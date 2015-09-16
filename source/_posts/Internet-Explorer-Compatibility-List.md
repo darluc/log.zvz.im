@@ -1,3 +1,7 @@
+title: Frameworks and Internet Explorer Compatibility
+date: 2015-09-16 23:06:50
+tags:
+---
 # Internet Explorer Compatibility
 
 - Bootstrap ( latest v3.3.5 )
@@ -22,7 +26,8 @@
   | jQuery 2.x | 9+                |                          |                          |        |                                 |      |           | 
   
   [reference](https://jquery.com/browser-support/)
-  
+<!--more-->  
+
 - AngularJS ( latest v1.4.5 & v1.2.28 )
   
   **Note:** AngularJS 1.3 has dropped support for IE8. Read more about it on [our blog](http://blog.angularjs.org/2013/12/angularjs-13-new-release-approaches.html). AngularJS 1.2 will continue to support IE8, but the core team does not plan to spend time addressing issues specific to IE8 or earlier.
