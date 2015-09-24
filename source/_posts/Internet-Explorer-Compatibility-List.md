@@ -8,14 +8,15 @@ tags:
   
   Internet Explorer 8 and 9 are also supported, however, please be aware that some CSS3 properties and HTML5 elements are not fully supported by these browsers. In addition, **Internet Explorer 8 requires the use of Respond.js to enable media query support.**
   
-  | Feature         | Internet Explorer 8 | Internet Explorer 9          | 
-  | --------------- | ------------------- | ---------------------------- | 
-  | `border-radius` | Not supported       | Supported                    | 
-  | `box-shadow`    | Not supported       | Supported                    | 
-  | `transform`     | Not supported       | Supported, with `-ms` prefix | 
-  | `transition`    | Not supported       |                              | 
-  | `placeholder`   | Not supported       |                              | 
-  
+| Feature         | Internet Explorer 8 | Internet Explorer 9          |
+|:---------------:|:-------------------:|:----------------------------:|
+| `border-radius` | Not supported       | Supported                    | 
+| `box-shadow`    | Not supported       | Supported                    | 
+| `transform`     | Not supported       | Supported, with `-ms` prefix | 
+| `transition`    | Not supported       |                              | 
+| `placeholder`   | Not supported       |                              | 
+
+
   [reference](http://getbootstrap.com/getting-started/#support)
   
 - jQuery ( latest v1.11.3 or v2.1.4 )
