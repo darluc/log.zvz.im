@@ -21,10 +21,10 @@ tags:
   
 - jQuery ( latest v1.11.3 or v2.1.4 )
   
-  |            | Internet Explorer | Chrome                   | Firefox                  | Safari | Opera                           | iOS  | Android   | 
-  | ---------- | ----------------- | ------------------------ | ------------------------ | ------ | ------------------------------- | ---- | --------- | 
-  | jQuery 1.x | 6+                | (Current - 1) or Current | (Current - 1) or Current | 5.1+   | 12.1x, (Current - 1) or Current | 6.1+ | 2.3, 4.0+ | 
-  | jQuery 2.x | 9+                |                          |                          |        |                                 |      |           | 
+|            | Internet Explorer | Chrome                   | Firefox                  | Safari | Opera                           | iOS  | Android   |
+|:----------:|:-----------------:|:------------------------:|:------------------------:|:------:|:-------------------------------:|:----:|:---------:|
+| jQuery 1.x | 6+                | (Current - 1) or Current | (Current - 1) or Current | 5.1+   | 12.1x, (Current - 1) or Current | 6.1+ | 2.3, 4.0+ |
+| jQuery 2.x | 9+                |                          |                          |        |                                 |      |           |
   
   [reference](https://jquery.com/browser-support/)
 <!--more-->  
