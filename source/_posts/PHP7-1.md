@@ -1,8 +1,9 @@
 title: PHP 7 有些什么值得期待？（一）
 date: 2015-10-24 23:29:47
-tags:
+tags: 
 - php
 ---
+
 # PHP 7 有些什么值得期待？（一）
 
 大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。
@@ -10,6 +11,7 @@ tags:
 无论你有什么想法，PHP7的发布都将是一个大事件，而且今年就会发布。但是这对你来说意味着什么呢？我们可以发现许多运营站点都不太愿意更新到较新的PHP 5.x版本。本次大版本的发布是否会带来许多向后兼容的问题，而使得这些站点更加不愿意进行更新呢？
 
 答案是：这是因具体情况而异的。且看下文分析。
+
 <!--more-->
 
 在PHP 7中，许多语言边界问题（language edge cases）都得到了清理。另外，性能和不一致性的修复在此版本都是关注的焦点。
@@ -83,7 +85,7 @@ echo $e->getMessage(); // Fatal Error: Call to a member function method() on nul
 echo "Hello World"; // Still runs
 ```
 
-此外ASP和脚本标签都被移除了，意味着<%和<%=，或者\<script language=“php”\>（以及它们对应的闭合标签，%>，和\</script\>）都不能再被使用。
+此外ASP和脚本标签都被移除了，意味着<%和<%=，或者&lt;script language=“php”&gt;（以及它们对应的闭合标签，%>，和&lt;/script&gt;）都不能再被使用。
 
 其它较大的变化可以参考[移除所有的过时函数](https://wiki.php.net/rfc/remove_deprecated_functionality_in_php7)。
 
