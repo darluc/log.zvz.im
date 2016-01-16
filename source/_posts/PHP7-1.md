@@ -3,7 +3,6 @@ date: 2015-10-24 23:29:47
 tags: 
 - php
 ---
-
 # PHP 7 有些什么值得期待？（一）
 
 大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。
@@ -182,4 +181,4 @@ function order_func($a, $b) {
 
 
 
-**本文翻译自：[https://blog.engineyard.com/2015/what-to-expect-php-7]()**
+**本文翻译自：[https://blog.engineyard.com/2015/what-to-expect-php-7](https://blog.engineyard.com/2015/what-to-expect-php-7)**
