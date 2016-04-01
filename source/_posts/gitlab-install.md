@@ -1,6 +1,7 @@
 title: Gitlab 安装指南
 date: 2016-04-02 00:37:15
-tags: git
+tags:
+- git
 ---
 #Gitlab 安装指南
 
