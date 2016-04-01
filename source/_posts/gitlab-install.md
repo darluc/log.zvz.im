@@ -64,7 +64,7 @@ $ cd gitlab-shell
 $ git checkout v2.6.5
 ```
 
-> 笔者安装的是 gitlab 7.x 的版本，需要跟 v2.6.5 的 gitlab-shell 配合，故以此版本号为例。
+笔者安装的是 gitlab 7.x 的版本，需要跟 v2.6.5 的 gitlab-shell 配合，故以此版本号为例。
 
 再修改一下它的配置文件：
 
@@ -89,7 +89,7 @@ $ git clone https://github.com/gitlabhq/gitlabhq.git gitlab
 $ git checkout 7-14-stable
 ```
 
-> 由于8.x版本的 gitlab 需要 go 语言的支持，故笔者选择了安装了最新的 7.x 版本。
+由于8.x版本的 gitlab 需要 go 语言的支持，故笔者选择了安装了最新的 7.x 版本。
 
 接下来，我们需要修改一下 gitlab 的配置文件：
 
