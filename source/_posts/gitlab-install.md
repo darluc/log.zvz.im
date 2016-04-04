@@ -34,7 +34,7 @@ GitLab 是一个用于仓库管理系统的开源项目。使用 [Git](http://ww
 
 ### 第一步：环境准备
 
-1. 安装好系统环境，ruby & mysql/mariadb & redis & nginx（可选）。具体可以参考[参考文章一][1]
+1. 安装好系统环境，ruby & mysql/mariadb & redis & nginx（可选）。具体可以参考[参考文章一](http://www.01happy.com/centos-6-5-install-gitlab/)
 
 2. 创建用户 git
 
@@ -180,17 +180,7 @@ $ bundle exec rake gitlab:check RAILS_ENV=production
 ```
 
 
-最后一个 nginx 的坑：如果安装完全没有问题而你又是使用 nginx 的时候，会发生用 http 协议push/pull git 库的时候报错；这个时候请检查一下你的 nginx 版本，如果太老了就请升级到最新版本吧，因为[老版本的 nginx 不支持文件分块（ chunked files ）的][2]。
+最后一个 nginx 的坑：如果安装完全没有问题而你又是使用 nginx 的时候，会发生用 http 协议push/pull git 库的时候报错；这个时候请检查一下你的 nginx 版本，如果太老了就请升级到最新版本吧，因为[老版本的 nginx 不支持文件分块（ chunked files ）](http://stackoverflow.com/questions/29898229/git-gitlab-push-rpc-failed-result-22-http-code-411)。
 
 
 最后给大家推荐一本 git 管理相关的书籍：[《Git版本控制管理(第2版)》](http://www.amazon.cn/gp/product/B00U42VM7Y/ref=as_li_tf_tl?ie=UTF8&camp=536&creative=3200&creativeASIN=B00U42VM7Y&linkCode=as2&tag=imzvz-23) <img src="http://ir-cn.amazon-adsystem.com/e/ir?t=imzvz-23&l=as2&o=28&a=B00U42VM7Y" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-
-
-
-
-
-
-[1]: http://www.01happy.com/centos-6-5-install-gitlab/	"参考文章一"
-
-
-[2​]: http://stackoverflow.com/questions/29898229/git-gitlab-push-rpc-failed-result-22-http-code-411	"stack overflow 上关于 gitlab 报错的问题"
