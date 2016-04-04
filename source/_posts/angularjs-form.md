@@ -1,6 +1,7 @@
 title: Nested AngularJS Form
 date: 2015-08-24 21:25:56
 tags:
+- AngularJS
 ---
 ## A problem about nested form in AngularJS
 Today I happened to work with a page having a form nested in another one. I found the nested ng-controller directive was not working. So I tried to replace the FORM tag with DIV tag, and the ng-controller directvie worked again.

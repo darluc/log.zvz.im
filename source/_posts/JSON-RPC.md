@@ -3,9 +3,8 @@ date: 2015-10-06 22:49:36
 tags:
 - json
 ---
-# JSON-RPC
 
-JSON-PRC 是与 XML-RPC类似的轻量级远程过程调用协议。
+> JSON-PRC 是与 XML-RPC类似的轻量级远程过程调用协议。
 
 
 ## JSON-RPC 2.0 说明文档

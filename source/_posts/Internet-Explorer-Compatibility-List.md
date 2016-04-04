@@ -2,7 +2,7 @@ title: Frameworks and Internet Explorer Compatibility
 date: 2015-09-16 23:06:50
 tags:
 ---
-# Internet Explorer Compatibility
+> I make a list of compatibilities of some popular font-end frameworks with Internet Explorer.
 
 - Bootstrap ( latest v3.3.5 )
   
@@ -19,6 +19,8 @@ tags:
 
   [reference](http://getbootstrap.com/getting-started/#support)
   
+<!--more-->  
+
 - jQuery ( latest v1.11.3 or v2.1.4 )
   
 |            | Internet Explorer | Chrome                   | Firefox                  | Safari | Opera                           | iOS  | Android   |
@@ -27,7 +29,6 @@ tags:
 | jQuery 2.x | 9+                |                          |                          |        |                                 |      |           |
   
   [reference](https://jquery.com/browser-support/)
-<!--more-->  
 
 - AngularJS ( latest v1.4.5 & v1.2.28 )
   

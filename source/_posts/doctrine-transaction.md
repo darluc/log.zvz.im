@@ -1,10 +1,9 @@
-title: Doctrine transaction
+title: Doctrine 2 ORM 2 中的事务说明
 date: 2015-09-02 02:29:35
 tags:
 - php
 - doctrine
 ---
-# Doctrine 2 ORM 2: Transaction Demarcation
 
 ## 事务划界
 

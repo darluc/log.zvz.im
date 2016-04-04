@@ -3,7 +3,6 @@ date: 2016-04-02 00:37:15
 tags:
 - git
 ---
-# Gitlab 安装指南
 
 ## Gitlab 简介
 
@@ -39,7 +38,7 @@ GitLab 是一个用于仓库管理系统的开源项目。使用 [Git](http://ww
 
 2. 创建用户 git
 
-```shell
+``` bash
 $ su -
 $ adduser --system --shell /bin/bash --comment 'GitLab' --create-home --home-dir /home/git/ git
 ```
@@ -50,7 +49,7 @@ $ adduser --system --shell /bin/bash --comment 'GitLab' --create-home --home-dir
 
 从 github 上下载 gitlab-shell 代码至 git 用户的 home 目录：
 
-```shell
+``` bash
 $ cd /home/git
 $ git clone https://github.com/gitlabhq/gitlab-shell.git
 $ cd gitlab-shell
@@ -60,7 +59,7 @@ $ cd gitlab-shell
 
 ![](http://ww3.sinaimg.cn/large/7327fe71gw1f29nzo8dboj20910dg74u.jpg)
 
-```shell
+``` bash
 $ git checkout v2.6.5
 ```
 
@@ -68,7 +67,7 @@ $ git checkout v2.6.5
 
 再修改一下它的配置文件：
 
-```shell
+``` bash
 $ cp config.yml.example config.yml
 ```
 
@@ -78,14 +77,14 @@ $ cp config.yml.example config.yml
 
 与上一步类似，我们先从 github 上下载 gitlab 代码至 git 用户的 home 目录：
 
-```shell
+``` bash
 $ cd /home/git
 $ git clone https://github.com/gitlabhq/gitlabhq.git gitlab
 ```
 
 然后切换至你所想要安装的版本：
 
-```shell
+``` bash
 $ git checkout 7-14-stable
 ```
 
@@ -93,7 +92,7 @@ $ git checkout 7-14-stable
 
 接下来，我们需要修改一下 gitlab 的配置文件：
 
-```shell
+``` bash
 # 复制配置文件
 $ cp config/gitlab.yml.example config/gitlab.yml
 
@@ -106,7 +105,7 @@ $ cp config/unicorn.rb.example config/unicorn.rb
 
 然后进行一些相关目录的设置：
 
-```shell
+``` bash
 # 设定log和tmp目录所有者和权限
 $ chown -R git log/
 $ chown -R git tmp/
@@ -129,7 +128,7 @@ $ chmod -R u+rwX public/uploads
 
 紧接着是数据库配置文件：
 
-```shell
+``` bash
 $ cp config/database.yml.mysql config/database.yml
 ```
 
@@ -143,7 +142,7 @@ Ruby 中的 gem 就是第三方依赖库，而 bundle 则是依赖包管理工�
 
 开始安装依赖包：
 
-```shell
+``` bash
 $ cd /home/git/gitlab/
 $ bundle install --deployment --without development test postgres puma aws
 ```
@@ -155,7 +154,7 @@ $ bundle install --deployment --without development test postgres puma aws
 还有一种可能是你的系统上缺少某些库的开发文件，只要根据报错信息提示，安装相应 lib 的 devel 包即可。
 ### 第五步：初始化数据库
 
-```shell
+``` bash
 $ cd /home/git/gitlab
 $ bundle exec rake gitlab:setup RAILS_ENV=production
 ```
@@ -175,7 +174,7 @@ admin@local.host
 
 到此为止，gitlab 就整个算是安装完成了。你可以执行以下命令来查看它的状态是否正常：
 
-```shell
+``` bash
 $ cd gitlab/
 $ bundle exec rake gitlab:check RAILS_ENV=production
 ```

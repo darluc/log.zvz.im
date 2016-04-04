@@ -1,10 +1,9 @@
-title: Doctrine generate entity from table
+title: Howto generate entities from table with Doctrine
 date: 2015-08-31 23:55:59
 tags:
 - php
 - doctrine
 ---
-# Doctrine generate entity from table
 
 1. Generate xml from table.
    
