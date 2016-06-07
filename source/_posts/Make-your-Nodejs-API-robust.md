@@ -273,3 +273,6 @@ it('should access their own locations', function(done){
 总的来说，我的团队都觉得这套测试方法不错，它节省了我们许多时间，并减少了在 QA 过程受挫的次数。
 
 你也想要来一套吗？快来 [clone 我的 git 代码](https://github.com/kathrynhough/node-api-testing-example)，开始亲自运行测试样例吧。
+
+
+> 翻译自：[MAKE YOUR NODE.JS API BULLETPROOF: HOW TO TEST WITH MOCHA, CHAI, AND SUPERTEST](https://developmentnow.com/2015/02/05/make-your-node-js-api-bulletproof-how-to-test-with-mocha-chai-and-supertest/)
