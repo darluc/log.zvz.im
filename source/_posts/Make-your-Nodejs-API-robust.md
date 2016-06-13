@@ -64,13 +64,13 @@ npm install supertest
 ### 使用 npm 安装 Express
 
 ```shell
-npm install supertest
+npm install express
 ```
 
 ### 使用 npm 安装 Body-Parser
 
 ```shell
-npm install express
+npm install body-parser
 ```
 
 ### 设置你的测试目录
