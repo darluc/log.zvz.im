@@ -422,3 +422,7 @@ render(
 不可否认 React 加上 Redux 的生态系统会略有些复杂，甚至对于初学者来说有点吓人，不过好处也很明显，几乎所有这些概念都是可转移的（ transferable ）。我们早已受够了从头开始学习 [The Elm 架构](https://github.com/evancz/elm-architecture-tutorial) ，或者从零开始一个像 [Om](https://github.com/omcljs/om) 或 [Re-frame](https://github.com/Day8/re-frame) 之类的 ClojureScript 库，而现在我们完全不必接触到 Redux 的底层架构。此外，我们也只体会到不可变数据能力的一小部分，现在我们有更好的能力开始学习 [Clojure](http://clojure.org/) 或 [Haskell](https://www.haskell.org/) 语言了。
 
 无论你是正在探索 web 应用开发趋势，还是早已成天地在编写 Javascript；行为驱动式架构和不可变数据的相关经验已经成为现今开发者的必备技能了，所以**从现在开始**学习这些技能正是时候！
+
+
+
+> 翻译自：[How to Build a Todo App Using React, Redux and Immutable.js](https://www.sitepoint.com/how-to-build-a-todo-app-using-react-redux-and-immutable-js/)
