@@ -81,3 +81,6 @@ deploy:
   type: git
   repository: https://github.com/darluc/hexo-theme-icarus.git
   branch: gh-pages
+
+sitemap:
+  path: sitemap.xml
