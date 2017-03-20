@@ -405,3 +405,5 @@ cv.readImage('./img/face.jpg', function(err, im){
 直接去读代码当然是最好的，我也很喜欢这样做；但是类库中有些返回值与 OpenCV 官方不一致和区别的地方，还是让我不那么爽。**希望这个类库能够快快发展，我也会尽我所能贡献一些代码。**
 
 > 译者注：修改了边缘侦测部分的代码后，译者发现类库 API 与官方不一致的问题有所改善。
+
+> 翻译自：[OpenCV tutorial: Computer vision with Node.js](https://community.risingstack.com/opencv-tutorial-computer-vision-with-node-js/)
