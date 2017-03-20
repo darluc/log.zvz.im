@@ -18,7 +18,7 @@ tags:
 OpenCV 官方支持 C，C ++，Python 和 Java。幸运的是，由 Peter Braden 领导的一群 Javascript 程序员开发了一个 Javascript 的 OpenCV 接口库，名为 [node-opencv](https://github.com/peterbraden/node-opencv)。
 
 利用该接口库，我们可以实现用于图像分析的 Node.js 应用。此库目前还没有实现所有的 OpenCV 特性 - 特别是 OpenCV 3 的一些特性 - 不过已经基本够用了。
-
+<!--more-->
 ## 安装
 
 要在 Node.js 中使用 OpenCV 库，你得先进行全局安装。在 MacOS 上，你可以通过 [Homebrew](http://brew.sh/) 来安装。在这篇文章中我安装并使用的是 OpenCV 的 2.4 版本。
