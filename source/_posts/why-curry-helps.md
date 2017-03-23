@@ -146,3 +146,5 @@ Ok，很少的逻辑，轻松地表达；如果没有柯里化函数我们是无
 [柯里化](https://npmjs.org/package/curry)能给予你一种令人垂涎的表达能力。
 
 我建议你立刻开始使用它。如果你已经熟稔于此，那么你一定会发现它的 API 接口直接好用。如果还没有，那么你应当与你的同事一起好好考虑一下了。
+
+> 翻译自：[Why Curry Helps](https://hughfdjackson.com/javascript/why-curry-helps/)
