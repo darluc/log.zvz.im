@@ -4,7 +4,7 @@ tags:
 - Nodejs
 ---
 
-![](http://ww1.sinaimg.cn/large/7327fe71gy1ffoe2upbj4j20rq0db0w5.jpg)
+![](https://ww1.sinaimg.cn/large/7327fe71gy1ffoe2upbj4j20rq0db0w5.jpg)
 
 本文是「使用 NodeJS 构建影院微服务」系列的第一篇。此系列将会讲述了如何构建**NodeJS 微服务**并将它们部署到**Docker Swarm 集群**上。
 
@@ -57,7 +57,7 @@ Javascript 是当前最流行编程语言，拥有丰富的开源模块生态系
 
 ## # 我们的微服务架构
 
-![](http://ww1.sinaimg.cn/large/7327fe71gy1ffoffkgj24j20vg0fp0wg.jpg)
+![](https://ww1.sinaimg.cn/large/7327fe71gy1ffoffkgj24j20vg0fp0wg.jpg)
 
 假设我们在 **Cinépolis**（一个墨西哥电影院）的 IT 部门工作。他们派给我们一个任务，让我们重构票务和零售店系统，将原有的一体化系统改为微服务架构。
 
@@ -71,7 +71,7 @@ Javascript 是当前最流行编程语言，拥有丰富的开源模块生态系
 
 首先，我们需要查看此影院中当前有哪些电影上映。下面这种图展示了微服务中是如何使用 REST 方式进行信息交流的。
 
-![](http://ww1.sinaimg.cn/large/7327fe71ly1ffoftow8znj20pm0cxwfx.jpg)
+![](https://ww1.sinaimg.cn/large/7327fe71ly1ffoftow8znj20pm0cxwfx.jpg)
 
 我们的**电影服务（movies service）** API 规格定义如下：
 
@@ -697,7 +697,7 @@ describe('movies-service', () => {
 
 最后回顾一下我们都做了什么事情。
 
-![](http://ww1.sinaimg.cn/large/7327fe71gy1ffw9wzy1z7j20pm0cxwfx.jpg)
+![](https://ww1.sinaimg.cn/large/7327fe71gy1ffw9wzy1z7j20pm0cxwfx.jpg)
 
 我们已经完成了以上信息交互中的第一个部分，构建了**电影服务**使得我们可以在电影院查询电影首映时间，使用 NodeJS 实现了**电影服务**的 API，我们先用一个 **RAML** 文件进行 **API 设计**，然后开始构建我们的 **API**，并且进行了相应的**单元测试**，最后把所有的代码整合成我们的**微服务**，使我们的电影服务可以启动起来。
 
