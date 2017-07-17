@@ -710,7 +710,8 @@ describe('movies-service', () => {
 你可以在 Github 上找到本文的完整代码 [Crizstian/cinema-microservice](https://github.com/Crizstian/cinema-microservice)。
 
 
-
-
-
 翻译自：[Build a NodeJS cinema microservice and deploying it with docker — part 1](https://medium.com/@cramirez92/build-a-nodejs-cinema-microservice-and-deploying-it-with-docker-part-1-7e28e25bfa8b)
+
+
+
+[系列文章 - Part 2](https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part2/)
