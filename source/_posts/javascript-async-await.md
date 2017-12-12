@@ -212,3 +212,6 @@ console.log('wanna race?');
 
 自 `node 7.6.0` 向上都支持 Aysnc/Await 语法！
 
+
+
+翻译自：[Asynchronous Adventures in JavaScript: Async/Await](https://medium.com/dailyjs/asynchronous-adventures-in-javascript-async-await-bd2e62f37ffd)
