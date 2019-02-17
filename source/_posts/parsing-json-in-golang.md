@@ -26,9 +26,9 @@ json.Unmarshall([]byte(myJsonString), &myStoredVariable)
 ```
 
 本文中我们要讨论的是，对于 `myStoredVariable` 变量的类型，你可以有哪些不同的选择，以及决定何时采用何种类型。
+<!--more-->
 
 在处理 JSON 数据时，你会遇到两种情况：
-<!--more-->
 1. 结构化数据
 2. 非结构化数据
 
