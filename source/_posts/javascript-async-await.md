@@ -5,7 +5,7 @@ tags:
 - Nodejs
 ---
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fmawg0jg66j20q80catae.jpg)
+![](https://img.zvz.im/imgs/2019/06/44f169f7325d65cf.png)
 
 ### Async/Await 为何物？
 

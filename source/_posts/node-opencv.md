@@ -66,7 +66,7 @@ cv.readImage('./img/myImage.jpg', function(err, img) {
 });
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fcjgkrk3j3j20xc0monbz)
+![](https://img.zvz.im/imgs/2019/06/c1afacfcbce536d3.jpg)
 
 承载加载图片数据的对象，是 OpenCV 使用的一个基本数据结构 - 矩阵。所有载入和生成的图像都是用矩阵来描述的，矩阵中的每一个元素都对应图像的一个像素。矩阵的大小由载入图像的大小决定。在 Node.js 中你可以使用特定参数调用 new Matrix() 构造方法来生成一个矩阵。
 
@@ -84,7 +84,7 @@ img.convertGrayScale();
 img.save('./img/myGrayscaleImg.jpg');
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fckmrimrxoj20xc0mothy)
+![](https://img.zvz.im/imgs/2019/06/470560edbd5675be.jpg)
 
 在进行边缘探测时经常会用到这个方法。
 
@@ -95,7 +95,7 @@ img.convertHSVscale();
 img.save('./img/myHSVscaleImg.jpg');
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fckmrypaswj20xc0mok7g)
+![](https://img.zvz.im/imgs/2019/06/2d1840e7761522b8.jpg)
 
 我们可以使用 **Matrix#crop(x, y, width, height)** 方法来裁剪图片，并指定其中的参数。
 
@@ -118,11 +118,11 @@ let newImg = img.copy();
 
 腐蚀和膨胀是数学形态学（ mathematical morphology ）的基本方法。我将结合下面的图像修改操作来解释它们是如何工作的。（译者注：具体数学定义可[参考此文](http://media.cs.tsinghua.edu.cn/~ahz/digitalimageprocess/chapter08/chapt08_ahz.htm)）
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fcko6iz4maj20e808cq3p)
+![](https://img.zvz.im/imgs/2019/06/c2316008cb739a25.jpg)
 
 二进制图像 A 通过结构元素 B 的膨胀定义如下
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fcknsm5zdzj203b01amwy)
+![](https://img.zvz.im/imgs/2019/06/97dd7ea051bb7cbb.jpg)
 
 OpenCV 有一个 **Matrix#dilate(iterations, structEl)** 方法，其中的 **iterations** 参数指定膨胀的量，**structEl** 参数是用于膨胀的结构元素（默认为 3X3）。
 
@@ -140,11 +140,11 @@ cv::dilate(self->mat, self->mat, sturctEl, cv::Point(-1, -1), 3);
 
 调用过此方法后，我们可以得到如下修改过的图像。
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fd5gfq8itaj20e808c74p)
+![](https://img.zvz.im/imgs/2019/06/e4af008c72801d71.jpg)
 
 二进制图像 A 通过结构元素 B 的腐蚀定义如下
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fd5gglll9wj205b00r743)
+![](https://img.zvz.im/imgs/2019/06/6c51dfe0d4de36c5.jpg)
 
 在 OpenCV 中，我们可以调用 **Martix#erode(iterations, structEl)** 方法，和前面的膨胀方法相似。
 
@@ -156,7 +156,7 @@ img.erode(3);
 
 同样我们可以得到一个腐蚀过的图像。
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fd5gj8ez6rj20e808cwfh)
+![](https://img.zvz.im/imgs/2019/06/c200eeb23703b2c0.jpg)
 
 ### 边缘侦测
 
@@ -173,7 +173,7 @@ im.convertGrayscale();
 im.gaussianBlur([3, 3]);
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfeo3x71oj20xc0mothy)
+![](https://img.zvz.im/imgs/2019/06/470560edbd5675be.jpg)
 
 图像现已准备就绪，可以开始使用坎尼边缘侦测算法了。此算法接收两个参数：**lowThreshold** 和 **highThreshold** 。
 
@@ -209,11 +209,11 @@ all.drawAllContours(contours, WHITE);
 all.save('./img/allContoursImg.jpg');
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71ly1fdfhgvq8kaj20xc0mo15o)
+![](https://img.zvz.im/imgs/2019/06/07508d8ffe2c236e.jpg)
 
 膨胀过后的图像
 
-![](https://ww1.sinaimg.cn/large/7327fe71ly1fdfhhiiewcj20xc0mok4n)
+![](https://img.zvz.im/imgs/2019/06/246848b1793b0f98.jpg)
 
 未进行膨胀的图像
 
@@ -243,7 +243,7 @@ const thickness = 1;
 largestContourImg.drawContour(contours, largestAreaIndex, GREEN, thickness, lineType, maxLevel, [0, 0]);
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfj85jh2qj20xc0motcf)
+![](https://img.zvz.im/imgs/2019/06/df9ace1263c0476b.jpg)
 
 如果想要多一些轮廓线，比如大于特定值的所有轮廓，我们只需要将 **Matrix#drawContour()** 方法挪到 for 循环中同时更改一下 **if** 条件即可。
 
@@ -264,7 +264,7 @@ for ( let i = 0; i < contours.size(); i ++) {
 }
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfjfeac63j20xc0moted)
+![](https://img.zvz.im/imgs/2019/06/88e343ab79695efc.jpg)
 
 ### 多边形近似
 
@@ -275,7 +275,7 @@ let bound = contours.boundingRect(largestAreaIndex);
 largestContourImg.rectangle([bound.x, bound.y], [bound.width, bound.height], WHITE, 2);
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfkazuj6hj20xc0mon0z)
+![](https://img.zvz.im/imgs/2019/06/4f73351216c0607f.jpg)
 
 第二种使用多边形近似的方法是通过调用 **Contours#approxPolyDP()** 方法获得指定精确的多边形。通过调用 **Contours#cornerCount(index)** 方法，可以获取到多边形顶角的数量。下面附上了两种使用不同级别精度获取到的图像。
 
@@ -290,9 +290,9 @@ poly.drawContour(contours, largestAreaIndex, RED);
 console.log(contours.cornerCount(largestAreaIndex));
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfkm2silej20xc0mogob)
+![](https://img.zvz.im/imgs/2019/06/cb6d4e52603a38f1.jpg)
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfkmasjcfj20xc0mon01)
+![](https://img.zvz.im/imgs/2019/06/36f55bf3133a2346.jpg)
 
 使用 **Contours#minAreaRect()** 方法获取一个旋转过的面积最小的近似矩形也很有意思。
 
@@ -308,7 +308,7 @@ for (let i = 0; i < 4; i ++) {
 console.log(rect.angle)
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfkzfh0k8j20xc0modls)
+![](https://img.zvz.im/imgs/2019/06/a65f66ec8a92d4c0.jpg)
 
 ### 无裁剪图片旋转
 
@@ -322,7 +322,7 @@ img.rotate(90);
 
 只是我们会得到如下的结果：
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdfs0dlao0j20xc0monb6)
+![](https://img.zvz.im/imgs/2019/06/69ffacfce4d67078.jpg)
 
 **怎样才能做到既旋转了图片又不会被裁剪呢？**在旋转之前，我们先生成一个 8 位 3 通道的矩阵 **bgImg** ，其边长等于原图对角线的长度。
 
@@ -341,7 +341,7 @@ bgImg.rotate(rect.angle + 90);
 bgImg.save('./img/rotatedImg.jpg');
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdte8e8zaxj20xc0xcnat.jpg)
+![](https://img.zvz.im/imgs/2019/06/4010207470c71e31.png)
 
 然后，我们可以对新的旋转图片使用坎尼边缘侦测方法。
 
@@ -363,7 +363,7 @@ rotatedContour.drawContour(contours, largestAreaIndex, GREEN, thickness, lineTyp
 rotatedContour.save('./img/rotatedImgContour.jpg');
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdteahxpalj20xc0xcjuw.jpg)
+![](https://img.zvz.im/imgs/2019/06/0f82295326f2c5fd.png)
 
 还有许多操作图片的方法。比如，很实用的去除背景功能 - 不过本文就暂不做介绍了。
 
@@ -394,7 +394,7 @@ cv.readImage('./img/face.jpg', function(err, im){
 });
 ```
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fdtf8ak5n3j20v90ku1kx.jpg)
+![](https://img.zvz.im/imgs/2019/06/2b7a99d9ea52c2d6.png)
 
 > 译者注：译者找了个照片试了一下，发现会有误认的情况。。。不知道是否有方法提高准确度。
 

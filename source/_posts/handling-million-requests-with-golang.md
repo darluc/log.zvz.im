@@ -4,7 +4,7 @@ tags:
 - golang
 ---
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fouyezw261j218g0rsqt8.jpg)
+![](https://img.zvz.im/imgs/2019/06/8cdd2b7f20b4b9fe.jpg)
 
 我在反广告、杀病毒、检木马等行业的不同软件公司里已经工作 15 年以上了，非常了解这类系统软件因每天处理海量数据而导致的复杂性。
 
@@ -139,7 +139,7 @@ func StartProcessor() {
 
 我们傻乎乎地忽略了问题，最终开始了系统的死亡倒计时。在部署了这个问题版本之后几分钟里，系统的延迟以固定的速率不断增加。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fovfye6vjyj20mz0f8goj.jpg)
+![](https://img.zvz.im/imgs/2019/06/a7dd8e1bb4446be3.jpg)
 
 ## 更好的解决方案
 
@@ -298,17 +298,17 @@ var (
 
 在部署这份代码后，我们发现系统的延迟立刻大幅下降，而我们处理请求的能力得到了巨大的提升。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fovyepplmqj20mv0eo0v1.jpg)
+![](https://img.zvz.im/imgs/2019/06/d21c1ec060f286f7.jpg)
 
 在我们的 Elastic Load Balancers 全部预热完成几分钟后，可以看到我们的 ElasticBeanstalk 应用每分钟可以处理近一百万的请求，常常会在流量早高峰的时候突破每分钟一百万。
 
 我们刚把新代码部署上去，服务器数量就从 100 台服务器大幅下降到大约 20 台服务器。
 
-![](https://ws1.sinaimg.cn/large/7327fe71ly1fovypyezcmj20my0d775l.jpg)
+![](https://img.zvz.im/imgs/2019/06/3c0a7a5f497861ed.jpg)
 
 在我们调整集群配置和自动缩放配置后，我们能将服务器的使用数量降低到四个 EC2 c4.Large 实例，再将 Elastic Auto-Scaling 设置为 CPU 使用率持续五分钟超 90% 的时候，增加一个实例。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fovz7tuy0hj213c0k6jv1.jpg)
+![](https://img.zvz.im/imgs/2019/06/f1571f323aa5126a.jpg)
 
 ## 结论
 

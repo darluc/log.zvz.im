@@ -25,7 +25,7 @@ tags:
 
 在之前的章节中，我们已经完成了以下架构图中的上层部分，接着从本章起，我们要开始图中下层部分的开发了。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fki9tkkgh7j20xh0liad7.jpg)
+![](https://img.zvz.im/imgs/2019/06/5201f3beb0ad3a8e.png)
 
 到目前为止，我们的终端用户已经能够在影院看到电影首映信息，选择影院并下单买票。本章我们会继续构建**影院架构**，并探索**订票服务**内部是如何工作的，跟我一起学点有趣的东西吧。
 
@@ -761,13 +761,13 @@ $ bash < start_service
 
 如果你看了之前的几篇文章，那么我们已经有了一个如下的系统架构图：
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fkiq8xdf42j212e0xijva.jpg)
+![](https://img.zvz.im/imgs/2019/06/eac76015e41c1aa8.png)
 
 你可以看到系统已经基本成形了，只是某些部分还是有点不对，那就是在 **worker1** 和 **worker2** 中我们没有运行任何微服务。那是因为我们还没有在这些 **docker-machines** 中创建任何的服务，不过以后会去做的。
 
 在**影院微服务架构**中，我们基本上完成了下图中的部分：
 
-![](https://ws1.sinaimg.cn/large/7327fe71ly1fkiqgvjnjhj20r909dt9w.jpg)
+![](https://img.zvz.im/imgs/2019/06/82a13f9a82e55315.png)
 
 我们刚刚完成了**订票服务**，而且实现了简易版的**支付服务**和**通知服务**。
 

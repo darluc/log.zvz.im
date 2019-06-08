@@ -7,7 +7,7 @@ tags:
 
 Tensorflow 并不是一个专门用于机器学习的库，相反的，它是一个通用的用于图计算的库。它的核心部分是用 C++ 实现的，同时还有其它语言的接口库。Go 语言版本的接口库与 Python 版本的并不一样，它不仅有助于我们使用 Go 语言调用 Tensorflow，同时有助于我们了解 Tensorflow 的底层实现。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fsnt4f7jeej209a07uq3u.jpg)
+![](https://img.zvz.im/imgs/2019/06/e18bb51e93eb9b04.jpg)
 <!-- more -->
 ## 接口库
 

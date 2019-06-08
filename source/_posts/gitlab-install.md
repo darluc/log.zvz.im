@@ -16,7 +16,7 @@ GitLab 是一个用于仓库管理系统的开源项目。使用 [Git](http://ww
 如果你点击查看 [gitlabhq](https://github.com/gitlabhq) 这个用户，你可以看到更多的代码库。
 
 <!--more-->  
-![](https://ww4.sinaimg.cn/large/7327fe71gw1f29iby01w6j20jb0ihwfz.jpg)
+![](https://img.zvz.im/imgs/2019/06/290c9239ce2f613d.jpg)
 
 截图中是以下三个项目：
 
@@ -57,7 +57,7 @@ $ cd gitlab-shell
 
 然后切换至你所需要的版本，可以在 github 页面上找到对应的版本 tags：
 
-![](https://ww3.sinaimg.cn/large/7327fe71gw1f29nzo8dboj20910dg74u.jpg)
+![](https://img.zvz.im/imgs/2019/06/0b930f31bc03b819.jpg)
 
 ``` bash
 $ git checkout v2.6.5

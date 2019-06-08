@@ -21,7 +21,7 @@ tags:
 
 在本篇中我们将继续构建我们的**影院微服务**，这次我们将进行**影院目录服务**的开发，以完成下图中的功能。
 
-![](https://ww1.sinaimg.cn/large/7327fe71gy1fh6s0apl6rj20pm0cxwfx.jpg)
+![](https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png)
 <!-- more -->
 我们将使用到以下技术：
 
@@ -192,11 +192,11 @@ $ docker run --name movies-service -p 443:3000 -d movies-service
 
 最终我们用 chrome 浏览器测试一下，可以确认我们的 **HTTP/2** 协议已经完全生效了。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fh93lpah4oj218g0kqn8v.jpg)
+![](https://img.zvz.im/imgs/2019/06/6858ab638d364e2d.png)
 
 而且我们还可以使用 **wireshark** 之类的抓包工具确认 **ssl** 确实生效了。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fh93n83hkaj215q0nrn63.jpg)
+![](https://img.zvz.im/imgs/2019/06/0d98f20c7725bd61.png)
 
 ### # 在微服务上实现 JWT
 
@@ -229,19 +229,19 @@ $ docker run --name movies-service -p 443:3000 -d movies-service
 
 对于我们的 **Locations** 库来说，一个国家可以有多个州而一个州则对应一个国家，所以这是**一对多**的关系，对于州和城市来说也是一样的关系，让我们看一下关系图：
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fh9554yo99j214c0lwn6c.jpg)
+![](https://img.zvz.im/imgs/2019/06/5c43c08b82f70617.png)
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fh9565vaghj218g0kw7dt.jpg)
+![](https://img.zvz.im/imgs/2019/06/7de1fafcdbfff1a2.png)
 
 这种关系还适用于很多情况。一个城市有多个电影院，一个电影院属于一个城市；一个放映室有许多放映计划，一个放映计划属于一个放映室，我们看一下它们之间的关系。
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fh95cxrl6lj20vy0c9gsd.jpg)
+![](https://img.zvz.im/imgs/2019/06/3f1a1b0ba2e94f39.png)
 
 如果电影院数组或者放映计划数据增长比较有限，我们可以采用上图中的引用关系。假设一个放映室每天最多只有 5 个放映计划，我们也可以将放映计划文档直接嵌入到影院文档中去。
 
 > 内嵌数据模型允许应用将相关性数据片断存放在同一条数据库记录中。这样做可使得应用的常用操作需要更少的查询和更新。—— MongoDB Docs
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fh95mks5nsj218g0t9aoy.jpg)
+![](https://img.zvz.im/imgs/2019/06/213cd97d135f56e1.png)
 
 这就是我们数据库结构设计的最终结果。
 
@@ -631,23 +631,23 @@ $ docker ps
 
 应该可以看到类似下图的情况：
 
-![](https://ws1.sinaimg.cn/large/7327fe71gy1fhjfh3vltbj218g0340wa.jpg)
+![](https://img.zvz.im/imgs/2019/06/9306e91bf244845c.png)
 
 我们还可以在 chrome 浏览器中测一下我们的服务，验证 **HTTP/2** 协议能正常工作，而且服务也是正常运行的。
 
-![](https://ws1.sinaimg.cn/large/7327fe71ly1fhjfuu5c99j218g0l9n6u.jpg)
+![](https://img.zvz.im/imgs/2019/06/80065700ac28226e.png)
 
 我们还可以找点乐子，使用 **JMeter** 进行压力测试，压测文件也在 github 仓库中的 **integration-test/** 目录下。
 
-![](https://ws1.sinaimg.cn/large/7327fe71ly1fhjgio18suj21520w0wi0.jpg)
+![](https://img.zvz.im/imgs/2019/06/15b430ee5d0b7082.png)
 
-![](https://ws1.sinaimg.cn/large/7327fe71ly1fhjgjov7szg20hs05o4qp.gif)
+![](https://img.zvz.im/imgs/2019/06/89fcb6d89df7cf8a.gif)
 
 ## # 总结时间
 
 我们都做了什么。。。
 
-![](https://ws1.sinaimg.cn/large/7327fe71ly1fhjgn4y5qbj20pm0cxwfx.jpg)
+![](https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png)
 
 我们已经完成了图中的这些微服务，你可能会说在**影院目录服务**中我们还没有调用**电影服务**。的确如此，我们至此只实现了服务的 **GET** 请求处理。而在**影院目录服务**中调用**电影服务**时使用 **POST** 请求，是为了给影院输入上映的电影，以便制作放映计划，由于我们本次的任务只是 **CRUD** 操作中的 **R** 读操作，所以我们还没有看到这个交互。不过在本系列的后续文章中，我们会在微服务中实现更多的 CRUD 操作，请保持耐心和好奇心 :D 。
 

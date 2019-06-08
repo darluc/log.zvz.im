@@ -122,7 +122,7 @@ it('should return a 200 response', function(done){
 
 执行一下。确保你处在你的项目的父级目录。然后执行 mocha 命令。
 
-![](https://ww1.sinaimg.cn/large/7327fe71gw1f4ly0b3642j20gl06n3ys.jpg)
+![](https://img.zvz.im/imgs/2019/06/73205ca9df23e8e4.jpg)
 
 在此，我们简单地向一个服务端发送了一个 get 请求，并且期望它返回一个 200 状态的响应。
 
@@ -148,7 +148,7 @@ it('should be an object with keys and values', function(done){
 
 让我们运行一下：
 
-![](https://ww4.sinaimg.cn/large/7327fe71gw1f4lyd6qu79j20gm06n74p.jpg)
+![](https://img.zvz.im/imgs/2019/06/191ef6f4ed3f9126.jpg)
 
 ## 写更多的测试
 
@@ -179,7 +179,7 @@ it('should be updated with a new name', function(done){
 
 让我们来运行一下：
 
-![](https://ww4.sinaimg.cn/large/7327fe71gw1f4m0bad38rj20gp07w0t9.jpg)
+![](https://img.zvz.im/imgs/2019/06/892f5f9a63531e3d.jpg)
 
 ### 错误
 
@@ -203,7 +203,7 @@ it('should not be able to access other users locations', function(doen){
 
 看一下执行结果：
 
-![](https://ww1.sinaimg.cn/large/7327fe71gw1f4m0vk3uduj20gl07cdgj.jpg)
+![](https://img.zvz.im/imgs/2019/06/ada663e9dbe9ef88.jpg)
 
 ### 钩子
 
@@ -246,7 +246,7 @@ it('should access their own locations', function(done){
 
 看一下结果：
 
-![](https://ww2.sinaimg.cn/large/7327fe71gw1f4mmt7lasmj20gq07lmxz.jpg)
+![](https://img.zvz.im/imgs/2019/06/cb8f11ceeea23ae7.jpg)
 
 除了 before 这个钩子外，mocha 还提供了 after，afterEach 和 beforeEach 这些钩子。
 
@@ -254,19 +254,19 @@ it('should access their own locations', function(done){
 
 虽然我强烈推荐使用测试覆盖率工具[Istanbul](https://github.com/gotwarlost/istanbul)，但是我们还是决定等到项目的第二期在加入 Istanbul。因为现在的 node.js 接口还是比较简单的，我们决定采用抽查方式（就算我们只检测了200个响应）来保证每个接口都被测试过了。在我们确认所有的接口都被覆盖了，我们就可以开始配置持续集成工具 [Magnum CI](https://magnum-ci.com/) 了。为了使用 Magnum CI，你需要创建一个账号然后设置你的第一个项目。
 
-![](https://ww4.sinaimg.cn/large/7327fe71gw1f4msexy95bj20cy07tmxc.jpg)
+![](https://img.zvz.im/imgs/2019/06/2af0a7ab09a29002.jpg)
 
 接着，给你的项目填入基本信息。
 
-![](https://ww1.sinaimg.cn/large/7327fe71gw1f4msfoh70qj20f409fgm5.jpg)
+![](https://img.zvz.im/imgs/2019/06/f499691c55343155.jpg)
 
 点击创建你的项目后，就可以开始配置你的项目了。
 
-![](https://ww4.sinaimg.cn/large/7327fe71gw1f4msgxlozjj20qk0e3gn0.jpg)
+![](https://img.zvz.im/imgs/2019/06/ebb0d7d94ad61e68.jpg)
 
 从这里开始，你可以像例子中一样，选择你用于构建的 git 分支。或者，你可以跳过自定义设置，简单地采用 Magnum CI 的默认值创建你的第一个测试构建配置。
 
-![](https://ww1.sinaimg.cn/large/7327fe71gw1f4mvnqxn8oj20v90az401.jpg)
+![](https://img.zvz.im/imgs/2019/06/689306844b5a97c1.jpg)
 
 之后你就会收到一封邮件，上面会详细描述了你的项目构建状态。你还可以增加一个网页钩子，让它将信息推送到你在 [Slack](https://slack.com/) 中的项目房间中。我的团队非常喜欢这个功能，因为这样能够让所有人在忙着工作修改 bug 的时候及时得到通知。如果有人推送了一次代码导致 API 出问题，我们立刻能得到通知并开始着手修复。
 
