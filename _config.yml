@@ -79,7 +79,7 @@ disqus_shortname: imzvz
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: https://github.com/darluc/hexo-theme-icarus.git
+  repository: https://github.com/darluc/hexo-blog.git
   branch: gh-pages
 
 sitemap:
