@@ -104,3 +104,9 @@ Traverse-8  64.4µs ± 1%
 
  数据库查询本身占用了前一个跑分的大部分时间。项目本身引入的延迟很低，这保证了它会有一个优秀的前景。想要知道更多的开发细节，此项目已经[在 Github 放出了线路图](https://github.com/facebookincubator/ent/issues/46)。
 
+
+
+
+
+> 翻译自：[Go: ent, Graph-Based ORM by Facebook](https://medium.com/a-journey-with-go/go-ent-graph-based-orm-by-facebook-d9ba6d2290c6)
+
