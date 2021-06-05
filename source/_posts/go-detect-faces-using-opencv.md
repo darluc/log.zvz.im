@@ -1,4 +1,8 @@
-# 使用 Golang 和 OpenCV 侦测人脸
+title: 使用 Golang 和 OpenCV 侦测人脸
+date: 2021-06-05 22:55:29
+tags:
+- golang
+---
 
 ![](https://img.zvz.im/imgs/2020/04/d055ce9a0a5c233c.png)
 
@@ -9,6 +13,7 @@ OpenCV 是一个用于计算机视觉处理的代码库，面世已有 20 多年
 * Go
 * OpenCV （下文附有安装链接）
 * 一个网络摄像头
+<!--more-->
 
 **安装地址**
 
