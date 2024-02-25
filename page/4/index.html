@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Blog for computer technology.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Z - Computer & Programming Technology">
+<meta property="og:url" content="http://log.zvz.im/page/4/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="Blog for computer technology.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Z - Computer & Programming Technology">
+<meta name="twitter:description" content="Blog for computer technology.">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.proxy.ustclug.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-67274065-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-utf8-in-javascript" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/30/utf8-in-javascript/">Javascript 中的 UTF-8</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/12/30/utf8-in-javascript/" class="article-date">
+  <time datetime="2016-12-30T02:50:08.000Z" itemprop="datePublished">2016-12-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/javascript/">javascript</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 <code>decodeURIComponent</code> 函数对 <code>escape</code> 编码过的字符串进行解码导致了浏览器报错：<strong>URIError: URI malformed</strong>。于是上网找寻答案，看到这篇文章。</p>
+</blockquote>
+<p>在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 <code>atob</code> 和 <code>btoa</code> 函数时。这些函数用于二进制字符串和 Base64 ASCII 码之间的转换。但是用它们处理 Unicode 字符串时就挂了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; btoa(&apos;\u0227&apos;);</div><div class="line">Error: INVALID_CHARACTER_ERR: DOM</div><div class="line">Exception 5</div></pre></td></tr></table></figure>
+<p><a href="https://developer.mozilla.org/en/DOM/window.btoa#Unicode_Strings">MDN 上关于 <code>btoa</code> 的文档</a>指出下面<a href="http://ecmanaut.blogspot.com/2006/07/encoding-decoding-utf8-in-javascript.html">来自于 Johan Sundström 的函数</a>可以解决 Unicode 问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">encode_utf8</span>(<span class="params">s</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">unescape</span>(endcodeURIComponent(s));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">decode_utf8</span>(<span class="params">s</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">decodeURIComponent</span>(<span class="built_in">escape</span>(s));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用上这些函数后，<code>btoa</code> 就能够给出期望的结果了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; btoa(encode_utf8(&apos;\u0227&apos;));</div><div class="line">&quot;yKc==&quot;</div></pre></td></tr></table></figure>
+<p>Johan 的函数能正常工作，只是让人觉得有点像是黑魔法。所以我决定研究一下 <code>encode_utf8</code> 函数的各个部分，搞明白它是如何工作的。<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/12/30/utf8-in-javascript/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-good-taste-coding" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/11/good-taste-coding/">如何拥有 Linus Torvalds 所说的编码“好品味”</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/11/11/good-taste-coding/" class="article-date">
+  <time datetime="2016-11-11T13:57:43.000Z" itemprop="datePublished">2016-11-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/coding/">coding</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在<a href="https://www.ted.com/talks/linus_torvalds_the_mind_behind_linux">最近一次对 Linus Torvalds （ Linux 之父 ） 的采访</a>视频中，约 14 分 20 秒的位置，他提到了带着“好品味”编程的观点。好品味？采访者对其细节进行了追问，而 Linus 则是早有准备。</p>
+<p>他首先展示了一个代码段。不过这不是一个有着“好品味”的代码。这个代码段是个坏样例，用作对比的原始代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">remove_list_entry(entry) </div><div class="line">&#123;</div><div class="line">  prev = <span class="literal">NULL</span>;</div><div class="line">  walk = head;</div><div class="line">  </div><div class="line">  <span class="comment">// Walk the list</span></div><div class="line">  </div><div class="line">  <span class="keyword">while</span> (walk != entry) &#123;</div><div class="line">    prev = walk;</div><div class="line">    walk = walk-&gt;next;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// Remove the entry by updating the</span></div><div class="line">  <span class="comment">// head or the previous entry</span></div><div class="line">  </div><div class="line">  <span class="keyword">if</span> (!prev)</div><div class="line">    head = entry-&gt;next;</div><div class="line">  <span class="keyword">else</span></div><div class="line">    prev-&gt;head = entry-&gt;next;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>无品味的代码示例</em><br>
+        
+          <p class="article-more-link">
+            <a href="/2016/11/11/good-taste-coding/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-build-todo-app" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/13/build-todo-app/">使用 Redux 秒做 todo-list 应用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/10/13/build-todo-app/" class="article-date">
+  <time datetime="2016-10-13T01:39:11.000Z" itemprop="datePublished">2016-10-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/javascript/">javascript</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://facebook.github.io/react">React</a> 采用组件和单向数据流的方式完美地解决了用户界面的构建问题，不过它所用于处理状态的工具设计得太简单了，感觉就是故意的；也可能是为了强调 React 只是对应传统的 <a href="http://blog.codinghorror.com/understanding-model-view-controller/">MVC</a> 架构中 View 的部分。</p>
+<h2 id="作者认为"><a href="#作者认为" class="headerlink" title="作者认为"></a>作者认为</h2><p>没有什么能够阻止我们用 React 来构建越来越大的应用，但是很快我们就会发现，想要保持代码简单，我们到处都需要进行状态的管理。</p>
+<p>尽管没有官方的解决方案，但是仍然有不少代码库依照 React 的设计理念解决了状态管理的问题。今天我们就要介绍两个这样的类库，并使用它们构建一个简单的小应用。</p>
+<h2 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h2><p><a href="https://redux.js.org/">Redux</a> 是一个极精简的库，它融合了 <a href="https://redux.js.org/">Flux</a> 和 <a href="https://redux.js.org/">Elm</a> 的设计理念，为应用状态提供容器功能。我们可以使用 Redux 管理任何应用的状态，使我们遵守以下准则：<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/10/13/build-todo-app/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-understand-js-closure" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/03/understand-js-closure/">搞不明白的 Javascript 闭包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/09/03/understand-js-closure/" class="article-date">
+  <time datetime="2016-09-03T23:32:18.000Z" itemprop="datePublished">2016-09-03</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/javascript/">javascript</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在 Javascript 语言中，闭包就是一个函数，只是它上下文中的变量以引用的形式与其绑定在了一起。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMeAClosure</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> canYouSeeMe = <span class="string">"here I am"</span>;</div><div class="line">  <span class="keyword">return</span> (<span class="function"><span class="keyword">function</span> <span class="title">theClosure</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> &#123;<span class="attr">canYouSeeIt</span>: canYouSeeMe ? <span class="string">"yes"</span> : <span class="string">"no"</span>&#125;;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> closure = getMeAClosure();</div><div class="line">closure().canYouSeeIt; <span class="comment">//"yes"</span></div></pre></td></tr></table></figure>
+<p>实际上每个 Javascript 函数在生成的时候都形成了闭包。稍后我会给大家解释闭包的产生原因和过程，然后纠正一些关于闭包的错误概念，最后再给出一些闭包的实际用例。不过首先简单介绍一下闭包相关的基础概念：Javascript 的闭包是通过 <code>词法域 (lexical scope)</code> 和 <code>变量环境 (VariableEnvironment)</code> 实现的。<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/09/03/understand-js-closure/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-PHP-Coroutine" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/01/PHP-Coroutine/">用PHP协程实现多任务协作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/07/01/PHP-Coroutine/" class="article-date">
+  <time datetime="2016-07-01T00:56:55.000Z" itemprop="datePublished">2016-07-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/Coroutine/">Coroutine</a> <a class="article-category-link" href="/tags/php/">php</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>PHP 5.5  中最重要的特性之一就是对协程（coroutine）和生成器（generator）的支持。生成器的特性已经由<a href="http://de2.php.net/manual/en/language.generators.overview.php">官方文档</a>和许多博文（比如<a href="http://blog.ircmaxell.com/2012/07/what-generators-can-do-for-you.html">这一篇</a>和<a href="http://sheriframadan.com/2012/10/test-drive-php-5-5-a-sneak-peek/#generators">这一篇</a>）讲解得很充分了。另一方面，协程受到的关注则较少。这是因为协程的功能相较而言更加强大，但却难以讲解。</p>
+<p>本文会使用协程实现一个任务调度器，以此帮助你理解协程的概念和用法。我会先用几个段落做一些介绍。如果你觉得你已经对生成器和协程的基本概念掌握得很牢固了，那么你可以直接跳至“多任务协作”这一段开始阅读。</p>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>生成器背后最原始的想法就是一个函数不仅仅返回一次数据，而是能够返回一系列的数据，并且这些数据是挨个返回的。也可以理解为，生成器使你能更方便地实现迭代器。<code>xrange()</code> 函数就是一个生成器的简单例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">xrange</span><span class="params">($start, $end, $step = <span class="number">1</span>)</span> </span>&#123;</div><div class="line">  <span class="keyword">for</span> ($i = $start; $i &lt;= $end; $i += $step) &#123;</div><div class="line">    <span class="keyword">yield</span> $i;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> (xrange(<span class="number">1</span>, <span class="number">1000000</span>) <span class="keyword">as</span> $num) &#123;</div><div class="line">  <span class="keyword">echo</span> $num, <span class="string">"\n"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2016/07/01/PHP-Coroutine/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Laravel-5" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/28/Laravel-5/">Laravel 5 流程简析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/06/28/Laravel-5/" class="article-date">
+  <time datetime="2016-06-28T13:42:32.000Z" itemprop="datePublished">2016-06-28</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/laravel/">laravel</a> <a class="article-category-link" href="/tags/php/">php</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>文中 PHP 代码默认的 namespace 为 Illuminate。</p>
+<p>代码中的异常处理流程被忽略，未作描述。</p>
+</blockquote>
+<h2 id="public-index-php"><a href="#public-index-php" class="headerlink" title="public/index.php"></a>public/index.php</h2><ol>
+<li>引入 autoload 文件；</li>
+<li><a href="#app">引入 Bootstrap/app.php</a>； </li>
+<li><a href="#kernel">通过容器实例化 Kernel 接口对象</a>；</li>
+<li><a href="#request">Request::capture 获取到 Request 对象</a>，并<a href="#handle">交给 Kernel 实例处理</a>，得到 Response 实例；</li>
+<li><a href="#send">Response 实例输出 <code>send()</code></a>；</li>
+<li><a href="#terminate">Kernel 终结</a>，传入 Request 和 Response 作为参数；
+        
+          <p class="article-more-link">
+            <a href="/2016/06/28/Laravel-5/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    </nav>
+  
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文是「使用 NodeJS 构建影院微服务」系列的第二篇文章。
+
+## 第一章快速回顾
+我们讲了什么是微服务
+我们对比了微服务的利与弊
+我们设计了一个影院微服务的架构
+我们使用 RAML 定义了电影服务 API 的技术规格
+我们使用 NodeJS 和 ExpressJS 开发了 电影服务 API
+我们针对 API 做了单元测试
+我们将 API 组成一个服务，并使我们的电影服务运行在 Docke">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2">
+<meta property="og:url" content="http://log.zvz.im/2017/07/17/nodejs-cinema-microservice-part2/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="本文是「使用 NodeJS 构建影院微服务」系列的第二篇文章。
+
+## 第一章快速回顾
+我们讲了什么是微服务
+我们对比了微服务的利与弊
+我们设计了一个影院微服务的架构
+我们使用 RAML 定义了电影服务 API 的技术规格
+我们使用 NodeJS 和 ExpressJS 开发了 电影服务 API
+我们针对 API 做了单元测试
+我们将 API 组成一个服务，并使我们的电影服务运行在 Docke">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/6858ab638d364e2d.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/0d98f20c7725bd61.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/5c43c08b82f70617.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/7de1fafcdbfff1a2.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/3f1a1b0ba2e94f39.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/213cd97d135f56e1.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/9306e91bf244845c.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/80065700ac28226e.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/15b430ee5d0b7082.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/89fcb6d89df7cf8a.gif">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png">
+<meta property="og:updated_time" content="2024-02-25T16:06:33.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2">
+<meta name="twitter:description" content="本文是「使用 NodeJS 构建影院微服务」系列的第二篇文章。
+
+## 第一章快速回顾
+我们讲了什么是微服务
+我们对比了微服务的利与弊
+我们设计了一个影院微服务的架构
+我们使用 RAML 定义了电影服务 API 的技术规格
+我们使用 NodeJS 和 ExpressJS 开发了 电影服务 API
+我们针对 API 做了单元测试
+我们将 API 组成一个服务，并使我们的电影服务运行在 Docke">
+<meta name="twitter:image" content="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.proxy.ustclug.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-67274065-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-nodejs-cinema-microservice-part2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/07/17/nodejs-cinema-microservice-part2/" class="article-date">
+  <time datetime="2017-07-17T14:18:23.000Z" itemprop="datePublished">2017-07-17</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/Nodejs/">Nodejs</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文是「使用 NodeJS 构建影院微服务」系列的第二篇文章。</p>
+</blockquote>
+<h3 id="第一章快速回顾"><a href="#第一章快速回顾" class="headerlink" title="## 第一章快速回顾"></a>## 第一章快速回顾</h3><ul>
+<li>我们讲了<strong>什么是微服务</strong></li>
+<li>我们对比了<strong>微服务</strong>的<strong>利</strong>与<strong>弊</strong></li>
+<li>我们设计了一个<strong>影院微服务的架构</strong></li>
+<li>我们使用 <strong>RAML</strong> 定义了<strong>电影服务 API</strong> 的技术规格</li>
+<li>我们使用 <strong>NodeJS 和 ExpressJS</strong> 开发了 <strong>电影服务 API</strong></li>
+<li>我们针对 API 做了<strong>单元测试</strong></li>
+<li>我们将 API 组成一个服务，并使我们的<strong>电影服务</strong>运行在 <strong>Docker</strong> 容器中</li>
+<li>我们对运行在 <strong>Docker</strong> 中的<strong>电影服务</strong>做了<strong>集成测试</strong></li>
+</ul>
+<p>如果你还没有阅读过第一篇文章，你可以<a href="https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">去这里看看</a>👀。</p>
+<p>在本篇中我们将继续构建我们的<strong>影院微服务</strong>，这次我们将进行<strong>影院目录服务</strong>的开发，以完成下图中的功能。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png" alt=""><br><a id="more"></a><br>我们将使用到以下技术：</p>
+<ul>
+<li>NodeJS version 7.2.0</li>
+<li>MongoDB 3.4.1</li>
+<li>Docker for Mac 1.13</li>
+</ul>
+<p>要跟上本文的进度有以下要求：</p>
+<ul>
+<li>已经完成<a href="https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">上一篇文章</a>中的例子代码</li>
+</ul>
+<p>如果你还没有完成这些代码，我已经将代码传到了 github 上，你可以直接使用<a href="https://github.com/Crizstian/cinema-microservice/tree/step-1" target="_blank" rel="external">代码库</a>分支 <strong>step-1</strong>。</p>
+<h2 id="微服务安全以及-¿-HTTP-2"><a href="#微服务安全以及-¿-HTTP-2" class="headerlink" title="# 微服务安全以及 ¿ HTTP/2 ?"></a># 微服务安全以及 ¿ HTTP/2 ?</h2><p>在第一章中，我们实现了一个简单的微服务，它使用的是 HTTP/1.1 协议。对于已有 15 年历史的 HTTP 协议来说，<strong>HTTP/2 是第一次大升级</strong>，它被高度优化且效率更高。<strong>HTTP/2 是最新的网络标准</strong>，它起源于谷歌的 SPDY 协议。现在已有许多热门站点在使用它，并且几乎所有主流浏览器都支持该协议。</p>
+<p><strong>要实现 HTTP/2，只需满足以下一些规则。</strong></p>
+<ul>
+<li>它仅支持 HTTPS 协议（我们需要一个有效的 SSL 安全证书）</li>
+<li>它是向后兼容的。当浏览器或设备不支持 <strong>HTTP/2</strong> 时，它能回退到 HTTP/1.1</li>
+<li>它会带来极大的性能提升</li>
+<li>它不需要客户端做任何改动，只需要服务端做一个基础实现</li>
+<li>一些有趣的新特性能提高站点的加载速度，在 HTTP 1.1 中这种方式是无法想象的</li>
+</ul>
+<h3 id="一个启用了-HTTP-2-的微服务网络架构"><a href="#一个启用了-HTTP-2-的微服务网络架构" class="headerlink" title="一个启用了 HTTP/2 的微服务网络架构"></a>一个启用了 HTTP/2 的微服务网络架构</h3><p><em>这意味着我们要在客户端与服务端之间启用一个单独的连接，然后在“网络中”利用类似 Y 轴分片（ Y-axis sharding 会在本系列文章的动态扩容篇讲到更多）的方式享受 HTTP/2 带来的性能提升，同时还能享受微服务架构在运营和开发上带来的好处。</em></p>
+<p>为什么我们要使用最新的 <strong>HTTP/2 协议</strong>？因为作为一名好的开发者，我们不仅要保障应用，基础设施和通信的安全，尽最大努力来防止恶意攻击；而且作为一名好的开发者，我们还应该采用对我们有利的最佳实践方式，比如使用 HTTP/2 。</p>
+<p>微服务安全的一些好的实践方式如下：</p>
+<blockquote>
+<p>安全，是微服务应用生产环境部署中的一个重要组成部分。根据 451 Research 的一项名为<a href="https://451research.com/blog/64-451-research-presents-2016-software-defined-infrastructure-sdi-outlook" target="_blank" rel="external">2016软件定义设施展望</a>的调查，在未来的 12 月内，近 45% 的企业已经或计划实现基于容器的应用部署。由于 DevOps 实践在企业中取得了稳固地位，容器应用变得更加流行，安全顾问们需要知道如何保障这些应用的安全。—— <a href="http://www.darkreading.com/endpoint/rethinking-application-security-with-microservices-architectures-/a/d-id/1325155" target="_blank" rel="external">@Ranga Rajagopalan</a></p>
+</blockquote>
+<ul>
+<li>发现并监控服务间通信</li>
+<li>分段并隔离应用与服务</li>
+<li>对传输中的数据以及存储的数据进行加密</li>
+</ul>
+<p>我们将对微服务通信进行加密以实现安全通信，并提升公网流量的安全性，这是我们使用 <strong>HTTP/2</strong> 的原因之一，为了更好的性能以及安全提升。</p>
+<h2 id="微服务的-HTTP-2-实现"><a href="#微服务的-HTTP-2-实现" class="headerlink" title="# 微服务的 HTTP/2 实现"></a># 微服务的 HTTP/2 实现</h2><p>首先，让我们更新下上一章的<strong>电影服务</strong>，以支持 <strong>HTTP/2</strong> 协议，在此之前我们在 <strong>config</strong> 目录下新建一个 <strong>ssl</strong> 目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">movies-service/config:/ $ mkdir ssl</div><div class="line">movies-service/config:/ $ cd ssl</div></pre></td></tr></table></figure>
+<p>进入 <strong>ssl</strong> 目录后，我们创建一个自签名的 SSL 证书，用于实现 <strong>HTTP/2</strong> 协议。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Let's generate the server pass key</span></div><div class="line"></div><div class="line">ssl/: $ openssl genrsa -des3 -passout pass:x -out server.pass.key 2048 </div><div class="line"><span class="comment"># now generate the server key from the pass key</span></div><div class="line"></div><div class="line">ssl/: $ openssl rsa -passin pass:x -in server.pass.key -out server.key</div><div class="line"><span class="comment"># we remove the pass key</span></div><div class="line"></div><div class="line">ssl/: $ rm server.pass.key</div><div class="line"><span class="comment"># now let's create the .csr file</span></div><div class="line">ssl/: $ openssl req -new -key server.key -out server.csr </div><div class="line">...</div><div class="line">Country Name (2 letter code) [AU]:MX</div><div class="line">State or Province Name (full name) [Some-State]:Michoacan </div><div class="line">... </div><div class="line">A challenge password []: </div><div class="line">...</div><div class="line"><span class="comment"># now let's create the .crt file</span></div><div class="line">ssl/: $ openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt</div></pre></td></tr></table></figure>
+<p>然后我们使用下面的命令安装 <strong>SPDY</strong> 包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cinema-catalog-service/: $ npm i -S spdy --silent</div></pre></td></tr></table></figure>
+<p>首先我们在 <code>ssl/</code> 目录下创建一个 <code>index.js</code> 文件，代码如下，我们在代码中加载 key 和 cert 文件，这里是我们为数不多地使用 <code>fs.readFileSync()</code> 的地方之一：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">key</span>: fs.readFileSync(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/server.key`</span>),</div><div class="line">  <span class="attr">cert</span>: fs.readFileSync(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/server.crt`</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后我们还要修改一些文件，第一个文件是 <code>config.js</code> ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> dbSettings = &#123; ... &#125;</div><div class="line"><span class="comment">// The first modification is adding the ssl certificates to the </span></div><div class="line"><span class="comment">// serverSettings</span></div><div class="line"><span class="keyword">const</span> serverSettings = &#123;</div><div class="line">  <span class="attr">port</span>: process.env.PORT || <span class="number">3000</span>,</div><div class="line">  <span class="attr">ssl</span>: <span class="built_in">require</span>(<span class="string">'./ssl'</span>)</div><div class="line">&#125;</div><div class="line"><span class="built_in">module</span>.exports = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123; dbSettings, serverSettings &#125;)</div></pre></td></tr></table></figure>
+<p>接下来修改 <code>server.js</code> ，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">const spdy = <span class="built_in">require</span>(<span class="string">'spdy'</span>)</div><div class="line"><span class="keyword">const</span> api = <span class="built_in">require</span>(<span class="string">'../api/movies'</span>)</div><div class="line"><span class="keyword">const</span> start = <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</div><div class="line">...</div><div class="line"> const app = express()</div><div class="line"> app.use(morgan(<span class="string">'dev'</span>))</div><div class="line"> app.use(helmet())</div><div class="line"> app.use(<span class="function">(<span class="params">err, req, res, next</span>) =&gt;</span> &#123;</div><div class="line">   reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Something went wrong!, err:'</span> + err))</div><div class="line">   res.status(<span class="number">500</span>).send(<span class="string">'Something went wrong!'</span>)</div><div class="line"> &#125;)</div><div class="line"> api(app, options)</div><div class="line"> <span class="comment">// here is where we made the modifications, we create a spdy</span></div><div class="line"> <span class="comment">// server, then we pass the ssl certs, and the express app</span></div><div class="line"> <span class="keyword">const</span> server = spdy.createServer(options.ssl, app)</div><div class="line">      .listen(options.port, () =&gt; resolve(server))</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"><span class="built_in">module</span>.exports = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;start&#125;)</div></pre></td></tr></table></figure>
+<p>最后修改 <code>index.js</code> 这个主文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">const</span> &#123;EventEmitter&#125; = <span class="built_in">require</span>(<span class="string">'events'</span>)</div><div class="line"><span class="keyword">const</span> server = <span class="built_in">require</span>(<span class="string">'./server/server'</span>)</div><div class="line"><span class="keyword">const</span> repository = <span class="built_in">require</span>(<span class="string">'./repository/repository'</span>)</div><div class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'./config/'</span>)</div><div class="line"><span class="keyword">const</span> mediator = <span class="keyword">new</span> EventEmitter()</div><div class="line">...</div><div class="line">mediator.on(<span class="string">'db.ready'</span>, (db) =&gt; &#123;</div><div class="line">  <span class="keyword">let</span> rep</div><div class="line">  repository.connect(db)</div><div class="line">    .then(<span class="function"><span class="params">repo</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'Connected. Starting Server'</span>)</div><div class="line">      rep = repo</div><div class="line">      <span class="keyword">return</span> server.start(&#123;</div><div class="line">        <span class="attr">port</span>: config.serverSettings.port,</div><div class="line">        <span class="comment">// here we pass the ssl options to the server.js file</span></div><div class="line">        ssl: config.serverSettings.ssl,</div><div class="line">        repo</div><div class="line">      &#125;)</div><div class="line">    &#125;)</div><div class="line">    .then(<span class="function"><span class="params">app</span> =&gt;</span> &#123; ... &#125;)</div><div class="line">&#125;)</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>现在我们使用下面的指令重建 docker 镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker build -t movies-service .</div></pre></td></tr></table></figure>
+<p>再使用以下参数运行我们的 docker 镜像 <code>moives-service</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --name movies-service -p 443:3000 -d movies-service</div></pre></td></tr></table></figure>
+<p>最终我们用 chrome 浏览器测试一下，可以确认我们的 <strong>HTTP/2</strong> 协议已经完全生效了。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/6858ab638d364e2d.png" alt=""></p>
+<p>而且我们还可以使用 <strong>wireshark</strong> 之类的抓包工具确认 <strong>ssl</strong> 确实生效了。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/0d98f20c7725bd61.png" alt=""></p>
+<h3 id="在微服务上实现-JWT"><a href="#在微服务上实现-JWT" class="headerlink" title="# 在微服务上实现 JWT"></a># 在微服务上实现 JWT</h3><p>另外一种加密并保障我们的微服务通信安全的方式是使用 <code>json web token</code> 协议，我们将在本系列后面的文章中讲到🚉。</p>
+<h2 id="构建微服务"><a href="#构建微服务" class="headerlink" title="# 构建微服务"></a># 构建微服务</h2><p>到此为止我们已经知道了如何实现 <strong>HTTP/2</strong> 协议，接下来让我们继续构建<strong>影院目录服务</strong> 。我们会使用与<strong>电影服务</strong>一样的项目结构，让我们少讲话🗣多编码👨🏻‍💻👩🏻‍💻这就干起来。</p>
+<p>在开始设计 API 之前，这次我们要先为数据库设计 <strong>Mongo Schemas</strong>，我们将使用到以下数据库：</p>
+<ul>
+<li>Locations（国家，州县和城市）</li>
+<li>Cinemas（影院，放映计划，电影）</li>
+</ul>
+<h3 id="模型数据设计"><a href="#模型数据设计" class="headerlink" title="# 模型数据设计"></a># 模型数据设计</h3><p>本文重点关注于构建微服务，故不会在“模型数据设计”上花太多的时间，只会强调某些部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># posible collections for the cinemas db.</div><div class="line"># For locations </div><div class="line">- countries</div><div class="line">- states</div><div class="line">- cities</div><div class="line"># For cinemas</div><div class="line">- cinemas</div><div class="line">- cinemaRooms</div><div class="line">- schedules</div></pre></td></tr></table></figure>
+<p>对于我们的 <strong>Locations</strong> 库来说，一个国家可以有多个州而一个州则对应一个国家，所以这是<strong>一对多</strong>的关系，对于州和城市来说也是一样的关系，让我们看一下关系图：</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/5c43c08b82f70617.png" alt=""></p>
+<p><img src="https://img.zvz.im/imgs/2019/06/7de1fafcdbfff1a2.png" alt=""></p>
+<p>这种关系还适用于很多情况。一个城市有多个电影院，一个电影院属于一个城市；一个放映室有许多放映计划，一个放映计划属于一个放映室，我们看一下它们之间的关系。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/3f1a1b0ba2e94f39.png" alt=""></p>
+<p>如果电影院数组或者放映计划数据增长比较有限，我们可以采用上图中的引用关系。假设一个放映室每天最多只有 5 个放映计划，我们也可以将放映计划文档直接嵌入到影院文档中去。</p>
+<blockquote>
+<p>内嵌数据模型允许应用将相关性数据片断存放在同一条数据库记录中。这样做可使得应用的常用操作需要更少的查询和更新。—— MongoDB Docs</p>
+</blockquote>
+<p><img src="https://img.zvz.im/imgs/2019/06/213cd97d135f56e1.png" alt=""></p>
+<p>这就是我们数据库结构设计的最终结果。</p>
+<h3 id="将数据导入数据库"><a href="#将数据导入数据库" class="headerlink" title="# 将数据导入数据库"></a># 将数据导入数据库</h3><p>我已经为刚才设计的数据库结构准备了一些样例数据，在 github 仓库的 <code>cinema-catalog-service/src/mock</code> 目录下有 4 个 JOSN 文件，你可以将它们导入到影院数据库中，不过首先我们找到数据库主服务器，之后执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># first we need to copy the files one by one or we can zip it and pass the zip file</div><div class="line">$ docker cp countries.json mongoNodeContainer:/tmp</div><div class="line">$ docker cp state.json mongoNodeContainer:/tmp</div><div class="line">$ docker cp city.json mongoNodeContainer:/tmp</div><div class="line">$ docker cp cinemas.json mongoNodeContainer:/tmp</div></pre></td></tr></table></figure>
+<p>执行完上面的命令后，我们就可以把数据导入到数据库中了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ docker exec mongoNode&#123;number&#125; bash -c &apos;mongoimport --db cinemas --collection countries --file /tmp/countries.json --jsonArray -u $MONGO_USER_ADMIN -p $MONGO_PASS_ADMIN --authenticationDatabase &quot;admin&quot;&apos;</div><div class="line"></div><div class="line">$ docker exec mongoNode&#123;number&#125; bash -c &apos;mongoimport --db cinemas --collection states --file /tmp/states.json --jsonArray -u $MONGO_USER_ADMIN -p $MONGO_PASS_ADMIN --authenticationDatabase &quot;admin&quot;&apos;</div><div class="line"></div><div class="line">$ docker exec mongoNode&#123;number&#125; bash -c &apos;mongoimport --db cinemas --collection cities --file /tmp/cities.json --jsonArray -u $MONGO_USER_ADMIN -p $MONGO_PASS_ADMIN --authenticationDatabase &quot;admin&quot;&apos;</div><div class="line"></div><div class="line">$ docker exec mongoNode&#123;number&#125; bash -c &apos;mongoimport --db cinemas --collection cinemas --file /tmp/cinemas.json --jsonArray -u $MONGO_USER_ADMIN -p $MONGO_PASS_ADMIN --authenticationDatabase &quot;admin&quot;&apos;</div></pre></td></tr></table></figure>
+<p>现在我们已经设计好了数据库结构，而且数据也已导入可以查询了，那么我们现在开始为<strong>影院目录服务</strong>设计 API，有一种定义路由的方法是用一句话把它们表达出来，如下：</p>
+<ul>
+<li>我们需要一个城市能够显示所有可用的电影院。</li>
+<li>我们需要这些电影院展示电影上映信息。</li>
+<li>我们需要电影的首映信息并展示放映计划。</li>
+<li>我们需要放映计划并查看是否有座位可供订票。</li>
+</ul>
+<p>我们假设 <strong>Cinépolis</strong> IT 部门的其他开发小组在做其他的增删改查操作，而交给我们的任务只是查询读取数据，我们还假设一些 <strong>Cinépolis</strong> 影院的操作人员已经为影院排好了放映计划，这样一来我们的任务只是取获取这些计划而已。</p>
+<p><strong>影院目录服务</strong>只专注于处理影院和放映计划两方面的数据，没有其它功能，之前我们提到的 <strong>locations</strong> 数据集合，是另一个微服务负责处理的，不过显示影院和放映计划时还是要依赖位置信息的。</p>
+<p>现在我们已经确认了需求边界，可以创建我们的 RAML 文件了，如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#%RAML 1.0</span></div><div class="line"><span class="attr">title:</span> <span class="string">Cinema</span> <span class="string">Catalog</span> <span class="string">Service</span></div><div class="line"><span class="attr">version:</span> <span class="string">v1</span></div><div class="line"><span class="attr">baseUri:</span> <span class="string">/</span></div><div class="line"><span class="attr">uses:</span></div><div class="line"><span class="attr">  object:</span> <span class="string">types.raml</span></div><div class="line"><span class="attr">  stack:</span> <span class="string">../movies-service/api.raml</span></div><div class="line"></div><div class="line"><span class="attr">types:</span></div><div class="line"><span class="attr">  Cinemas:</span> <span class="string">object.Cinema</span> <span class="string">[]</span></div><div class="line"><span class="attr">  Movies:</span> <span class="string">stack.MoviePremieres</span></div><div class="line"><span class="attr">  Schedules:</span> <span class="string">object.Schedule</span> <span class="string">[]</span></div><div class="line"></div><div class="line"><span class="attr">traits:</span></div><div class="line"><span class="attr">  FilterByLocation:</span></div><div class="line"><span class="attr">    queryParameters:</span></div><div class="line"><span class="attr">      city:</span></div><div class="line"><span class="attr">        type:</span> <span class="string">string</span></div><div class="line"></div><div class="line"><span class="attr">resourceTypes:</span></div><div class="line"><span class="attr">  GET:</span></div><div class="line"><span class="attr">    get:</span></div><div class="line"><span class="attr">      responses:</span></div><div class="line">        <span class="number">200</span><span class="string">:</span></div><div class="line"><span class="attr">          body:</span></div><div class="line">            <span class="string">application/json:</span></div><div class="line"><span class="attr">              type:</span> <span class="string">&lt;&lt;item&gt;&gt;</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="string">/cinemas:</span></div><div class="line"><span class="attr">  type:</span>  <span class="string">&#123;</span> <span class="attr">GET:</span> <span class="string">&#123;item</span> <span class="string">:</span> <span class="string">Cinemas</span> <span class="string">&#125;</span> <span class="string">&#125;</span></div><div class="line"><span class="attr">  get:</span></div><div class="line"><span class="attr">    is:</span> <span class="string">[FilterByLocation]</span></div><div class="line"><span class="attr">  description:</span> <span class="string">we</span> <span class="string">already</span> <span class="string">have</span> <span class="string">the</span> <span class="string">location</span> <span class="string">defined</span> <span class="string">to</span> <span class="string">display</span> <span class="string">the</span> <span class="string">cinemas</span></div><div class="line"></div><div class="line">  <span class="string">/cinemas/&#123;cinema_id&#125;:</span></div><div class="line"><span class="attr">    type:</span>  <span class="string">&#123;</span> <span class="attr">GET:</span> <span class="string">&#123;item</span> <span class="string">:</span> <span class="string">Movies</span> <span class="string">&#125;</span> <span class="string">&#125;</span></div><div class="line"><span class="attr">    description:</span> <span class="string">we</span> <span class="string">have</span> <span class="string">selected</span> <span class="string">the</span> <span class="string">cinema</span> <span class="string">to</span> <span class="string">display</span> <span class="string">the</span> <span class="string">movie</span> <span class="string">premieres</span></div><div class="line"></div><div class="line">    <span class="string">/cinemas/&#123;cinema_id&#125;/&#123;movie_id&#125;:</span></div><div class="line"><span class="attr">      type:</span>  <span class="string">&#123;</span> <span class="attr">GET:</span> <span class="string">&#123;item</span> <span class="string">:</span> <span class="string">Schedules</span> <span class="string">&#125;</span> <span class="string">&#125;</span></div><div class="line"><span class="attr">      description:</span> <span class="string">we</span> <span class="string">have</span> <span class="string">selceted</span> <span class="string">a</span> <span class="string">movie</span> <span class="string">to</span> <span class="string">display</span> <span class="string">the</span> <span class="string">schedules</span></div></pre></td></tr></table></figure>
+<p>我们已经实现了上面四句话需求中的三句，第 4 条需求是在电影院订票，不过它是<strong>订票服务</strong>负责的，所以请继续关注「用 NodeJS 打造影院微服务」系列的后续文章。</p>
+<p>现在我们可以继续开发<strong>影院目录服务</strong>了，它的结构与配置和<strong>电影服务</strong>基本一样，所以先看一下 API 的 <strong>repository.js</strong> 文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// more code above</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> getCinemasByCity = <span class="function">(<span class="params">cityId</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> cinemas = []</div><div class="line">      <span class="keyword">const</span> query = &#123;<span class="attr">city_id</span>: cityId&#125;</div><div class="line">      <span class="keyword">const</span> projection = &#123;<span class="attr">_id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="number">1</span>&#125;</div><div class="line">      <span class="comment">// example of making a find query to mongoDB, </span></div><div class="line">      <span class="comment">// passign a query and projection objects.</span></div><div class="line">      <span class="keyword">const</span> cursor = db.collection(<span class="string">'cinemas'</span>).find(query, projection)</div><div class="line">      <span class="keyword">const</span> addCinema = <span class="function">(<span class="params">cinema</span>) =&gt;</span> &#123;</div><div class="line">        cinemas.push(cinema)</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">const</span> sendCinemas = <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (err) &#123;</div><div class="line">          reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'An error occured fetching cinemas, err: '</span> + err))</div><div class="line">        &#125;</div><div class="line">        resolve(cinemas)</div><div class="line">      &#125;</div><div class="line">      cursor.forEach(addCinema, sendCinemas)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">const</span> getCinemaById = <span class="function">(<span class="params">cinemaId</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> query = &#123;<span class="attr">_id</span>: <span class="keyword">new</span> ObjectID(cinemaId)&#125;</div><div class="line">      <span class="keyword">const</span> projection = &#123;<span class="attr">_id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="number">1</span>, <span class="attr">cinemaPremieres</span>: <span class="number">1</span>&#125;</div><div class="line">      <span class="keyword">const</span> response = <span class="function">(<span class="params">err, cinema</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (err) &#123;</div><div class="line">          reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'An error occuered retrieving a cinema, err: '</span> + err))</div><div class="line">        &#125;</div><div class="line">        resolve(cinema)</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// example of using findOne method from mongodb, </span></div><div class="line">      <span class="comment">// we do this because we only need one record.</span></div><div class="line">      db.collection(<span class="string">'cinemas'</span>).findOne(query, projection, response)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">const</span> getCinemaScheduleByMovie = <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> match = &#123; <span class="attr">$match</span>: &#123;</div><div class="line">        <span class="string">'city_id'</span>: options.cityId,</div><div class="line">        <span class="string">'cinemaRooms.schedules.movie_id'</span>: options.movieId</div><div class="line">      &#125;&#125;</div><div class="line">      <span class="keyword">const</span> project = &#123; <span class="attr">$project</span>: &#123;</div><div class="line">        <span class="string">'name'</span>: <span class="number">1</span>,</div><div class="line">        <span class="string">'cinemaRooms.schedules.time'</span>: <span class="number">1</span>,</div><div class="line">        <span class="string">'cinemaRooms.name'</span>: <span class="number">1</span>,</div><div class="line">        <span class="string">'cinemaRooms.format'</span>: <span class="number">1</span></div><div class="line">      &#125;&#125;</div><div class="line">      <span class="keyword">const</span> unwind = [&#123; <span class="attr">$unwind</span>: <span class="string">'$cinemaRooms'</span> &#125;, &#123; <span class="attr">$unwind</span>: <span class="string">'$cinemaRooms.schedules'</span> &#125;]</div><div class="line">      <span class="keyword">const</span> group = [&#123; <span class="attr">$group</span>: &#123;</div><div class="line">        <span class="attr">_id</span>: &#123;</div><div class="line">          <span class="attr">name</span>: <span class="string">'$name'</span>,</div><div class="line">          <span class="attr">room</span>: <span class="string">'$cinemaRooms.name'</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">schedules</span>: &#123; <span class="attr">$addToSet</span>: <span class="string">'$cinemaRooms.schedules.time'</span> &#125;</div><div class="line">      &#125;&#125;, &#123; <span class="attr">$group</span>: &#123;</div><div class="line">        <span class="attr">_id</span>: <span class="string">'$_id.name'</span>,</div><div class="line">        <span class="attr">schedules</span>: &#123;</div><div class="line">          <span class="attr">$addToSet</span>: &#123;</div><div class="line">            <span class="attr">room</span>: <span class="string">'$_id.room'</span>,</div><div class="line">            <span class="attr">schedules</span>: <span class="string">'$schedules'</span></div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;&#125;]</div><div class="line">      <span class="keyword">const</span> sendSchedules = <span class="function">(<span class="params">err, result</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (err) &#123;</div><div class="line">          reject(<span class="string">'An error has occured fetching schedules by movie, err: '</span> + err)</div><div class="line">        &#125;</div><div class="line">        resolve(result)</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// example of using a aggregation method from mongoDB</span></div><div class="line">      <span class="comment">// we difine our pipline above, we are using also ES6 spread operator</span></div><div class="line">      db.collection(<span class="string">'cinemas'</span>).aggregate([match, project, ...unwind, ...group], sendSchedules)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>想要查看完整版 <strong>repository.js</strong> 文件，你可以去 github 仓库的 <em>step-2</em> 分支里去找。</p>
+<p>此文件中定义了三个函数：</p>
+<ul>
+<li><strong>getCinemasByCity</strong>: 通过此函数我们可以获取到城市中所有可用的电影院，我们传入 city_id 参数以获取电影院信息，可用来调用下一个函数。</li>
+<li><strong>getCinemaById</strong>: 此函数可以通过 cinema_id 查询到电影院的名称，id，以及正在上映的电影，返回结果可以帮助我们最终获取到电影的放映计划。</li>
+<li><strong>getCinemaScheduleByMovie</strong>: 这个函数可以为我们提供城中所有影院关于某电影的放映计划。</li>
+</ul>
+<p>为了展示当前影院的放映计划，我们可能还需要一个函数，或者我们可以修改一下 <strong>getCinemaById</strong> 方法，如果你乐意做个小练习，这是个不错的挑战，由于我已经提供了所有需要的信息，所以这应该不会太难。</p>
+<p>下面我们要看 API 文件 <strong>cinema-catalog.js</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">const</span> status = <span class="built_in">require</span>(<span class="string">'http-status'</span>)</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">app, options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> &#123;repo&#125; = options</div><div class="line"></div><div class="line">  app.get(<span class="string">'/cinemas'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    repo.getCinemasByCity(req.query.cityId)</div><div class="line">      .then(<span class="function"><span class="params">cinemas</span> =&gt;</span> &#123;</div><div class="line">        res.status(status.OK).json(cinemas)</div><div class="line">      &#125;)</div><div class="line">      .catch(next)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  app.get(<span class="string">'/cinemas/:cinemaId'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    repo.getCinemaById(req.params.cinemaId)</div><div class="line">      .then(<span class="function"><span class="params">cinema</span> =&gt;</span> &#123;</div><div class="line">        res.status(status.OK).json(cinema)</div><div class="line">      &#125;)</div><div class="line">      .catch(next)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  app.get(<span class="string">'/cinemas/:cityId/:movieId'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> params = &#123;</div><div class="line">      <span class="attr">cityId</span>: req.params.cityId,</div><div class="line">      <span class="attr">movieId</span>: req.params.movieId</div><div class="line">    &#125;</div><div class="line">    repo.getCinemaScheduleByMovie(params)</div><div class="line">      .then(<span class="function"><span class="params">schedules</span> =&gt;</span> &#123;</div><div class="line">        res.status(status.OK).json(schedules)</div><div class="line">      &#125;)</div><div class="line">      .catch(next)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如你所见，这里我们实现了服务的入口，和我们在 <strong>RAML</strong> 文件中定义的一样，根据路由调用 <code>repository.js</code> 中的不同方法。</p>
+<p>在第一个路由中，我们使用 <code>req.query.cityId</code> 的值作为城市的 <code>city_id</code> 查询数据库获取到影院信息，另一个路由中，我们通过 <code>req.params</code> 得到 <code>cinemaId</code> 和 <code>movieId</code> 的值，来查询放映计划 <code>schedules</code> 😎。</p>
+<p>最后，我们看一下 <code>cinema-catalog.spec.js</code> 这个测试文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/* eslint-env mocha */</span></div><div class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'supertest'</span>)</div><div class="line"><span class="keyword">const</span> server = <span class="built_in">require</span>(<span class="string">'../server/server'</span>)</div><div class="line">process.env.NODE = <span class="string">'test'</span></div><div class="line"></div><div class="line">describe(<span class="string">'Movies API'</span>, () =&gt; &#123;</div><div class="line">  <span class="keyword">let</span> app = <span class="literal">null</span></div><div class="line">  <span class="keyword">const</span> testCinemasCity = [&#123;</div><div class="line">    <span class="string">'_id'</span>: <span class="string">'588ac3a02d029a6d15d0b5c4'</span>,</div><div class="line">    <span class="string">'name'</span>: <span class="string">'Plaza Morelia'</span></div><div class="line">  &#125;, &#123;</div><div class="line">    <span class="string">'_id'</span>: <span class="string">'588ac3a02d029a6d15d0b5c5'</span>,</div><div class="line">    <span class="string">'name'</span>: <span class="string">'Las Americas'</span></div><div class="line">  &#125;]</div><div class="line"></div><div class="line">  <span class="keyword">const</span> testCinemaId = &#123;</div><div class="line">    <span class="string">'_id'</span>: <span class="string">'588ac3a02d029a6d15d0b5c4'</span>,</div><div class="line">    <span class="string">'name'</span>: <span class="string">'Plaza Morelia'</span>,</div><div class="line">    <span class="string">'cinemaPremieres'</span>: [</div><div class="line">      &#123;</div><div class="line">        <span class="string">'id'</span>: <span class="string">'1'</span>,</div><div class="line">        <span class="string">'title'</span>: <span class="string">'Assasins Creed'</span>,</div><div class="line">        <span class="string">'runtime'</span>: <span class="number">115</span>,</div><div class="line">        <span class="string">'plot'</span>: <span class="string">'Lorem ipsum dolor sit amet'</span>,</div><div class="line">        <span class="string">'poster'</span>: <span class="string">'link to poster...'</span></div><div class="line">      &#125;,</div><div class="line">      &#123;</div><div class="line">        <span class="string">'id'</span>: <span class="string">'2'</span>,</div><div class="line">        <span class="string">'title'</span>: <span class="string">'Aliados'</span>,</div><div class="line">        <span class="string">'runtime'</span>: <span class="number">124</span>,</div><div class="line">        <span class="string">'plot'</span>: <span class="string">'Lorem ipsum dolor sit amet'</span>,</div><div class="line">        <span class="string">'poster'</span>: <span class="string">'link to poster...'</span></div><div class="line">      &#125;,</div><div class="line">      &#123;</div><div class="line">        <span class="string">'id'</span>: <span class="string">'3'</span>,</div><div class="line">        <span class="string">'title'</span>: <span class="string">'xXx: Reactivado'</span>,</div><div class="line">        <span class="string">'runtime'</span>: <span class="number">107</span>,</div><div class="line">        <span class="string">'plot'</span>: <span class="string">'Lorem ipsum dolor sit amet'</span>,</div><div class="line">        <span class="string">'poster'</span>: <span class="string">'link to poster...'</span></div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">const</span> testSchedulesMovie = [&#123;</div><div class="line">    <span class="string">'_id'</span>: <span class="string">'Plaza Morelia'</span>,</div><div class="line">    <span class="string">'schedules'</span>: [&#123;</div><div class="line">      <span class="string">'room'</span>: <span class="number">2.0</span>,</div><div class="line">      <span class="string">'schedules'</span>: [ <span class="string">'10:15'</span> ]</div><div class="line">    &#125;, &#123;</div><div class="line">      <span class="string">'room'</span>: <span class="number">1.0</span>,</div><div class="line">      <span class="string">'schedules'</span>: [ <span class="string">'6:55'</span>, <span class="string">'4:35'</span>, <span class="string">'10:15'</span> ]</div><div class="line">    &#125;, &#123;</div><div class="line">      <span class="string">'room'</span>: <span class="number">3.0</span>,</div><div class="line">      <span class="string">'schedules'</span>: [ <span class="string">'10:15'</span> ]</div><div class="line">    &#125;]</div><div class="line">  &#125;, &#123;</div><div class="line">    <span class="string">'_id'</span>: <span class="string">'Las Americas'</span>,</div><div class="line">    <span class="string">'schedules'</span>: [ &#123;</div><div class="line">      <span class="string">'room'</span>: <span class="number">2.0</span>,</div><div class="line">      <span class="string">'schedules'</span>: [ <span class="string">'3:25'</span>, <span class="string">'10:15'</span> ]</div><div class="line">    &#125;, &#123;</div><div class="line">      <span class="string">'room'</span>: <span class="number">1.0</span>,</div><div class="line">      <span class="string">'schedules'</span>: [ <span class="string">'12:15'</span>, <span class="string">'10:15'</span> ]</div><div class="line">    &#125;]</div><div class="line">  &#125;]</div><div class="line"></div><div class="line">  <span class="keyword">let</span> testRepo = &#123;</div><div class="line">    getCinemasByCity (location) &#123;</div><div class="line">      <span class="built_in">console</span>.log(location)</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(testCinemasCity)</div><div class="line">    &#125;,</div><div class="line">    getCinemaById (cinemaId) &#123;</div><div class="line">      <span class="built_in">console</span>.log(cinemaId)</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(testCinemaId)</div><div class="line">    &#125;,</div><div class="line">    getCinemaScheduleByMovie (cinemaId, movieId) &#123;</div><div class="line">      <span class="built_in">console</span>.log(cinemaId, movieId)</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(testSchedulesMovie)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> server.start(&#123;</div><div class="line">      <span class="attr">port</span>: <span class="number">3000</span>,</div><div class="line">      <span class="attr">repo</span>: testRepo</div><div class="line">    &#125;).then(<span class="function"><span class="params">serv</span> =&gt;</span> &#123;</div><div class="line">      app = serv</div><div class="line">    &#125;)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  afterEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    app.close()</div><div class="line">    app = <span class="literal">null</span></div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  it(<span class="string">'can return cinemas by location'</span>, (done) =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> location = &#123;</div><div class="line">      <span class="attr">city</span>: <span class="string">'588ababf2d029a6d15d0b5bf'</span></div><div class="line">    &#125;</div><div class="line">    request(app)</div><div class="line">      .get(<span class="string">`/cinemas?cityId=<span class="subst">$&#123;location.city&#125;</span>`</span>)</div><div class="line">      .expect(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">        res.body.should.containEql(testCinemasCity[<span class="number">0</span>])</div><div class="line">        res.body.should.containEql(testCinemasCity[<span class="number">1</span>])</div><div class="line">      &#125;)</div><div class="line">      .expect(<span class="number">200</span>, done)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  it(<span class="string">'can get movie premiers by cinema'</span>, (done) =&gt; &#123;</div><div class="line">    request(app)</div><div class="line">    .get(<span class="string">'/cinemas/588ac3a02d029a6d15d0b5c4'</span>)</div><div class="line">    .expect(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">      res.body.should.containEql(testCinemaId)</div><div class="line">    &#125;)</div><div class="line">    .expect(<span class="number">200</span>, done)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  it(<span class="string">'can get schedules by cinema and movie'</span>, (done) =&gt; &#123;</div><div class="line">    request(app)</div><div class="line">      .get(<span class="string">'/cinemas/588ababf2d029a6d15d0b5bf/1'</span>)</div><div class="line">      .expect(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">        res.body.should.containEql(testSchedulesMovie[<span class="number">0</span>])</div><div class="line">        res.body.should.containEql(testSchedulesMovie[<span class="number">1</span>])</div><div class="line">      &#125;)</div><div class="line">      .expect(<span class="number">200</span>, done)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>最终我们可以构建一个 <code>cinema-catalog-service</code> 的 docker 镜像，并使其在容器中运行。我们将使用和 <strong>movies service</strong> 一样的 <code>dockerfile</code> ，为了使操作过程更加自动化一些，我们创建了一个 bash 脚本 <code>start-service.sh</code> 如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env bash</span></div><div class="line"><span class="built_in">eval</span> `docker-machine env manager1`</div><div class="line">docker build -t catalog-service .</div><div class="line">docker run --name catalog-service -p 3000:3000 --env-file env <span class="_">-d</span> catalog-service</div></pre></td></tr></table></figure>
+<p>由于我们的服务会不断增加，所以需要注意可供服务使用的端口，这次我们使用 3000 端口，另外我会使用一个<strong>环境文件</strong>使我们的 <strong>NodeJS</strong> 服务开始使用 <strong>process.env</strong> 配置，我们的环境文件看起来如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DB=cinemas</div><div class="line">DB_USER=cristian</div><div class="line">DB_PASS=cristianPassword2017</div><div class="line">DB_REPLS=rs1</div><div class="line">DB_SERVERS=&apos;192.168.99.100:27017 192.168.99.101:27017 192.168.99.102:27017&apos;</div><div class="line">PORT=3000</div></pre></td></tr></table></figure>
+<p>在 devOps 的世界中，这被认为是最好的做法。</p>
+<p>最后只要执行我们的 bash 小脚本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># execute our script</div><div class="line">$ bash &lt; start-service.sh</div><div class="line"># check running docker contianers</div><div class="line">$ docker ps</div></pre></td></tr></table></figure>
+<p>应该可以看到类似下图的情况：</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/9306e91bf244845c.png" alt=""></p>
+<p>我们还可以在 chrome 浏览器中测一下我们的服务，验证 <strong>HTTP/2</strong> 协议能正常工作，而且服务也是正常运行的。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/80065700ac28226e.png" alt=""></p>
+<p>我们还可以找点乐子，使用 <strong>JMeter</strong> 进行压力测试，压测文件也在 github 仓库中的 <strong>integration-test/</strong> 目录下。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/15b430ee5d0b7082.png" alt=""></p>
+<p><img src="https://img.zvz.im/imgs/2019/06/89fcb6d89df7cf8a.gif" alt=""></p>
+<h2 id="总结时间"><a href="#总结时间" class="headerlink" title="# 总结时间"></a># 总结时间</h2><p>我们都做了什么。。。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png" alt=""></p>
+<p>我们已经完成了图中的这些微服务，你可能会说在<strong>影院目录服务</strong>中我们还没有调用<strong>电影服务</strong>。的确如此，我们至此只实现了服务的 <strong>GET</strong> 请求处理。而在<strong>影院目录服务</strong>中调用<strong>电影服务</strong>时使用 <strong>POST</strong> 请求，是为了给影院输入上映的电影，以便制作放映计划，由于我们本次的任务只是 <strong>CRUD</strong> 操作中的 <strong>R</strong> 读操作，所以我们还没有看到这个交互。不过在本系列的后续文章中，我们会在微服务中实现更多的 CRUD 操作，请保持耐心和好奇心 :D 。</p>
+<p>那么本章中我们做了什么 ¿ 🤔 ?，我们学习了 <strong>HTTP/2</strong> 协议并且在<strong>微服务</strong>中实现了它。我们还看到了如何<strong>设计一个 MongoDB 模型</strong>，虽然并不深入但是我突出了这个部分，并详细描绘了<strong>影院目录服务</strong>设计中发生了什么，然后我们用 <strong>RAML</strong> 设计了 API 接口，接着实现 API 服务，之后做了相应的<strong>单元测试</strong>，最后我们把这些都组装起来完成了微服务。</p>
+<p>其次我们使用了与之前的<strong>微服务</strong>一样的 <strong>dockerfile</strong>，并构建了一个脚本来自动化此过程，我们还介绍了如何使用环境文件，并且在 <strong>Docker</strong> 容器中使用 <code>environment variables</code>，在完成这些之后，作为<strong>集成测试</strong>的补充，我还向你们展示了如何使用 JMeter 进行<strong>压力测试</strong>。</p>
+<p>虽然我们可能见过许多 <strong>NodeJS</strong> 开发的项目，不过仍然还有许多东西值得我们去学习和实践。本文只是一个小小的展示，我希望它展示出了一些有趣而有用的东西，使你在工作中能够运用 <strong>Docker 和 NodeJS</strong> 的相关技术。</p>
+<p>翻译自：<a href="https://medium.com/@cramirez92/build-a-nodejs-cinema-microservice-and-deploying-it-with-docker-part-2-e05cc7b126e0" target="_blank" rel="external">Build a NodeJS cinema microservice and deploying it with docker (part 2)</a></p>
+<p><a href="https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">系列文章 - Part 1</a></p>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/17/nodejs-cinema-microservice-part3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          用 NodeJS 打造影院微服务并部署到 docker 上 — Part 3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/24/nodejs-cinema-microservice-part1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用 NodeJS 打造影院微服务并部署到 docker 上 — Part 1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2017/07/17/nodejs-cinema-microservice-part2/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

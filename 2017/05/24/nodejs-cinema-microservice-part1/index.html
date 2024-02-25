@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>用 NodeJS 打造影院微服务并部署到 docker 上 — Part 1 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文是「使用 NodeJS 构建影院微服务」系列的第一篇。此系列将会讲述了如何构建NodeJS 微服务并将它们部署到Docker Swarm 集群上。
+本文将向你展示，如何构建微服务，以及如何将其部署到Docker容器中。我们会完成一个简单的 NodeJS 服务，并以 MongoDB 作为后端存储。
+本文将使用到以下技术：
+
+NodeJS 7.2.0 版本
+MongoDB 3.4.1
+Docke">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 NodeJS 打造影院微服务并部署到 docker 上 — Part 1">
+<meta property="og:url" content="http://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="本文是「使用 NodeJS 构建影院微服务」系列的第一篇。此系列将会讲述了如何构建NodeJS 微服务并将它们部署到Docker Swarm 集群上。
+本文将向你展示，如何构建微服务，以及如何将其部署到Docker容器中。我们会完成一个简单的 NodeJS 服务，并以 MongoDB 作为后端存储。
+本文将使用到以下技术：
+
+NodeJS 7.2.0 版本
+MongoDB 3.4.1
+Docke">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/1212f2b3d00c4c80.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/3a80c5deba7da702.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png">
+<meta property="og:updated_time" content="2024-02-25T16:06:33.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用 NodeJS 打造影院微服务并部署到 docker 上 — Part 1">
+<meta name="twitter:description" content="本文是「使用 NodeJS 构建影院微服务」系列的第一篇。此系列将会讲述了如何构建NodeJS 微服务并将它们部署到Docker Swarm 集群上。
+本文将向你展示，如何构建微服务，以及如何将其部署到Docker容器中。我们会完成一个简单的 NodeJS 服务，并以 MongoDB 作为后端存储。
+本文将使用到以下技术：
+
+NodeJS 7.2.0 版本
+MongoDB 3.4.1
+Docke">
+<meta name="twitter:image" content="https://img.zvz.im/imgs/2019/06/1212f2b3d00c4c80.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.proxy.ustclug.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-67274065-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-nodejs-cinema-microservice-part1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用 NodeJS 打造影院微服务并部署到 docker 上 — Part 1
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2017/05/24/nodejs-cinema-microservice-part1/" class="article-date">
+  <time datetime="2017-05-24T21:58:41.000Z" itemprop="datePublished">2017-05-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/Nodejs/">Nodejs</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://img.zvz.im/imgs/2019/06/1212f2b3d00c4c80.png" alt=""></p>
+<p>本文是「使用 NodeJS 构建影院微服务」系列的第一篇。此系列将会讲述了如何构建<strong>NodeJS 微服务</strong>并将它们部署到<strong>Docker Swarm 集群</strong>上。</p>
+<p>本文将向你展示，如何构建<strong>微服务</strong>，以及如何将其部署到<strong>Docker</strong>容器中。我们会完成一个简单的 NodeJS 服务，并以 MongoDB 作为后端存储。</p>
+<p>本文将使用到以下技术：</p>
+<ul>
+<li>NodeJS 7.2.0 版本</li>
+<li>MongoDB 3.4.1</li>
+<li>Docker for Mac 1.12.6</li>
+</ul>
+<p>为了理解文中内容，你最好了解以下知识：</p>
+<ul>
+<li>NodeJS 的基础知识</li>
+<li>Docker 的基础知识（并且已安装了 docker）</li>
+<li>MongoDB 的基础知识（并且有可运行的数据库服务）</li>
+</ul>
+<p>我强烈建议大家参考我以前的文章<a href="https://medium.com/@cramirez92/how-to-deploy-a-mongodb-replica-set-using-docker-6d0b9ac00e49" target="_blank" rel="external">「如何在 Docker 上部署 mongoDB 集群」</a>，部署好数据库服务并将其运行起来。<br><a id="more"></a></p>
+<h2 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="# 什么是微服务"></a># 什么是微服务</h2><blockquote>
+<p>微服务是一个独立可用的单元，它可以与其它微服务一起，构成一个大的应用系统。通过将一个应用划分为更小的单元，可使得这些小的单元更加独立、易于部署、且易于扩展，而且这些小单元可以由不同团队的开发，使用不同语言进行开发，并且单独进行测试。—— <a href="https://medium.com/@cramirez92/how-to-deploy-a-mongodb-replica-set-using-docker-6d0b9ac00e49" target="_blank" rel="external">Max Stoiber</a></p>
+<p>微服务架构意味着你的系统由许多小的、独立的应用组成。它们运行在自己的内存空间中，而且独立部署，能够扩展部署到多台机器上。—— <a href="https://medium.com/javascript-scene/10-interview-questions-every-javascript-developer-should-know-6fa6bdf5ad95#.gl46xectt" target="_blank" rel="external">Eric Elliot</a></p>
+</blockquote>
+<h3 id="微服务的优点"><a href="#微服务的优点" class="headerlink" title="微服务的优点"></a>微服务的优点</h3><ul>
+<li>应用启动更快，开发效率更高，部署也更加快速。</li>
+<li>每个服务可以独立于其它服务进行部署——这样更容易部署新版本</li>
+<li>更容易组织大规模开发，而且有性能优势。</li>
+<li>可以避免与技术栈长期捆绑。当开发新服务时，你可以选用新的技术栈。</li>
+<li>微服务一般都有更好的组织结构，因为每个微服务都有特定的使命，且与其它服务无关。</li>
+<li>无耦合的服务更容易重新组合配置，可以服务于不同的应用系统（比如，同时服务于 web 客户端以及公共 API）。</li>
+</ul>
+<h3 id="微服务的缺点"><a href="#微服务的缺点" class="headerlink" title="微服务的缺点"></a>微服务的缺点</h3><ul>
+<li>开发者必须处理分布式系统带来的额外复杂性。</li>
+<li>部署更加复杂。在生产环境中，部署并管理一个由许多不同服务组成的系统，操作起来更复杂。</li>
+<li>在你构建微服务架构的过程中，可能会发现许多在设计初期未能预料到的功能点被切割分散到了各处。</li>
+</ul>
+<h2 id="如何用-NodeJS-构建微服务"><a href="#如何用-NodeJS-构建微服务" class="headerlink" title="# 如何用 NodeJS 构建微服务"></a># 如何用 NodeJS 构建微服务</h2><p><strong>微服务</strong>可以利用许多<strong>简单，目的单一，易于使用的</strong>组件构建应用，使得软件质量更好，迭代速度更快。甚至已有的整体架构系统也可以采用<a href="https://blog.risingstack.com/why-you-should-start-using-microservices/" target="_blank" rel="external">微服务模式</a>进行转换，不过我们的问题是如何用 <strong>NodeJS</strong> 来构建一个微服务？</p>
+<p>Javascript 是当前最流行编程语言，拥有丰富的开源模块生态系统。 对于一个微服务来说，我们想要构建一套 <strong>API</strong>，我应该用哪些模块，库，或者框架呢？我在 Quora 上搜索到了一个类似的问题：<a href="https://www.quora.com/Which-Node-js-framework-is-better-for-building-a-RESTful-api" target="_blank" rel="external">构建 RESTful api 应该使用哪个 Node.js 框架？</a></p>
+<p>问题的答案中有一位用户给出了一条非常有用的答案，他提供了一个 NB 的<a href="http://nodeframework.com/" target="_blank" rel="external">网站</a>，里面展示了我们可以用来构建 API 的所有框架和库，这样你就可以自己做选择了。本文中我们将使用 <strong>ExpressJS</strong> 来构建我们的 API 和微服务。</p>
+<p>现在我们不再空谈，开始动手编码，学习如何解决这个实际问题吧 👨🏻‍💻👨🏼‍🎨🖥。</p>
+<h2 id="我们的微服务架构"><a href="#我们的微服务架构" class="headerlink" title="# 我们的微服务架构"></a># 我们的微服务架构</h2><p><img src="https://img.zvz.im/imgs/2019/06/3a80c5deba7da702.png" alt=""></p>
+<p>假设我们在 <strong>Cinépolis</strong>（一个墨西哥电影院）的 IT 部门工作。他们派给我们一个任务，让我们重构票务和零售店系统，将原有的一体化系统改为微服务架构。</p>
+<p>作为「使用 NodeJS 构建影院微服务」系列的第一部分，我们将关注点放在<strong>电影目录服务(movies catalog service)</strong>上。</p>
+<p>在架构图中，我们可以看到有三种不同的设备使用到微服务。POS（售卖点），手机/平板，以及电脑。POS 和手机/平板有单独的应用（用 electron 开发），并且直接访问微服务。而电脑端则通过网页应用访问微服务。</p>
+<h2 id="构建微服务"><a href="#构建微服务" class="headerlink" title="# 构建微服务"></a># 构建微服务</h2><p>现在假设我们想在自己喜欢的电影院中去看某电影的首映。</p>
+<p>首先，我们需要查看此影院中当前有哪些电影上映。下面这种图展示了微服务中是如何使用 REST 方式进行信息交流的。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png" alt=""></p>
+<p>我们的<strong>电影服务（movies service）</strong> API 规格定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#%RAML 1.0</div><div class="line">title: cinema</div><div class="line">version: v1</div><div class="line">baseUri: /</div><div class="line"></div><div class="line">types:</div><div class="line">  Movie:</div><div class="line">    properties:</div><div class="line">      id: string</div><div class="line">      title: string</div><div class="line">      runtime: number</div><div class="line">      format: string</div><div class="line">      plot: string</div><div class="line">      releaseYear: number</div><div class="line">      releaseMonth: number</div><div class="line">      releaseDay: number</div><div class="line">    example:</div><div class="line">      id: &quot;123&quot;</div><div class="line">      title: &quot;Assasins Creed&quot;</div><div class="line">      runtime: 115</div><div class="line">      format: &quot;IMAX&quot;</div><div class="line">      plot: &quot;Lorem ipsum dolor sit amet&quot;</div><div class="line">      releaseYear : 2017</div><div class="line">      releaseMonth: 1</div><div class="line">      releaseDay: 6</div><div class="line"></div><div class="line">  MoviePremieres:</div><div class="line">    type: Movie []</div><div class="line"></div><div class="line"></div><div class="line">resourceTypes:</div><div class="line">  Collection:</div><div class="line">    get:</div><div class="line">      responses:</div><div class="line">        200:</div><div class="line">          body:</div><div class="line">            application/json:</div><div class="line">              type: &lt;&lt;item&gt;&gt;</div><div class="line"></div><div class="line">/movies:</div><div class="line">  /premieres:</div><div class="line">    type:  &#123; Collection: &#123;item : MoviePremieres &#125; &#125;</div><div class="line"></div><div class="line">  /&#123;id&#125;:</div><div class="line">    type:  &#123; Collection: &#123;item : Movie &#125; &#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p> 如果你不知道 <strong>RAML</strong> 是什么，这儿有一篇很好的<a href="http://apiworkbench.com/docs/" target="_blank" rel="external">入门介绍</a>。</p>
+</blockquote>
+<p>此 API 项目的目录结构如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">-</span> <span class="string">api/</span>                  <span class="comment"># our apis</span></div><div class="line"><span class="bullet">-</span> <span class="string">config/</span>               <span class="comment"># config for the app</span></div><div class="line"><span class="bullet">-</span> <span class="string">mock/</span>                 <span class="comment"># not necessary just for data examples</span></div><div class="line"><span class="bullet">-</span> <span class="string">repository/</span>           <span class="comment"># abstraction over our db</span></div><div class="line"><span class="bullet">-</span> <span class="string">server/</span>               <span class="comment"># server setup code</span></div><div class="line"><span class="bullet">-</span> <span class="string">package.json</span>          <span class="comment"># dependencies</span></div><div class="line"><span class="bullet">-</span> <span class="string">index.js</span>              <span class="comment"># main entrypoint of the app</span></div></pre></td></tr></table></figure>
+<p>让我们开始编码。首先看一下这个 <code>repository</code> 。这是我们进行数据库查询的地方。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// repository.js</span></div><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="comment">// factory function, that holds an open connection to the db,</span></div><div class="line"><span class="comment">// and exposes some functions for accessing the data.</span></div><div class="line"><span class="keyword">const</span> repository = <span class="function">(<span class="params">db</span>) =&gt;</span> &#123;</div><div class="line">  </div><div class="line">  <span class="comment">// since this is the movies-service, we already know</span></div><div class="line">  <span class="comment">// that we are going to query the `movies` collection</span></div><div class="line">  <span class="comment">// in all of our functions.</span></div><div class="line">  <span class="keyword">const</span> collection = db.collection(<span class="string">'movies'</span>)</div><div class="line"></div><div class="line">  <span class="keyword">const</span> getMoviePremiers = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> movies = []</div><div class="line">      <span class="keyword">const</span> currentDay = <span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">      <span class="keyword">const</span> query = &#123;</div><div class="line">        <span class="attr">releaseYear</span>: &#123;</div><div class="line">          <span class="attr">$gt</span>: currentDay.getFullYear() - <span class="number">1</span>,</div><div class="line">          <span class="attr">$lte</span>: currentDay.getFullYear()</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">releaseMonth</span>: &#123;</div><div class="line">          <span class="attr">$gte</span>: currentDay.getMonth() + <span class="number">1</span>,</div><div class="line">          <span class="attr">$lte</span>: currentDay.getMonth() + <span class="number">2</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">releaseDay</span>: &#123;</div><div class="line">          <span class="attr">$lte</span>: currentDay.getDate()</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">const</span> cursor = collection.find(query)</div><div class="line">      <span class="keyword">const</span> addMovie = <span class="function">(<span class="params">movie</span>) =&gt;</span> &#123;</div><div class="line">        movies.push(movie)</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">const</span> sendMovies = <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (err) &#123;</div><div class="line">          reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'An error occured fetching all movies, err:'</span> + err))</div><div class="line">        &#125;</div><div class="line">        resolve(movies)</div><div class="line">      &#125;</div><div class="line">      cursor.forEach(addMovie, sendMovies)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">const</span> getMovieById = <span class="function">(<span class="params">id</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">const</span> projection = &#123; <span class="attr">_id</span>: <span class="number">0</span>, <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="number">1</span>, <span class="attr">format</span>: <span class="number">1</span> &#125;</div><div class="line">      <span class="keyword">const</span> sendMovie = <span class="function">(<span class="params">err, movie</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (err) &#123;</div><div class="line">          reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`An error occured fetching a movie with id: <span class="subst">$&#123;id&#125;</span>, err: <span class="subst">$&#123;err&#125;</span>`</span>))</div><div class="line">        &#125;</div><div class="line">        resolve(movie)</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// fetch a movie by id -- mongodb syntax</span></div><div class="line">      collection.findOne(&#123;<span class="attr">id</span>: id&#125;, projection, sendMovie)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// this will close the database connection</span></div><div class="line">  <span class="keyword">const</span> disconnect = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    db.close()</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.create(&#123;</div><div class="line">    getAllMovies,</div><div class="line">    getMoviePremiers,</div><div class="line">    getMovieById,</div><div class="line">    disconnect</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> connect = <span class="function">(<span class="params">connection</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">if</span> (!connection) &#123;</div><div class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'connection db not supplied!'</span>))</div><div class="line">    &#125;</div><div class="line">    resolve(repository(connection))</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"><span class="comment">// this only exports a connected repo</span></div><div class="line"><span class="built_in">module</span>.exports = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;connect&#125;)</div><div class="line"></div><div class="line"><span class="comment">// movie-service-repo.js</span></div></pre></td></tr></table></figure>
+<p>你可能注意到了，我们向唯一暴露的 <strong>connect</strong>(connection) 方法传入了一个 <code>connection</code> 对象，这儿你可以看到 javascript 最强大之处的<strong>“闭包”</strong>，这个仓库对象返回了一个闭包，其中所有的方法都能访问到 <code>db</code> 和 <code>collection</code> 对象， <code>db</code>  对象保持着数据库连接。这里我们对所连接数据库的类型进行了抽象，repository 对象并不知道使用的是哪一种数据库，本文中我们使用的是 <strong>MongoDB</strong>，它也不知道连接的数据库是单例还是集群，不过只要我们使用 mongodb 的语法，我们就能使用 repository 中的方法，我们还可以使用 <a href="https://medium.com/@cramirez92/s-o-l-i-d-the-first-5-priciples-of-object-oriented-design-with-javascript-790f6ac9b9fa#.ubs2g1ozf" target="_blank" rel="external">solid principles</a> 中的<em>依赖反转方式</em>，将 mongo 语法拆分到另一个文件中，而只调用数据库操作接口（比如使用 mongoose 模型）。</p>
+<p>我们还有一个 <code>repository/repository.spec.js</code> 文件用于测试这个模块，以后我将会讲到测试的部分，你可以在 <a href="https://github.com/Crizstian/cinema-microservice" target="_blank" rel="external">github 仓库的 step-1 分支</a>中找到它。</p>
+<p>接下来我们看一下 <code>server.js</code> 文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</div><div class="line"><span class="keyword">const</span> morgan = <span class="built_in">require</span>(<span class="string">'morgan'</span>)</div><div class="line"><span class="keyword">const</span> helmet = <span class="built_in">require</span>(<span class="string">'helmet'</span>)</div><div class="line"><span class="keyword">const</span> movieAPI = <span class="built_in">require</span>(<span class="string">'../api/movies'</span>)</div><div class="line"></div><div class="line"><span class="keyword">const</span> start = <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// we need to verify if we have a repository added and a server port</span></div><div class="line">    <span class="keyword">if</span> (!options.repo) &#123;</div><div class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'The server must be started with a connected repository'</span>))</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!options.port) &#123;</div><div class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'The server must be started with an available port'</span>))</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// let's init a express app, and add some middlewares</span></div><div class="line">    <span class="keyword">const</span> app = express()</div><div class="line">    app.use(morgan(<span class="string">'dev'</span>))</div><div class="line">    app.use(helmet())</div><div class="line">    app.use(<span class="function">(<span class="params">err, req, res, next</span>) =&gt;</span> &#123;</div><div class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Something went wrong!, err:'</span> + err))</div><div class="line">      res.status(<span class="number">500</span>).send(<span class="string">'Something went wrong!'</span>)</div><div class="line">    &#125;)</div><div class="line">    </div><div class="line">    <span class="comment">// we add our API's to the express app</span></div><div class="line">    movieAPI(app, options)</div><div class="line">    </div><div class="line">    <span class="comment">// finally we start the server, and return the newly created server </span></div><div class="line">    <span class="keyword">const</span> server = app.listen(options.port, () =&gt; resolve(server))</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;start&#125;)</div><div class="line"></div><div class="line"><span class="comment">// movie-service-server.js</span></div></pre></td></tr></table></figure>
+<p>这里我们实例化了一个新的 express 应用，验证我们是否提供了仓库对象以及和服务端口参数，然后使用了一些中间件，比如用于日志的 <code>morgan</code> ，用于安全的 <code>helmet</code> ，以及一个 <code>错误处理</code> 函数，最后对外提供了一个 start 方法，用于启动服务😎。</p>
+<blockquote>
+<p>Helmet 包括了多达 11 个模块全部是用于阻止针对用户的恶意攻击。</p>
+</blockquote>
+<p>如果你想加强你的微服务的安全性，你可以看一下<a href="https://nodesource.com/blog/nine-security-tips-to-keep-express-from-getting-pwned/?utm_source=nodeweekly&amp;utm_medium=email" target="_blank" rel="external">这篇文章</a>。</p>
+<p>既然我们的 server 要使用到 movieAPI，那就让我们继续看一下 <code>movies.js</code> 。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="keyword">const</span> status = <span class="built_in">require</span>(<span class="string">'http-status'</span>)</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">app, options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> &#123;repo&#125; = options</div><div class="line">  </div><div class="line">  <span class="comment">// here we get all the movies </span></div><div class="line">  app.get(<span class="string">'/movies'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    repo.getAllMovies().then(<span class="function"><span class="params">movies</span> =&gt;</span> &#123;</div><div class="line">      res.status(status.OK).json(movies)</div><div class="line">    &#125;).catch(next)</div><div class="line">  &#125;)</div><div class="line">  </div><div class="line">  <span class="comment">// here we retrieve only the premieres</span></div><div class="line">  app.get(<span class="string">'/movies/premieres'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    repo.getMoviePremiers().then(<span class="function"><span class="params">movies</span> =&gt;</span> &#123;</div><div class="line">      res.status(status.OK).json(movies)</div><div class="line">    &#125;).catch(next)</div><div class="line">  &#125;)</div><div class="line">  </div><div class="line">  <span class="comment">// here we get a movie by id</span></div><div class="line">  app.get(<span class="string">'/movies/:id'</span>, (req, res, next) =&gt; &#123;</div><div class="line">    repo.getMovieById(req.params.id).then(<span class="function"><span class="params">movie</span> =&gt;</span> &#123;</div><div class="line">      res.status(status.OK).json(movie)</div><div class="line">    &#125;).catch(next)</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// movies-service-movies.js</span></div></pre></td></tr></table></figure>
+<p>这里我们为 API 定义了路由，并根据路由调用仓库对象的不同方法。你可以注意到，这里是直接调用仓库对象的接口的，我们在实践着著名的「面向接口编程，而不是面向实现编程」箴言（coding for an interface not to an implementation），因为 express 路由并不知道数据库对象的存在，也不知道数据库查询的逻辑等等，它只是调用了仓库对象的方法用于处理所有的数据库相关业务。</p>
+<p>我们所有的代码都有对应的单元测试，让我们看一下 <code>movies.js</code> 的测试代码。</p>
+<blockquote>
+<p>你可以将测试代码当作你所构建应用的保护措施。它们不仅在你的本地机器上执行，还会在持续集成服务中执行，以保证失败的构建不会被推送到生成环境中。—— <a href="https://medium.com/@RisingStack" target="_blank" rel="external">Trace by RisingStack</a></p>
+</blockquote>
+<p>为了写单元测试，所有的依赖项都必须进行伪造，也就是说我们为要测试的模块提供伪造的依赖项。现在看下我们的 <code>标准测试文件</code> 长什么样子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* eslint-env mocha */</span></div><div class="line"><span class="keyword">const</span> request = <span class="built_in">require</span>(<span class="string">'supertest'</span>)</div><div class="line"><span class="keyword">const</span> server = <span class="built_in">require</span>(<span class="string">'../server/server'</span>)</div><div class="line"></div><div class="line">describe(<span class="string">'Movies API'</span>, () =&gt; &#123;</div><div class="line">  <span class="keyword">let</span> app = <span class="literal">null</span></div><div class="line">  <span class="keyword">let</span> testMovies = [&#123;</div><div class="line">    <span class="string">'id'</span>: <span class="string">'3'</span>,</div><div class="line">    <span class="string">'title'</span>: <span class="string">'xXx: Reactivado'</span>,</div><div class="line">    <span class="string">'format'</span>: <span class="string">'IMAX'</span>,</div><div class="line">    <span class="string">'releaseYear'</span>: <span class="number">2017</span>,</div><div class="line">    <span class="string">'releaseMonth'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'releaseDay'</span>: <span class="number">20</span></div><div class="line">  &#125;, &#123;</div><div class="line">    <span class="string">'id'</span>: <span class="string">'4'</span>,</div><div class="line">    <span class="string">'title'</span>: <span class="string">'Resident Evil: Capitulo Final'</span>,</div><div class="line">    <span class="string">'format'</span>: <span class="string">'IMAX'</span>,</div><div class="line">    <span class="string">'releaseYear'</span>: <span class="number">2017</span>,</div><div class="line">    <span class="string">'releaseMonth'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'releaseDay'</span>: <span class="number">27</span></div><div class="line">  &#125;, &#123;</div><div class="line">    <span class="string">'id'</span>: <span class="string">'1'</span>,</div><div class="line">    <span class="string">'title'</span>: <span class="string">'Assasins Creed'</span>,</div><div class="line">    <span class="string">'format'</span>: <span class="string">'IMAX'</span>,</div><div class="line">    <span class="string">'releaseYear'</span>: <span class="number">2017</span>,</div><div class="line">    <span class="string">'releaseMonth'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'releaseDay'</span>: <span class="number">6</span></div><div class="line">  &#125;]</div><div class="line"></div><div class="line">  <span class="keyword">let</span> testRepo = &#123;</div><div class="line">    getAllMovies () &#123;</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(testMovies)</div><div class="line">    &#125;,</div><div class="line">    getMoviePremiers () &#123;</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(testMovies.filter(<span class="function"><span class="params">movie</span> =&gt;</span> movie.releaseYear === <span class="number">2017</span>))</div><div class="line">    &#125;,</div><div class="line">    getMovieById (id) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(testMovies.find(<span class="function"><span class="params">movie</span> =&gt;</span> movie.id === id))</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> server.start(&#123;</div><div class="line">      <span class="attr">port</span>: <span class="number">3000</span>,</div><div class="line">      <span class="attr">repo</span>: testRepo</div><div class="line">    &#125;).then(<span class="function"><span class="params">serv</span> =&gt;</span> &#123;</div><div class="line">      app = serv</div><div class="line">    &#125;)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  afterEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    app.close()</div><div class="line">    app = <span class="literal">null</span></div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  it(<span class="string">'can return all movies'</span>, (done) =&gt; &#123;</div><div class="line">    request(app)</div><div class="line">      .get(<span class="string">'/movies'</span>)</div><div class="line">      .expect(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">        res.body.should.containEql(&#123;</div><div class="line">          <span class="string">'id'</span>: <span class="string">'1'</span>,</div><div class="line">          <span class="string">'title'</span>: <span class="string">'Assasins Creed'</span>,</div><div class="line">          <span class="string">'format'</span>: <span class="string">'IMAX'</span>,</div><div class="line">          <span class="string">'releaseYear'</span>: <span class="number">2017</span>,</div><div class="line">          <span class="string">'releaseMonth'</span>: <span class="number">1</span>,</div><div class="line">          <span class="string">'releaseDay'</span>: <span class="number">6</span></div><div class="line">        &#125;)</div><div class="line">      &#125;)</div><div class="line">      .expect(<span class="number">200</span>, done)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  it(<span class="string">'can get movie premiers'</span>, (done) =&gt; &#123;</div><div class="line">    request(app)</div><div class="line">    .get(<span class="string">'/movies/premiers'</span>)</div><div class="line">    .expect(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">      res.body.should.containEql(&#123;</div><div class="line">        <span class="string">'id'</span>: <span class="string">'1'</span>,</div><div class="line">        <span class="string">'title'</span>: <span class="string">'Assasins Creed'</span>,</div><div class="line">        <span class="string">'format'</span>: <span class="string">'IMAX'</span>,</div><div class="line">        <span class="string">'releaseYear'</span>: <span class="number">2017</span>,</div><div class="line">        <span class="string">'releaseMonth'</span>: <span class="number">1</span>,</div><div class="line">        <span class="string">'releaseDay'</span>: <span class="number">6</span></div><div class="line">      &#125;)</div><div class="line">    &#125;)</div><div class="line">    .expect(<span class="number">200</span>, done)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  it(<span class="string">'returns 200 for an known movie'</span>, (done) =&gt; &#123;</div><div class="line">    request(app)</div><div class="line">      .get(<span class="string">'/movies/1'</span>)</div><div class="line">      .expect(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">        res.body.should.containEql(&#123;</div><div class="line">          <span class="string">'id'</span>: <span class="string">'1'</span>,</div><div class="line">          <span class="string">'title'</span>: <span class="string">'Assasins Creed'</span>,</div><div class="line">          <span class="string">'format'</span>: <span class="string">'IMAX'</span>,</div><div class="line">          <span class="string">'releaseYear'</span>: <span class="number">2017</span>,</div><div class="line">          <span class="string">'releaseMonth'</span>: <span class="number">1</span>,</div><div class="line">          <span class="string">'releaseDay'</span>: <span class="number">6</span></div><div class="line">        &#125;)</div><div class="line">      &#125;)</div><div class="line">      .expect(<span class="number">200</span>, done)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">//movie-service-movie.spec.js</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* eslint-env mocha */</span></div><div class="line"><span class="keyword">const</span> server = <span class="built_in">require</span>(<span class="string">'./server'</span>)</div><div class="line"></div><div class="line">describe(<span class="string">'Server'</span>, () =&gt; &#123;</div><div class="line">  it(<span class="string">'should require a port to start'</span>, () =&gt; &#123;</div><div class="line">    <span class="keyword">return</span> server.start(&#123;</div><div class="line">      <span class="attr">repo</span>: &#123;&#125;</div><div class="line">    &#125;).should.be.rejectedWith(<span class="regexp">/port/</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  it(<span class="string">'should require a repository to start'</span>, () =&gt; &#123;</div><div class="line">    <span class="keyword">return</span> server.start(&#123;</div><div class="line">      <span class="attr">port</span>: &#123;&#125;</div><div class="line">    &#125;).should.be.rejectedWith(<span class="regexp">/repository/</span>)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// movie-service-server.spec.js</span></div></pre></td></tr></table></figure>
+<p>如你所见，我们伪造了 <code>movies API</code> 的依赖项，我们验证了 server 对象需要服务端口和仓库对象。</p>
+<p>你可在文本的 github 仓库中找到所有的测试文件。</p>
+<p>让我们接下来看如何创建<strong>仓库模块</strong>中的 <code>数据库连接对象（db connection object）</code> ，在我们的规划中每个微服务都有自己的数据库，但是只会使用一个 <strong>mongoDB 集群服务</strong>，只是每个微服务都会使用自己的库。</p>
+<p>下面是我们使用 <strong>NodeJS</strong> 连接 <strong>MongoDB</strong> 的数据库配置。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> MongoClient = <span class="built_in">require</span>(<span class="string">'mongodb'</span>)</div><div class="line"></div><div class="line"><span class="comment">// here we create the url connection string that the driver needs</span></div><div class="line"><span class="keyword">const</span> getMongoURL = <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> url = options.servers</div><div class="line">    .reduce(<span class="function">(<span class="params">prev, cur</span>) =&gt;</span> prev + <span class="string">`<span class="subst">$&#123;cur.ip&#125;</span>:<span class="subst">$&#123;cur.port&#125;</span>,`</span>, <span class="string">'mongodb://'</span>)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;url.substr(<span class="number">0</span>, url.length - <span class="number">1</span>)&#125;</span>/<span class="subst">$&#123;options.db&#125;</span>`</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// mongoDB function to connect, open and authenticate</span></div><div class="line"><span class="keyword">const</span> connect = <span class="function">(<span class="params">options, mediator</span>) =&gt;</span> &#123;</div><div class="line">  mediator.once(<span class="string">'boot.ready'</span>, () =&gt; &#123;</div><div class="line">    MongoClient.connect( getMongoURL(options), &#123;</div><div class="line">        <span class="attr">db</span>: options.dbParameters(),</div><div class="line">        <span class="attr">server</span>: options.serverParameters(),</div><div class="line">        <span class="attr">replset</span>: options.replsetParameters(options.repl)</div><div class="line">      &#125;, (err, db) =&gt; &#123;</div><div class="line">        <span class="keyword">if</span> (err) &#123;</div><div class="line">          mediator.emit(<span class="string">'db.error'</span>, err)</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        db.admin().authenticate(options.user, options.pass, (err, result) =&gt; &#123;</div><div class="line">          <span class="keyword">if</span> (err) &#123;</div><div class="line">            mediator.emit(<span class="string">'db.error'</span>, err)</div><div class="line">          &#125;</div><div class="line">          mediator.emit(<span class="string">'db.ready'</span>, db)</div><div class="line">        &#125;)</div><div class="line">      &#125;)</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;connect&#125;)</div><div class="line"></div><div class="line"><span class="comment">// mongodb-relicaset.js</span></div></pre></td></tr></table></figure>
+<p>虽然可能还有其它更好的实现方式，不过我们基本上这样就可以与 mongoDB 集群建立连接了。</p>
+<p>如你缩减，我们传入了一个 <code>options</code> 对象，它包含所有 mongo 连接需要的参数，我们还传入了一个 <code>event - mediator</code> 对象，当我们通过数据库连接验证时，它会喷出一个 <code>db</code> 对象。</p>
+<blockquote>
+<p><strong>注意*</strong> 这里我之所以使用了一个 event-emitter object 是因为使用 promise 方式时，当通过连接验证后，不知道什么原因它不能返回 db 对象，流程无法走下去——所以你可以挑战一下，尝试使用 promise 方式做一个实现，看看到底出了什么问题。</p>
+</blockquote>
+<p>既然我们用到了 <code>options</code> 参数，那么让我们看下它来自哪里，所以下一个文件是 <code>config.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// simple configuration file</span></div><div class="line"></div><div class="line"><span class="comment">// database parameters</span></div><div class="line"><span class="keyword">const</span> dbSettings = &#123;</div><div class="line">  <span class="attr">db</span>: process.env.DB || <span class="string">'movies'</span>,</div><div class="line">  <span class="attr">user</span>: process.env.DB_USER || <span class="string">'cristian'</span>,</div><div class="line">  <span class="attr">pass</span>: process.env.DB_PASS || <span class="string">'cristianPassword2017'</span>,</div><div class="line">  <span class="attr">repl</span>: process.env.DB_REPLS || <span class="string">'rs1'</span>,</div><div class="line">  <span class="attr">servers</span>: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(<span class="string">' '</span>) : [</div><div class="line">    <span class="string">'192.168.99.100:27017'</span>,</div><div class="line">    <span class="string">'192.168.99.101:27017'</span>,</div><div class="line">    <span class="string">'192.168.99.102:27017'</span></div><div class="line">  ],</div><div class="line">  <span class="attr">dbParameters</span>: <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</div><div class="line">    <span class="attr">w</span>: <span class="string">'majority'</span>,</div><div class="line">    <span class="attr">wtimeout</span>: <span class="number">10000</span>,</div><div class="line">    <span class="attr">j</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">readPreference</span>: <span class="string">'ReadPreference.SECONDARY_PREFERRED'</span>,</div><div class="line">    <span class="attr">native_parser</span>: <span class="literal">false</span></div><div class="line">  &#125;),</div><div class="line">  <span class="attr">serverParameters</span>: <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</div><div class="line">    <span class="attr">autoReconnect</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">poolSize</span>: <span class="number">10</span>,</div><div class="line">    <span class="attr">socketoptions</span>: &#123;</div><div class="line">      <span class="attr">keepAlive</span>: <span class="number">300</span>,</div><div class="line">      <span class="attr">connectTimeoutMS</span>: <span class="number">30000</span>,</div><div class="line">      <span class="attr">socketTimeoutMS</span>: <span class="number">30000</span></div><div class="line">    &#125;</div><div class="line">  &#125;),</div><div class="line">  <span class="attr">replsetParameters</span>: <span class="function">(<span class="params">replset = <span class="string">'rs1'</span></span>) =&gt;</span> (&#123;</div><div class="line">    <span class="attr">replicaSet</span>: replset,</div><div class="line">    <span class="attr">ha</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">haInterval</span>: <span class="number">10000</span>,</div><div class="line">    <span class="attr">poolSize</span>: <span class="number">10</span>,</div><div class="line">    <span class="attr">socketoptions</span>: &#123;</div><div class="line">      <span class="attr">keepAlive</span>: <span class="number">300</span>,</div><div class="line">      <span class="attr">connectTimeoutMS</span>: <span class="number">30000</span>,</div><div class="line">      <span class="attr">socketTimeoutMS</span>: <span class="number">30000</span></div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// server parameters</span></div><div class="line"><span class="keyword">const</span> serverSettings = &#123;</div><div class="line">  <span class="attr">port</span>: process.env.PORT || <span class="number">3000</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123; dbSettings, serverSettings &#125;)</div><div class="line"></div><div class="line"><span class="comment">// movie-service-config.js</span></div></pre></td></tr></table></figure>
+<p>以上就是我们的配置文件，绝大多数时候，配置代码都是硬编码的，不过你可以看到有些属性使用了环境变量作为一个可选项。使用环境变量被认为是实践范式，因为这样在可以文件中隐藏数据库认证信息及服务器参数等。</p>
+<p>最终，<code>movies-service</code>  API 的最后一步就是把所有这些模块集合到 <code>index.js</code> 中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="comment">// we load all the depencies we need</span></div><div class="line"><span class="keyword">const</span> &#123;EventEmitter&#125; = <span class="built_in">require</span>(<span class="string">'events'</span>)</div><div class="line"><span class="keyword">const</span> server = <span class="built_in">require</span>(<span class="string">'./server/server'</span>)</div><div class="line"><span class="keyword">const</span> repository = <span class="built_in">require</span>(<span class="string">'./repository/repository'</span>)</div><div class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'./config/'</span>)</div><div class="line"><span class="keyword">const</span> mediator = <span class="keyword">new</span> EventEmitter()</div><div class="line"></div><div class="line"><span class="comment">// verbose logging when we are starting the server</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'--- Movies Service ---'</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Connecting to movies repository...'</span>)</div><div class="line"></div><div class="line"><span class="comment">// log unhandled execpetions</span></div><div class="line">process.on(<span class="string">'uncaughtException'</span>, (err) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.error(<span class="string">'Unhandled Exception'</span>, err)</div><div class="line">&#125;)</div><div class="line">process.on(<span class="string">'uncaughtRejection'</span>, (err, promise) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.error(<span class="string">'Unhandled Rejection'</span>, err)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// event listener when the repository has been connected</span></div><div class="line">mediator.on(<span class="string">'db.ready'</span>, (db) =&gt; &#123;</div><div class="line">  <span class="keyword">let</span> rep</div><div class="line">  repository.connect(db)</div><div class="line">    .then(<span class="function"><span class="params">repo</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'Repository Connected. Starting Server'</span>)</div><div class="line">      rep = repo</div><div class="line">      <span class="keyword">return</span> server.start(&#123;</div><div class="line">        <span class="attr">port</span>: config.serverSettings.port,</div><div class="line">        repo</div><div class="line">      &#125;)</div><div class="line">    &#125;)</div><div class="line">    .then(<span class="function"><span class="params">app</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">`Server started succesfully, running on port: <span class="subst">$&#123;config.serverSettings.port&#125;</span>.`</span>)</div><div class="line">      app.on(<span class="string">'close'</span>, () =&gt; &#123;</div><div class="line">        rep.disconnect()</div><div class="line">      &#125;)</div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line">mediator.on(<span class="string">'db.error'</span>, (err) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.error(err)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// we load the connection to the repository</span></div><div class="line">config.db.connect(config.dbSettings, mediator)</div><div class="line"><span class="comment">// init the repository connection, and the event listener will handle the rest</span></div><div class="line">mediator.emit(<span class="string">'boot.ready'</span>)</div><div class="line"></div><div class="line"><span class="comment">// movie-service-index.js</span></div></pre></td></tr></table></figure>
+<p>这里我们集成了所有的电影 API 服务，并且设置了一个简单的错误处理过程，之后我们加载配置文件，连接数据仓库，最终启动服务。</p>
+<p>到此为止我们已经完成了所有 API 开发相关的工作，你可以在代码库的 <a href="https://github.com/Crizstian/cinema-microservice/tree/step-1" target="_blank" rel="external">step-1 分支</a> 找到源码。</p>
+<p>如果你到 github 仓库去看一下，你会发现以下这些命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">npm install          <span class="comment"># setup node dependencies  </span></div><div class="line">npm <span class="built_in">test</span>             <span class="comment"># unit test with mocha  </span></div><div class="line">npm start            <span class="comment"># starts the service  </span></div><div class="line">npm run node-debug   <span class="comment"># run the server in debug mode </span></div><div class="line">npm run chrome-debug <span class="comment"># debug the node with chrome</span></div><div class="line">npm run lint         <span class="comment"># lint the code with standard</span></div></pre></td></tr></table></figure>
+<p>我们可以使用 <code>npm start</code> 命令启动我们的第一个微服务，并在本地运行，这可不是文章标题所声称的运行在 docker 中🤔。</p>
+<p>不过首先我们要做的，是拥有 <a href="https://medium.com/@cramirez92/how-to-deploy-a-mongodb-replica-set-using-docker-6d0b9ac00e49#.xln0x0owy" target="_blank" rel="external">“用 docker 创建一个 mongoDB 集群”</a> 这篇文章中的 <strong>Docker</strong> 环境，如果你还没有，那么你需要一些额外的步骤为微服务创建一个数据库。这儿还有些命令是用来测试我们的电影服务的。</p>
+<p>首先我们创建一个 <strong>Dockerfile</strong> 将我们的 <strong>NodeJS 微服务</strong> Docker 化。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Node v7 as the base image to support ES6</span></div><div class="line"><span class="keyword">FROM</span> node:<span class="number">7.2</span>.<span class="number">0</span></div><div class="line"><span class="comment"># Create a new user to our new container and avoid the root user</span></div><div class="line"><span class="keyword">RUN</span><span class="bash"> useradd --user-group --create-home --shell /bin/<span class="literal">false</span> nupp &amp;&amp; \</span></div><div class="line">    apt-get clean</div><div class="line"><span class="keyword">ENV</span> HOME=/home/nupp</div><div class="line"><span class="keyword">COPY</span><span class="bash"> package.json npm-shrinkwrap.json <span class="variable">$HOME</span>/app/</span></div><div class="line"><span class="keyword">COPY</span><span class="bash"> src/ <span class="variable">$HOME</span>/app/src</span></div><div class="line"><span class="keyword">RUN</span><span class="bash"> chown -R nupp:nupp <span class="variable">$HOME</span>/* /usr/<span class="built_in">local</span>/</span></div><div class="line"><span class="keyword">WORKDIR</span><span class="bash"> <span class="variable">$HOME</span>/app</span></div><div class="line"><span class="keyword">RUN</span><span class="bash"> npm cache clean &amp;&amp; \</span></div><div class="line">    npm install --silent --progress=<span class="literal">false</span> --production</div><div class="line"><span class="keyword">RUN</span><span class="bash"> chown -R nupp:nupp <span class="variable">$HOME</span>/*</span></div><div class="line"><span class="keyword">USER</span> nupp</div><div class="line"></div><div class="line"><span class="keyword">EXPOSE</span> <span class="number">3000</span></div><div class="line"></div><div class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"npm"</span>, <span class="string">"start"</span>]</span></div></pre></td></tr></table></figure>
+<p>我们用 NodeJS 镜像作为我们的基础镜像，然后创建一个用户避免使用 root 账户，之后我们把源码拷贝到镜像中再安装依赖库，对外暴露一个端口号，最后实例化我们的电影服务。</p>
+<p>接下来使用下面的命令构建我们的 docker 镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker build -t moives-service .</div></pre></td></tr></table></figure>
+<p>先分析一下这条构建指令。</p>
+<ol>
+<li><code>docker build</code> 告诉 docker 引擎我们要创建一个新的镜像。</li>
+<li><code>-t moives-service</code> 将这个镜像打上 <code>movies-service</code> 标签。以后我们就可以用标签引用这个镜像。</li>
+<li><code>.</code> 表示在当前目录寻找 <code>Dockerfile</code> 。</li>
+</ol>
+<p>在看到一些命令行输出之后，包含我们的 NodeJS 应用的镜像就准备好了，现在我们就可以用下面的命令运行这个镜像了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --name movie-service -p 3000:3000 -e DB_SERVERS=&quot;192.168.99.100:27017 192.168.99.101:27017 192.168.99.100:27017&quot; -d movies-service</div></pre></td></tr></table></figure>
+<p>命令中我们传入了一个环境变量，用来提供 mongoDB 集群的服务器地址，这儿只是做一个演示，实际可以有更好操作的方式，比如从 env 文件中读取配置。</p>
+<p>现在我们的 docker 容器已经运行起来了，我们可以执行 <code>docker-machine ip machine-name</code> 获取微服务的 ip 地址，这样我们微服务就已经准备就绪，可以对其进行集成测试了。</p>
+<p>以下是我们的测试代码，它会进行一个接口调用检测。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* eslint-env mocha */</span></div><div class="line"><span class="keyword">const</span> supertest = <span class="built_in">require</span>(<span class="string">'supertest'</span>)</div><div class="line"></div><div class="line">describe(<span class="string">'movies-service'</span>, () =&gt; &#123;</div><div class="line"></div><div class="line">  <span class="keyword">const</span> api = supertest(<span class="string">'http://192.168.99.100:3000'</span>)</div><div class="line"></div><div class="line">  it(<span class="string">'returns a 200 for a collection of movies'</span>, (done) =&gt; &#123;</div><div class="line"></div><div class="line">    api.get(<span class="string">'/movies/premiers'</span>)</div><div class="line">      .expect(<span class="number">200</span>, done)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// movies-service-integration.test.js</span></div></pre></td></tr></table></figure>
+<h2 id="总结时间"><a href="#总结时间" class="headerlink" title="总结时间"></a>总结时间</h2><p>最后回顾一下我们都做了什么事情。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png" alt=""></p>
+<p>我们已经完成了以上信息交互中的第一个部分，构建了<strong>电影服务</strong>使得我们可以在电影院查询电影首映时间，使用 NodeJS 实现了<strong>电影服务</strong>的 API，我们先用一个 <strong>RAML</strong> 文件进行 <strong>API 设计</strong>，然后开始构建我们的 <strong>API</strong>，并且进行了相应的<strong>单元测试</strong>，最后把所有的代码整合成我们的<strong>微服务</strong>，使我们的电影服务可以启动起来。</p>
+<p>之后我们把我们的<strong>微服务</strong>打包进 <strong>Docker</strong> 容器，使我们能对其进行一些<strong>集成测试。</strong></p>
+<p>虽然我们可能见过许多 <strong>NodeJS</strong> 开发的项目，不过仍然还有许多东西值得我们去学习和实践。本文只是一个小小的展示，我希望它展示出了一些有趣而有用的东西，使你在工作中能够运用 <strong>Docker 和 NodeJS</strong> 的相关技术。</p>
+<h2 id="Github-上的完整代码"><a href="#Github-上的完整代码" class="headerlink" title="Github 上的完整代码"></a>Github 上的完整代码</h2><p>你可以在 Github 上找到本文的完整代码 <a href="https://github.com/Crizstian/cinema-microservice" target="_blank" rel="external">Crizstian/cinema-microservice</a>。</p>
+<p>翻译自：<a href="https://medium.com/@cramirez92/build-a-nodejs-cinema-microservice-and-deploying-it-with-docker-part-1-7e28e25bfa8b" target="_blank" rel="external">Build a NodeJS cinema microservice and deploying it with docker — part 1</a></p>
+<p><a href="https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part2/">系列文章 - Part 2</a></p>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/17/nodejs-cinema-microservice-part2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/23/why-curry-helps/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">为什么柯里化有用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>
