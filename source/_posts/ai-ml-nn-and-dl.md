@@ -6,8 +6,6 @@ tags:
 
 ---
 
-# AI, ML, NNs 和 DL 的关系
-
 ![AI,ML,NNs and DL - Relationship Diagram](http://img.zvz.im/202405101711131.png)
 
 ## 不是所有的神经网络都是深度学习模型
