@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Go:ent，基于图的 ORM 框架 - Facebook 出品 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content=":information_source: 本文基于处于开发中的项目的主分支
+ent 是由 Facebook Connectivity 团队创建的 ORM 框架。迫于 Go 社区中缺少能够像图一样查询数据的工具，同时也缺少 100% 类型安全的 ORM，ent 就是被设计出来解决这些问题的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go:ent，基于图的 ORM 框架 - Facebook 出品">
+<meta property="og:url" content="http://log.zvz.im/2020/06/21/go-ent-graph-based-orm/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content=":information_source: 本文基于处于开发中的项目的主分支
+ent 是由 Facebook Connectivity 团队创建的 ORM 框架。迫于 Go 社区中缺少能够像图一样查询数据的工具，同时也缺少 100% 类型安全的 ORM，ent 就是被设计出来解决这些问题的。">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/85d574b9bcb0a790.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/0b1995b25318a023.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/aedee6eb2dbe9289.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/1d8e45619c1eb5ef.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/e7be54884261b2e8.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/523d81b91c4b287e.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/5f78378a3b0e63a2.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/5ca7c6e0b64b64c4.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/cb0b33f8e0554d78.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/0b0b1ba8d0a653f6.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/e987261aedfa0a0a.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/06/35c48fae4fe6da94.png">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go:ent，基于图的 ORM 框架 - Facebook 出品">
+<meta name="twitter:description" content=":information_source: 本文基于处于开发中的项目的主分支
+ent 是由 Facebook Connectivity 团队创建的 ORM 框架。迫于 Go 社区中缺少能够像图一样查询数据的工具，同时也缺少 100% 类型安全的 ORM，ent 就是被设计出来解决这些问题的。">
+<meta name="twitter:image" content="https://img.zvz.im/imgs/2020/06/85d574b9bcb0a790.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-go-ent-graph-based-orm" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Go:ent，基于图的 ORM 框架 - Facebook 出品
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2020/06/21/go-ent-graph-based-orm/" class="article-date">
+  <time datetime="2020-06-21T23:57:22.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://img.zvz.im/imgs/2020/06/85d574b9bcb0a790.png" alt=""></p>
+<p>:information_source: <em>本文基于处于开发中的项目的主分支</em></p>
+<p><code>ent</code> 是由 <a href="https://connectivity.fb.com/" target="_blank" rel="external">Facebook Connectivity</a> 团队创建的 ORM 框架。迫于 Go 社区中缺少能够像图一样查询数据的工具，同时也缺少 100% 类型安全的 ORM，<code>ent</code> <a href="https://entgo.io/blog/#the-motivation-for-writing-a-new-orm-in-go" target="_blank" rel="external">就是被设计出来解决这些问题的</a>。<br><a id="more"></a></p>
+<h2 id="图的概念"><a href="#图的概念" class="headerlink" title="图的概念"></a>图的概念</h2><p><code>ent</code> 用一组实体和边线来表达图的概念，并且没有任何限制。我们使用代码库中现成的例子进行说明：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/0b1995b25318a023.png" alt=""></p>
+<p>此例子中，有三个实体对象，<code>Group</code> ，<code>User</code> ，<code>Pet</code> ，它们相互关联在一起，可以用多种方式遍历。这个图可以利用项目中的 <code>entc</code> 工具来描述，使用命令 <code>entc describe</code> ：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/aedee6eb2dbe9289.png" alt=""></p>
+<p>实体之间的关系由边线表示，它们在内部被转换为字段，表和外键。这里是在 MySQL 中转换成的数据库图表：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/1d8e45619c1eb5ef.png" alt=""></p>
+<p>传统的 ORM 框架把每个关系显示地申明在实体上，与此不同，<code>ent</code> 只暴露了实体的属性和一个用于遍历这些实体边线的方法。</p>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>这个项目提供了优秀的文档和各种不同 ORM 查询和使用的例子。让我们来看一个涉及所有实体的查询例子：</p>
+<p><em>从<strong>管理员</strong>用户的朋友中，我们想要获得他们的宠物的朋友的主人</em>。</p>
+<p>以下是这个查询的示意图：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/e7be54884261b2e8.png" alt=""></p>
+<p>例子中建议的查询是可自我描述的：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/523d81b91c4b287e.png" alt=""></p>
+<p>如上一段所示，每个实体都暴露了方法用来顺着它们的边线进行查询：<code>Group</code> 通过 <code>QueryAdmin()</code> 方法暴露了 <code>admin</code> 边线，它自己又通过 <code>QueryFriends()</code> 暴露了它的 <code>friends</code> 边线，等等。代码生成是用来创建这些方法的核心工具。</p>
+<h2 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h2><p>通过 <code>entc</code> 命令可以进行代码生成，它是项目的核心部件而且它使这个项目更加强大。模板引擎是代码生成的基础，它允许开发者修改查询语句，并依照他们的需求暴露各种方法，使得 ORM 足够灵活能够任意地定制。</p>
+<p>默认的实体模板会提供所有的文件和方法用于创建、更新、删除和遍历查询每个实体对象以及它们的关系边。无论如何，在代码生成中一切都是模板。你可以制定它与数据库的交流方式，数据迁移等等。</p>
+<p>这个项目还提供了一个实现了 GraphQL <a href="https://facebook.github.io/relay/graphql/objectidentification.htm#sec-Node-Interface" target="_blank" rel="external"> <code>Node</code> 接口</a>的模板示例。生成的代码使得我们的实体对象都能兼容这个接口：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/5f78378a3b0e63a2.png" alt=""></p>
+<p>模板系统能生成完美契合你的项目的代码。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>现在来到有趣的部分了，看看底层的查询是如何构建的。这里以 MySQL 为例，上例中生成的查询如下：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/5ca7c6e0b64b64c4.png" alt=""></p>
+<p>这个 ORM 使用嵌套查询来实现无限制地遍历查询。不过使用 join 查询也是可行的。这是与嵌套查询等效的使用 join 的查询：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/cb0b33f8e0554d78.png" alt=""></p>
+<p>虽然嵌套的查询更容易读，由于是一层层的 select 语句嵌套出来的，大多数情况下，<a href="https://dev.mysql.com/doc/refman/5.7/en/rewriting-subqueries.html" target="_blank" rel="external">join 语句执行更快</a>。不过，在这个案例中，由于 ORM 遍历数据使用的边线是相关的索引，服务器生成的查询计划是一样的：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/0b0b1ba8d0a653f6.png" alt="plan for the subqueries"></p>
+<center><small>plan for the subqueries</small></center>
+
+<p><img src="https://img.zvz.im/imgs/2020/06/e987261aedfa0a0a.png" alt="plan for the join"></p>
+<center><small>plan for the join</small></center>
+
+<p>这个 ORM 框架还支持更复杂的查询通过图来查询节点，比如：</p>
+<p><em>我们想要获得所有的宠物，它们的朋友的主人是 <code>admin</code> 成员组的朋友</em>。</p>
+<p>这个查询的 SQL 写起来非常难。使用常规的 ORM 框架几乎是个不可能完成的任务，不过用 <code>ent</code> 写起来却非常简单：</p>
+<p><img src="https://img.zvz.im/imgs/2020/06/35c48fae4fe6da94.png" alt=""></p>
+<p>而且， <code>ent</code> 不需要像传统 ORM 框架一样对多个领域的多个节点进行聚合，所以性能总会不错。对查询做一个快速的跑分，可以看出代码包增加了多少额外的工作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">name        time/op</div><div class="line">Traverse-8   179µs ± 5%</div><div class="line"></div><div class="line">name        alloc/op</div><div class="line">Traverse-8  21.4kB ± 0%</div><div class="line"></div><div class="line">name        allocs/op</div><div class="line">Traverse-8     414 ± 0%</div></pre></td></tr></table></figure>
+<p>现在，我们不对数据库进行实际查询，再跑一遍：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">name        time/op</div><div class="line">Traverse-8  64.4µs ± 1%</div></pre></td></tr></table></figure>
+<p> 数据库查询本身占用了前一个跑分的大部分时间。项目本身引入的延迟很低，这保证了它会有一个优秀的前景。想要知道更多的开发细节，此项目已经<a href="https://github.com/facebookincubator/ent/issues/46" target="_blank" rel="external">在 Github 放出了线路图</a>。</p>
+<blockquote>
+<p>翻译自：<a href="https://medium.com/a-journey-with-go/go-ent-graph-based-orm-by-facebook-d9ba6d2290c6" target="_blank" rel="external">Go: ent, Graph-Based ORM by Facebook</a></p>
+</blockquote>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/01/10/init-functions-in-go/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Go 语言中的 init 函数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/11/go-goroutine-and-preemption/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Go：Goroutine 的抢占机制</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2020/06/21/go-ent-graph-based-orm/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

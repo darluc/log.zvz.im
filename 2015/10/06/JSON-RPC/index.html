@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>JSON-RPC 2.0 Specification | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JSON-PRC 是与 XML-RPC类似的轻量级远程过程调用协议。
+
+JSON-RPC 2.0 说明文档1.概述JSON-RPC 是一种无状态、轻量级远程过程调用（RPC）协议。本文档主要定义了调用过程中的一些数据结构和规则。该协议是与传输方式无关的：其定义内容在同一个处理过程使用时，可通过sockets、HTTP或其它任意消息传递环境。JSON-RPC使用了JSON(RFC 4627)作为数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSON-RPC 2.0 Specification">
+<meta property="og:url" content="http://log.zvz.im/2015/10/06/JSON-RPC/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="JSON-PRC 是与 XML-RPC类似的轻量级远程过程调用协议。
+
+JSON-RPC 2.0 说明文档1.概述JSON-RPC 是一种无状态、轻量级远程过程调用（RPC）协议。本文档主要定义了调用过程中的一些数据结构和规则。该协议是与传输方式无关的：其定义内容在同一个处理过程使用时，可通过sockets、HTTP或其它任意消息传递环境。JSON-RPC使用了JSON(RFC 4627)作为数">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSON-RPC 2.0 Specification">
+<meta name="twitter:description" content="JSON-PRC 是与 XML-RPC类似的轻量级远程过程调用协议。
+
+JSON-RPC 2.0 说明文档1.概述JSON-RPC 是一种无状态、轻量级远程过程调用（RPC）协议。本文档主要定义了调用过程中的一些数据结构和规则。该协议是与传输方式无关的：其定义内容在同一个处理过程使用时，可通过sockets、HTTP或其它任意消息传递环境。JSON-RPC使用了JSON(RFC 4627)作为数">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-JSON-RPC" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JSON-RPC 2.0 Specification
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/10/06/JSON-RPC/" class="article-date">
+  <time datetime="2015-10-06T22:49:36.000Z" itemprop="datePublished">2015-10-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/json/">json</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>JSON-PRC 是与 XML-RPC类似的轻量级远程过程调用协议。</p>
+</blockquote>
+<h2 id="JSON-RPC-2-0-说明文档"><a href="#JSON-RPC-2-0-说明文档" class="headerlink" title="JSON-RPC 2.0 说明文档"></a>JSON-RPC 2.0 说明文档</h2><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>JSON-RPC 是一种无状态、轻量级远程过程调用（RPC）协议。本文档主要定义了调用过程中的一些数据结构和规则。该协议是与传输方式无关的：其定义内容在同一个处理过程使用时，可通过sockets、HTTP或其它任意消息传递环境。JSON-RPC使用了<a href="http://www.ietf.org/rfc/rfc4627.txt" target="_blank" rel="external">JSON(RFC 4627)</a>作为数据格式。<br>它是从简设计的！<br><a id="more"></a></p>
+<h2 id="2-约定"><a href="#2-约定" class="headerlink" title="2.约定"></a>2.约定</h2><p>”MUST”，”MUST NOT”，”REQUIRED”，”SHALL”，”SHALL NOT”，”SHOULD”，”SHOULD NOT”，”RECOMMENDED”，”MAY”，和”OPTIONAL”这些关键词由<a href="http://www.ietf.org/rfc/rfc2119.txt" target="_blank" rel="external">RFC 2119</a>定义。<br>JSON-RPC使用了JSON格式，所以与JSON使用相同的类型系统（参见<a href="http://www.json.org/" target="_blank" rel="external">http://www.json.org/</a>或者<a href="http://www.ietf.org/rfc/rfc4627.txt" target="_blank" rel="external">RFC 4627</a>）。JSON可以表示四种基础类型（字符串，数字，布尔，和空值）以及两种结构类型（对象和数组）。术语”Primitive”在本文中指代四种基础类型，术语”Structured”表示两种结构类型。文中的JSON类型首字母总是大写的，例如：<strong>Object</strong>，<strong>Array</strong>，<strong>String</strong>，<strong>Number</strong>，<strong>Boolean</strong>，<strong>Null</strong>。<strong>True</strong>和<strong>False</strong>同样采用首字母大写的方式。<br>客户端和服务端之间交互的所有成员名称都应当是大小写敏感的。术语：<strong>函数</strong>，<strong>方法</strong>和<strong>过程</strong>可以互换使用。<br>客户端被定义为请求对象的来源和应答对象的处理者；服务端被定义为应答对象的来源和请求对象的处理者。<br>本文档的实现很容易充斥着这两种角色，同时针对不同的客户端或者同一个客户端。在这里并不讨论其复杂性层面的问题。</p>
+<h2 id="3-兼容性"><a href="#3-兼容性" class="headerlink" title="3.兼容性"></a>3.兼容性</h2><p>JSON-RPC 2.0 请求对象和应答对象可能与现存的JSON-RPC 1.0客户端端或者服务端无法兼容。但是它们还是很容易区分的，因为2.0版本总是包含一个名为”jsonrpc”成员，其值为”2.0”，而1.0版本则没有。绝大部分时候2.0的实现应当尝试处理1.0版本的对象，即使不是1.0的点对点和类提示方面。</p>
+<h2 id="4-请求对象Request-Object"><a href="#4-请求对象Request-Object" class="headerlink" title="4.请求对象Request Object"></a>4.请求对象<code>Request Object</code></h2><p>一次RPC调用表现为向服务器发送的一个请求对象。该对象包含以下成员变量：</p>
+<p><strong>jsonrpc</strong><br>  指示JSON-PRC版本的字符串。必须等于”2.0”</p>
+<p><strong>method</strong><br>  字符串类型，包含被调用方法的名称。方法名称由rpc开头，紧随着一个.字符( U+002E 或者 ASCII 46)，是rpc内部保留的方法和扩展名称，不允许被使用。</p>
+<p><strong>params</strong><br>  结构类型值，保存着方法调用时的参数值。此成员可省略。</p>
+<p><strong>id</strong><br>  由客户端指定的标识，必须包含一个字符串或数字或NULL值。如果对象中不包含此成员，则改对象被认作一个通知(notification)。id值通常不应该为NULL<a href="不鼓励使用Null作为id的值，因为规范文档使用Null值作为id未知时响应对象id的值，而且，1.0版本中使用id为null值的对象被视作通知，这样做容易在处理时造成混乱。​">^1</a>，而且数字值不应当包含小数部分<a href="小数部分可能是有问题的，因为许多十进制小数都无法用二进制准确的表示。">^2</a>。</p>
+<p>如果包含id值，则服务端的响应必须包含与其一样的值。此成员用于维护两个对象之间的关联关系。</p>
+<h3 id="4-1通知-Notification"><a href="#4-1通知-Notification" class="headerlink" title="4.1通知 Notification"></a>4.1通知 <code>Notification</code></h3><p>通知是一个不包含”id”的请求对象。一次通知请求意味着客户端不需要相应的应答对象，因此不需要有应答对象返回给客户端。服务端必须不能回应通知，包括哪些在批量请求中的消息。<br>通知无法通过定义确认，因为它们没有对应返回的应答对象。而且，客户端无法得知任何错误消息（比如：”Invalid params”, “Internal error”)。</p>
+<h3 id="4-2-参数结构"><a href="#4-2-参数结构" class="headerlink" title="4.2 参数结构"></a>4.2 参数结构</h3><p>RPC调用包含的参数必须是结构类型的。要么使用数组，按位置区分；要么使用对象，按名称区分。</p>
+<ul>
+<li>按位置区分：params必须是一个数组，以服务端所期望的顺序包含所有参数；</li>
+<li>按名称区分：params必须是一个对象，成员名称与服务端期望的参数名称一直。如果缺少相应名称的参数，则可能产生错误。而且名称必须与方法所期望的参数名称完全匹配，包括大小写。</li>
+</ul>
+<h2 id="5-应答对象Response-Object"><a href="#5-应答对象Response-Object" class="headerlink" title="5 应答对象Response Object"></a>5 应答对象<code>Response Object</code></h2><p>当发生RPC调用时，除非是通知消息，否则服务端<strong>必须</strong>响应一个应答对象。应答对象表现为单个JSON对象，包含以下成员对象：</p>
+<p><strong>jsonrpc</strong><br>  指示JSON-PRC版本的字符串。必须等于”2.0”</p>
+<p><strong>result</strong><br>  如果调用成功则必须包含此成员。<br>  如果发生错误则必须不包含此成员。<br>  其值由被调用的服务端方法决定。</p>
+<p><strong>error</strong><br>  此成员在发生错误时是必要的。<br>  如果在调用时没有发生错误，则此成员必须不存在。<br>  此成员值必须是一个对象，在5.1节中有具体描述。</p>
+<p><strong>id</strong><br>  此成员是必要的。<br>  它必须与对应请求对象的id值相同。<br>  如果在获取请求对象的id时发生错误，那么它必须为null值。</p>
+<p>result成员和error成员两者必须包含其一，且不能同时存在。</p>
+<h3 id="5-1-错误对象Error-Object"><a href="#5-1-错误对象Error-Object" class="headerlink" title="5.1 错误对象Error Object"></a>5.1 错误对象<code>Error Object</code></h3><p>当RPC调用发生错误时，应答对象必须包含一个错误成员对象，该对象包含以下成员：</p>
+<p><strong>code</strong><br>  用于指示发生错误的数字。<br>  必须是整数。</p>
+<p><strong>message</strong><br>  用于简短描述该错误的字符串。<br>  该消息内容应当是一个简洁明了的单句。</p>
+<p><strong>data</strong><br>  基础类型或者结构类型值，包含更多关于该错误的信息。<br>  此成员是可以省略。<br>  成员值是由服务端定义的（比如详细错误信息，嵌套的更多错误等等）。</p>
+<p>从<em>-32768</em>至<em>-32000</em>的错误代码是保留的预定义错误代码。在此范围中，但未出现在下方列表中的代码，是预留给将来使用的。这些错误代码基本上与XML-RPC的相同，参考链接地址<a href="">http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php</a>。</p>
+<table>
+<thead>
+<tr>
+<th><strong>code</strong></th>
+<th><strong>message</strong></th>
+<th><strong>meaning</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-32700</td>
+<td>Parse error</td>
+<td>服务端接收到无效的JSON数据。在解析JSON字符串时发生错误。</td>
+</tr>
+<tr>
+<td>-32600</td>
+<td>Invalid Request</td>
+<td>发送出的JSON不是一个有效的请求对象。</td>
+</tr>
+<tr>
+<td>-32601</td>
+<td>Method Not found</td>
+<td>方法不存在或者不可用。</td>
+</tr>
+<tr>
+<td>-32602</td>
+<td>Invalid params</td>
+<td>无效的方法参数。</td>
+</tr>
+<tr>
+<td>-32603</td>
+<td>Internal error</td>
+<td>JSON-RPC内部错误。</td>
+</tr>
+<tr>
+<td>-32000 ~ -32099</td>
+<td>Server error</td>
+<td>由具体实现定义的服务端错误。</td>
+</tr>
+</tbody>
+</table>
+<p>剩余错误代码空间，可以由应用自定义错误。</p>
+<h2 id="6-批量操作"><a href="#6-批量操作" class="headerlink" title="6 批量操作"></a>6 批量操作</h2><p>客户端可以通过发送请求对象数组来发起一次批量请求。<br>服务端则应该在所有调用请求完成后，返回一个包含对应应答对象的数组。每个请求对象都应该有对应的应答对象，通知则不应该有应答对象。服务端可以以并发的方式处理批量RPC调用，而不必考虑并行顺序和处理时长。<br>返回数据中的应答对象可以以任意顺序排列。客户端应当使用id成员来关联对应的请求对象和应答对象。<br>如果批量RPC调用本身没有被正确识别为JSON或者至少包含一个值的数组，那么服务端的响应必须是单独一个应答对象。如果在应答数组中没有应答对象，服务端必须不能返回一个空数据，而是不返回任何数据。</p>
+<h2 id="7-举例"><a href="#7-举例" class="headerlink" title="7 举例"></a>7 举例</h2><p>语法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--&gt; 发送给服务端的数据</div><div class="line">&lt;-- 发送给客户端的数据</div></pre></td></tr></table></figure>
+<p>以位置区分参数的RPC调用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"substract"</span>, <span class="string">"params"</span>: [<span class="number">42</span>, <span class="number">23</span>], <span class="string">"id"</span>: <span class="number">1</span>&#125;</div><div class="line">&lt;-- &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"result"</span>: <span class="number">19</span>, <span class="string">"id"</span>: <span class="number">1</span>&#125;</div><div class="line"></div><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"substract"</span>, <span class="string">"params"</span>: [<span class="number">23</span>, <span class="number">42</span>], <span class="string">"id"</span>: <span class="number">2</span>&#125;</div><div class="line">&lt;-- &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"result"</span>: <span class="number">-19</span>, <span class="string">"id"</span> <span class="number">2</span>&#125;</div></pre></td></tr></table></figure>
+<p>以名称区分参数的RPC调用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"substract"</span>, <span class="string">"params"</span>: &#123;<span class="string">"substrahend"</span>: <span class="number">23</span>, <span class="string">"minuend"</span>: <span class="number">42</span>&#125;, <span class="string">"id"</span>: <span class="number">3</span>&#125;</div><div class="line">&lt;-- &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"result"</span>: <span class="number">19</span>, <span class="string">"id"</span>:<span class="number">3</span>&#125;</div><div class="line"></div><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"substract"</span>, <span class="string">"params"</span>: &#123;<span class="string">"minuend"</span>: <span class="number">42</span>, <span class="string">"substrahend"</span>: <span class="number">23</span>&#125;, <span class="string">"id"</span>: <span class="number">4</span>&#125;</div><div class="line">&lt;-- &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"result"</span>: <span class="number">19</span>, <span class="string">"id"</span>: <span class="number">4</span>&#125;</div></pre></td></tr></table></figure>
+<p>消息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"update"</span>, <span class="string">"params"</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]&#125;</div><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"foobar"</span>&#125;</div></pre></td></tr></table></figure>
+<p>RPC调用不存在的方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"foobar"</span>, <span class="string">"id"</span>: <span class="string">"1"</span>&#125;</div><div class="line">&lt;-- &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32601</span>, <span class="string">"message"</span>: <span class="string">"Method not found"</span>&#125;, <span class="string">"id"</span>: <span class="string">"1"</span>&#125;</div></pre></td></tr></table></figure>
+<p>无效JSON的RPC调用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--&gt; &#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;method&quot;: &quot;foobar, &quot;params&quot;: &quot;bar&quot;, &quot;baz]</div><div class="line">&lt;-- &#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;error&quot;: &#123;&quot;code&quot;: -32700, &quot;message&quot;: &quot;Parse error&quot;&#125;, &quot;id&quot;: null&#125;</div></pre></td></tr></table></figure>
+<p>无效请求对象的RPC调用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--&gt; &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="number">1</span>, <span class="string">"params"</span>: <span class="string">"bar"</span>&#125;</div><div class="line">&lt;-- &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32600</span>, <span class="string">"message"</span>: <span class="string">"Invalid Request"</span>&#125;, <span class="string">"id"</span>: <span class="literal">null</span>&#125;</div></pre></td></tr></table></figure>
+<p>批量RPC调用，无效的JSON：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">--&gt; [</div><div class="line">  &#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;method&quot;: &quot;sum&quot;, &quot;params&quot;: [1,2,4], &quot;id&quot;: &quot;1&quot;&#125;,</div><div class="line">  &#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;method&quot;</div><div class="line">]</div><div class="line">&lt;-- &#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;error&quot;: &#123;&quot;code&quot;: -32700, &quot;message&quot;: &quot;Parse error&quot;&#125;, &quot;id&quot;: null&#125;</div></pre></td></tr></table></figure>
+<p>使用空数组进行RPC调用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--&gt; []</div><div class="line">&lt;-- &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32600</span>, <span class="string">"message"</span>: <span class="string">"Invalid Request"</span>&#125;, <span class="string">"id"</span>: <span class="literal">null</span>&#125;</div></pre></td></tr></table></figure>
+<p>单个无效的批量RPC调用（非空数组）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">--&gt; [<span class="number">1</span>]</div><div class="line">&lt;-- [</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32600</span>, <span class="string">"message"</span>: <span class="string">"Invalid Request"</span>&#125;, <span class="string">"id"</span>: <span class="literal">null</span>&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>多个无效的批量RPC调用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">--&gt; [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">&lt;-- [</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32600</span>, <span class="string">"message"</span>: <span class="string">"Invalid Request"</span>&#125;, <span class="string">"id"</span>: <span class="literal">null</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32600</span>, <span class="string">"message"</span>: <span class="string">"Invalid Request"</span>&#125;, <span class="string">"id"</span>: <span class="literal">null</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32600</span>, <span class="string">"message"</span>: <span class="string">"Invalid Request"</span>&#125;, <span class="string">"id"</span>: <span class="literal">null</span>&#125;,</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>批量RPC调用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">--&gt; [</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"sum"</span>, <span class="string">"params"</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>], <span class="string">"id"</span>: <span class="string">"1"</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"notify_hello"</span>, <span class="string">"params"</span>: [<span class="number">7</span>]&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"substract"</span>, <span class="string">"params"</span>: [<span class="number">42</span>,<span class="number">23</span>], <span class="string">"id"</span>: <span class="string">"2"</span>&#125;,</div><div class="line">  &#123;<span class="string">"foo"</span>: <span class="string">"boo"</span>&#125;.</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"foo.get"</span>, <span class="string">"params"</span>: &#123;<span class="string">"name"</span>: <span class="string">"myself"</span>&#125;, <span class="string">"id"</span>: <span class="string">"5"</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"get_data"</span>, <span class="string">"id"</span>: <span class="string">"9"</span>&#125;</div><div class="line">]</div><div class="line">&lt;-- [</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"result"</span>: <span class="number">7</span>, <span class="string">"id"</span>: <span class="string">"1"</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"result"</span>: <span class="number">19</span>, <span class="string">"id"</span>: <span class="string">"2"</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>:<span class="number">-32600</span>, <span class="string">"message"</span>: <span class="string">"Invalid Request"</span>&#125;, <span class="string">"id"</span>: <span class="literal">null</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"error"</span>: &#123;<span class="string">"code"</span>: <span class="number">-32601</span>, <span class="string">"message"</span>: <span class="string">"Method not found"</span>&#125;, <span class="string">"id"</span>: <span class="string">"5"</span>&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"result"</span>: [<span class="string">"hello"</span>, <span class="number">5</span>], <span class="string">"id"</span>: <span class="string">"9"</span>&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>批量RPC调用（全部为通知）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">--&gt; [</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"notify_sum"</span>, <span class="string">"params"</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>]&#125;,</div><div class="line">  &#123;<span class="string">"jsonrpc"</span>: <span class="string">"2.0"</span>, <span class="string">"method"</span>: <span class="string">"notify_hello"</span>, <span class="string">"params"</span>: [<span class="number">7</span>]&#125;</div><div class="line">]</div><div class="line">&lt;-- <span class="comment">//Nothing is returned for all notification batches</span></div></pre></td></tr></table></figure>
+<h2 id="8-扩展"><a href="#8-扩展" class="headerlink" title="8 扩展"></a>8 扩展</h2><p>以 <em>rpc.</em> 开头的方法名被保留用作系统扩展，必须不能作为他用。每个系统扩展都由相应的文档定义。所有的系统扩展都是可选的。</p>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/24/PHP7-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PHP 7 有些什么值得期待？（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/09/16/Internet-Explorer-Compatibility-List/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Frameworks and Internet Explorer Compatibility</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2015/10/06/JSON-RPC/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

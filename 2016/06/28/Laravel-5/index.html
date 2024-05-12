@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Laravel 5 流程简析 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="文中 PHP 代码默认的 namespace 为 Illuminate。
+代码中的异常处理流程被忽略，未作描述。
+
+public/index.php
+引入 autoload 文件；
+引入 Bootstrap/app.php； 
+通过容器实例化 Kernel 接口对象；
+Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel 5 流程简析">
+<meta property="og:url" content="http://log.zvz.im/2016/06/28/Laravel-5/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="文中 PHP 代码默认的 namespace 为 Illuminate。
+代码中的异常处理流程被忽略，未作描述。
+
+public/index.php
+引入 autoload 文件；
+引入 Bootstrap/app.php； 
+通过容器实例化 Kernel 接口对象；
+Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Laravel 5 流程简析">
+<meta name="twitter:description" content="文中 PHP 代码默认的 namespace 为 Illuminate。
+代码中的异常处理流程被忽略，未作描述。
+
+public/index.php
+引入 autoload 文件；
+引入 Bootstrap/app.php； 
+通过容器实例化 Kernel 接口对象；
+Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-Laravel-5" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Laravel 5 流程简析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/06/28/Laravel-5/" class="article-date">
+  <time datetime="2016-06-28T13:42:32.000Z" itemprop="datePublished">2016-06-28</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/laravel/">laravel</a> <a class="article-category-link" href="/tags/php/">php</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>文中 PHP 代码默认的 namespace 为 Illuminate。</p>
+<p>代码中的异常处理流程被忽略，未作描述。</p>
+</blockquote>
+<h2 id="public-index-php"><a href="#public-index-php" class="headerlink" title="public/index.php"></a>public/index.php</h2><ol>
+<li>引入 autoload 文件；</li>
+<li><a href="#app">引入 Bootstrap/app.php</a>； </li>
+<li><a href="#kernel">通过容器实例化 Kernel 接口对象</a>；</li>
+<li><a href="#request">Request::capture 获取到 Request 对象</a>，并<a href="#handle">交给 Kernel 实例处理</a>，得到 Response 实例；</li>
+<li><a href="#send">Response 实例输出 <code>send()</code></a>；</li>
+<li><a href="#terminate">Kernel 终结</a>，传入 Request 和 Response 作为参数；<a id="more"></a>
+</li>
+</ol>
+<h2 id="Bootstrap-app-php"><a href="#Bootstrap-app-php" class="headerlink" title="Bootstrap/app.php"></a><a name="app"></a>Bootstrap/app.php</h2><ol>
+<li>实例化 Application 对象；<ol>
+<li>容器绑定最基础的两个对象：’app’ -&gt; Application($this); Container -&gt; Application($this);</li>
+<li>注册最基础的 Service Provider: EventServiceProvider &amp; RoutingServiceProvider;</li>
+<li>注册容器核心类和接口对应的别名；</li>
+<li>设置应用根目录；</li>
+</ol>
+</li>
+<li>绑定核心接口对应的类：<code>Contracts\Http\Kernel</code>, <code>Contracts\Console\Kernel</code>, <code>Contracts\Debug\ExceptionHandler</code>；</li>
+<li>返回 Application 实例；</li>
+</ol>
+<h2 id="Foundation-Http-Kernel-构造函数"><a href="#Foundation-Http-Kernel-构造函数" class="headerlink" title="Foundation\Http\Kernel 构造函数"></a><a name="kernel"></a>Foundation\Http\Kernel 构造函数</h2><ol>
+<li>注入 Application 和 Router 的依赖对象；</li>
+<li>将自己设置的路由中间件 ( routeMiddleware ) 注册到 Router 对象中；</li>
+</ol>
+<h2 id="Http-Request-capture-捕获请求"><a href="#Http-Request-capture-捕获请求" class="headerlink" title="Http\Request::capture() 捕获请求"></a><a name="reqeust"></a>Http\Request::capture() 捕获请求</h2><ol>
+<li>启用 _method 参数，用于支持 HTTP 的 PUT/DELET 方法；</li>
+<li>调用父类的 <code>createFromGlobals()</code> 方法，将 $_GET/$_POST 等全局变量封装在 ParameterBag 对象中，赋值给 Request 对象的相应属性；</li>
+<li>将上一步生产的 Symfony 的 Request 对象复制到 HTTP\Request 对象中，并且更改了 request 属性，加入了对 JSON 数据的处理 ( <code>getInputSource()</code> 方法)；</li>
+<li>返回 Request 对象；</li>
+</ol>
+<h2 id="Kernel-gt-handle-Request-处理请求"><a href="#Kernel-gt-handle-Request-处理请求" class="headerlink" title="Kernel-&gt;handle(Request) 处理请求"></a><a name="handle"></a>Kernel-&gt;handle(Request) 处理请求</h2><ol>
+<li>再次启用 Request 的 _method 支持；</li>
+<li>将请求发送给 Router 对象（<code>sendRequestThroughRouter</code>），接收返回的 Response 对象；<ol>
+<li>将 Request 对象注入到容器中，对应名称为 ‘request’；</li>
+<li>清除 Facade 中的 ‘request’ 实例；（具体作用尚未知）</li>
+<li>内核的启动过程: 通过容器（Application）启动内核中注册的启动项，并触发相应的启动事件，默认的启动项目有：<ul>
+<li>Foundation\Bootstrap\DetectEnvironment</li>
+<li>Foundation\Bootstrap\LoadConfiguration</li>
+<li>Foundation\Bootstrap\ConfigureLogging</li>
+<li>Foundation\Bootstrap\HandleException</li>
+<li>Foundation\Bootstrap\RegisterFacades</li>
+<li>Foundation\Bootstrap\RegisterProviders</li>
+<li>Foundation\Bootstrap\BootProviders</li>
+</ul>
+</li>
+<li>依赖于 app 容器建立一个管道，使 Request 对象经过注册于内核的中间件处理后，最终下发给 Router-&gt;dispatch ；<ol>
+<li>Router 调用 before 过滤器；</li>
+<li>下发至路由处理（稍后说明），获得 Response 对象；</li>
+<li>生成并优化 Response 对象；</li>
+<li>Router 调用 after 过滤器；</li>
+<li>返回 Response 对象；</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>触发 <code>kernel.handled</code> 事件，返回 Response 对象；</li>
+</ol>
+<h2 id="Response-输出"><a href="#Response-输出" class="headerlink" title="Response 输出"></a><a name="send"></a>Response 输出</h2><ol>
+<li>发送头信息；</li>
+<li>输出 <code>$this-&gt;content</code> ；</li>
+<li>flush 输出<ul>
+<li>fastcgi_finish_reqeust</li>
+<li>ob_end_flush &amp; ob_end_clean</li>
+</ul>
+</li>
+</ol>
+<h2 id="Kernel-终结"><a href="#Kernel-终结" class="headerlink" title="Kernel 终结"></a><a name="terminate"></a>Kernel 终结</h2><ol>
+<li>取得所有的路由中间件，并执行相应的 <code>terminate</code> 方法；</li>
+<li>调用 Application 的 terminate 方法：执行所有注册的终结回调过程（<code>$this-&gt;terminatingCallbacks</code>）；</li>
+</ol>
+<h2 id="Router-gt-dispatchToRoute-路由处理过程"><a href="#Router-gt-dispatchToRoute-路由处理过程" class="headerlink" title="Router-&gt;dispatchToRoute 路由处理过程"></a><a name="route"></a>Router-&gt;dispatchToRoute 路由处理过程</h2><ol>
+<li>根据 Request 实例获取匹配的路由对象；<ol>
+<li>根据 Request 从 RouteCollection 中匹配路由；</li>
+<li>将匹配到的路由对象注入到容器中；</li>
+<li>对路由中的参数进行计算替换；（具体作用有待考察）</li>
+</ol>
+</li>
+<li>给 Request 对象设定路由回调函数，该函数返回此匹配到的路由；</li>
+<li>出发 <code>router.matched</code> 事件；</li>
+<li>调用 Route 的 before 过滤器；</li>
+<li>如果返回为 null，则调用 <code>runRouteWithStack</code> 方法；<ol>
+<li>建立基于容器的管道，使请求对象通过通过路由相关的中间件；</li>
+<li>最终执行路由的 <code>run</code> 方法，并返回结果；</li>
+</ol>
+</li>
+<li>生成并优化 Response 对象；</li>
+<li>调用 Route 的 after 过滤器；</li>
+<li>返回 Response 对象；</li>
+</ol>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/01/PHP-Coroutine/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          用PHP协程实现多任务协作
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/07/Make-your-Nodejs-API-robust/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">让你的 Node.js 应用接口稳如狗：如何使用 Mocha, Chai 和 SuperTest 写测试代码</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2016/06/28/Laravel-5/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

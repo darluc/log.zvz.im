@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Go 项目最常见的 10 种错误 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文是我总结的 golang 项目中最常见的十种错误。排名不分先后。
+未知状态的枚举值我们来看一个简单的例子：
+1234567type Status uint32const (	StatusOpen Status = iota	StatusClosed	StatusUnknown)
+在这里我们使用 iota  创建了一个枚举列表，结果状态如下：
+123StatusOpen = 0StatusCl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 项目最常见的 10 种错误">
+<meta property="og:url" content="http://log.zvz.im/2019/11/09/top-10-golang-mistakes/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="本文是我总结的 golang 项目中最常见的十种错误。排名不分先后。
+未知状态的枚举值我们来看一个简单的例子：
+1234567type Status uint32const (	StatusOpen Status = iota	StatusClosed	StatusUnknown)
+在这里我们使用 iota  创建了一个枚举列表，结果状态如下：
+123StatusOpen = 0StatusCl">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/10/19578038f26ae531.jpg">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.157Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go 项目最常见的 10 种错误">
+<meta name="twitter:description" content="本文是我总结的 golang 项目中最常见的十种错误。排名不分先后。
+未知状态的枚举值我们来看一个简单的例子：
+1234567type Status uint32const (	StatusOpen Status = iota	StatusClosed	StatusUnknown)
+在这里我们使用 iota  创建了一个枚举列表，结果状态如下：
+123StatusOpen = 0StatusCl">
+<meta name="twitter:image" content="https://img.zvz.im/imgs/2019/10/19578038f26ae531.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-top-10-golang-mistakes" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Go 项目最常见的 10 种错误
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2019/11/09/top-10-golang-mistakes/" class="article-date">
+  <time datetime="2019-11-09T16:59:25.000Z" itemprop="datePublished">2019-11-09</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://img.zvz.im/imgs/2019/10/19578038f26ae531.jpg" alt=""></p>
+<p>本文是我总结的 golang 项目中最常见的十种错误。排名不分先后。</p>
+<h2 id="未知状态的枚举值"><a href="#未知状态的枚举值" class="headerlink" title="未知状态的枚举值"></a>未知状态的枚举值</h2><p>我们来看一个简单的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Status <span class="keyword">uint32</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> (</div><div class="line">	StatusOpen Status = <span class="literal">iota</span></div><div class="line">	StatusClosed</div><div class="line">	StatusUnknown</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>在这里我们使用 <code>iota</code>  创建了一个枚举列表，结果状态如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">StatusOpen = <span class="number">0</span></div><div class="line">StatusClosed = <span class="number">1</span></div><div class="line">StatusUnknown = <span class="number">2</span></div></pre></td></tr></table></figure>
+<p>现在，假设这个 <code>Status</code> 类型是 JSON 请求数据中的一部分，并且会被用于编码解码。我们可以设计一个结构，如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Request <span class="keyword">struct</span> &#123;</div><div class="line">	ID        <span class="keyword">int</span>    <span class="string">`json:"Id"`</span></div><div class="line">	Timestamp <span class="keyword">int</span>    <span class="string">`json:"Timestamp"`</span></div><div class="line">	Status    Status <span class="string">`json:"Status"`</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>然后，接收到这样的请求数据：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"Id"</span>: <span class="number">1234</span>,</div><div class="line">  <span class="attr">"Timestamp"</span>: <span class="number">1563362390</span>,</div><div class="line">  <span class="attr">"Status"</span>: <span class="number">0</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这儿没有什么特别的，状态字段会被解码为 <code>StatusOpen</code>，没错吧？但是，当我们使用另一个没有设置状态值的请求（无论是什么原因造成的）：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"Id"</span>: <span class="number">1235</span>,</div><div class="line">  <span class="attr">"Timestamp"</span>: <span class="number">1563362390</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这种情况下，<code>Request</code> 结构体的 <code>Status</code> 字段会被初始化为<strong>零值</strong>（<code>uint32</code> 类型：0）。所以，它的值会是 <code>StatusOpen</code> 而不是 <code>StatusUnknown</code>。</p>
+<p>最好的办法是将一个枚举的未知状态值设为 0：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Status <span class="keyword">uint32</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> (</div><div class="line">	StatusUnknown Status = <span class="literal">iota</span></div><div class="line">	StatusOpen</div><div class="line">	StatusClosed</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>这样一来，当 JSON 请求的缺少状态字段的时候，它就会像我们所预期地那样初始化为 <code>StatusUnknown</code> 。</p>
+<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><p>想要准确地进行性能测试是很困难的。有许多因素能影响到测试的结果。</p>
+<p>一个常见的错误是你会被某些编译器优化所愚弄。我们看一个来自于 <a href="https://github.com/teivah/bitvector/" target="_blank" rel="external"><em>teivah/bitvector</em></a> 库中的实际例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">clear</span><span class="params">(n <span class="keyword">uint64</span>, i, j <span class="keyword">uint8</span>)</span> <span class="title">uint64</span></span> &#123;</div><div class="line">	<span class="keyword">return</span> (math.MaxUint64&lt;&lt;j | ((<span class="number">1</span> &lt;&lt; i) - <span class="number">1</span>)) &amp; n</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此方法将指定范围的二进制位进行清除。要测试它的性能，我们也许会这样做：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkWrong</span><span class="params">(b *testing.B)</span></span> &#123;</div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</div><div class="line">		clear(<span class="number">1221892080809121</span>, <span class="number">10</span>, <span class="number">63</span>)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这个测试中，编译器会注意到 <code>clear</code> 是一个叶子方法（没有调用任何其它的方法），所以会对它进行内联编译。它被内联编译后，编译器会注意到这段代码没有任何<strong>副作用</strong>（side-effects）。所以 <code>clear</code> 的调用过程会被简单地移除掉，最终导致结果不正确。</p>
+<p>一个可行的方法是将计算结果赋值给一个全局变量：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> result <span class="keyword">uint64</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkCorrect</span><span class="params">(b *testing.B)</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> r <span class="keyword">uint64</span></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</div><div class="line">		r = clear(<span class="number">1221892080809121</span>, <span class="number">10</span>, <span class="number">63</span>)</div><div class="line">	&#125;</div><div class="line">	result = r</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样，编译器就无法知道该方法调用是否会产生副作用了。因此，这个基准测试就变得准确了。</p>
+<h2 id="指针！到处乱用指针！"><a href="#指针！到处乱用指针！" class="headerlink" title="指针！到处乱用指针！"></a>指针！到处乱用指针！</h2><p>变量以值传递时会产生这个变量的拷贝，而通过指针传递时只会拷贝内存地址。</p>
+<p>所以，指针传递总是<strong>更快</strong>一些，不是嘛？</p>
+<p>如果你是这样认为的，那么请看一下<a href="https://gist.github.com/teivah/a32a8e9039314a48f03538f3f9535537" target="_blank" rel="external">这个例子</a>。这是一个使用了 0.3KB 大小的数据结构，进行指针传递和值传递比较的性能测试。0.3KB 并不大，和我们（大多数人）日常见到的数据结构的大小差不多。</p>
+<p>我在本地环境运行这些性能测试时，值传递竟然比指针传递<strong>快 4 倍</strong>。这真的有些反印象流，不是吗？</p>
+<p>对这种结果的解释是，它与 Go 的内存管理相关。我没法像 <a href="https://www.ardanlabs.com/blog/2017/05/language-mechanics-on-stacks-and-pointers.html" target="_blank" rel="external">William Kennedy</a> 解释得那样清楚，不过还是尽量总结一下。</p>
+<p>一个变量可能被分配在<strong>堆</strong>上或者<strong>栈</strong>上。粗略的说明如下：</p>
+<ul>
+<li>栈内保存着 <strong>goroutine</strong> 中<strong>生存着</strong>的变量。一旦方法返回，这些变量就会被从栈中抛弃。</li>
+<li>堆里保存着<strong>共享的</strong>变量（比如， 全局变量）</li>
+</ul>
+<p>我们来看一个简单的例子，它会返回一个值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">getFooValue</span><span class="params">()</span> <span class="title">foo</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> result foo</div><div class="line">	<span class="comment">// Do something</span></div><div class="line">	<span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码中，一个 <code>result</code> 变量由当前的 goroutine 创建。这个变量被放入当前栈内。一旦方法返回，调用者会接收到这个变量的拷贝。而这个变量自身则会被从栈内抛出。它仍然存在于内存中，直到它被别的变量抹除，同时它是<strong>无法访问</strong>的。</p>
+<p>然后，同样的例子返回一个指针：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">getFooPointer</span><span class="params">()</span> *<span class="title">foo</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> result foo</div><div class="line">	<span class="comment">// Do something</span></div><div class="line">	<span class="keyword">return</span> &amp;result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个 <code>result</code> 变量仍然由当前的 goroutine 创建，不过调用者会接收到一个指针（变量地址的拷贝）。假如 <code>result</code> 变量被从栈内抛出，那么方法调用者也将<strong>无法访问</strong>到它了。</p>
+<p>在这种场景下，Go 编译器会让 <code>result</code> 变量<strong>逃逸（escape）</strong>到一个存放共享变量的地方：<strong>堆</strong>。</p>
+<p>传递指针参数，则是另一个场景了。比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</div><div class="line">	p := &amp;foo&#123;&#125;</div><div class="line">	f(p)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于我们在同一个 goroutine 中调用 <code>f</code> 方法，所以变量 <code>p</code> 不需要逃逸。只需简单地将它压入栈中，子方法就能够访问到。</p>
+<p>比如，这直接导致 <code>io.Reader</code> 接口的 <code>Read</code> 方法被设计成接收一个 slice 参数而不是返回一个 slice。返回一个 slice（slice 是指针类型）会使它被转移到堆中去。</p>
+<p>为什么栈的访问速度<strong>快</strong>呢？主要有两个原因：</p>
+<ul>
+<li>栈不需要<strong>垃圾回收器</strong>。正如之前所述，变量在创建时入栈，方法返回时出栈。没有必要实现一个复杂流程来回收未使用的变量等等。</li>
+<li>每个 goroutine 都有一个栈，所以在栈内存放变量和堆内不同，不需要<strong>同步</strong>机制。这也会使得效率提升。</li>
+</ul>
+<p>总结一下，当我们构建方法时，我们应该默认使用<strong>使用值而不是指针</strong>。指针应当只在我们需要<strong>共享</strong>变量时使用。</p>
+<p>所以，假如我们遇到了性能问题，一个可能的优化方案就是检查某些场景下是否该使用指针。如果想要知道编译器何时将变量转移到堆中，我们可以使用指令：<code>go build -gcflags &quot;-m -m&quot;</code> 。</p>
+<p>再强调一下，对于日常使用的大多数场景，传值是最好的选择。</p>
+<h2 id="跳出-for-switch-或-for-select-嵌套"><a href="#跳出-for-switch-或-for-select-嵌套" class="headerlink" title="跳出 for/switch 或 for/select 嵌套"></a>跳出 for/switch 或 for/select 嵌套</h2><p>下面例子中的 <code>f</code> 如果返回 true 会发生什么呢？</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">for</span> &#123;</div><div class="line">  <span class="keyword">switch</span> f() &#123;</div><div class="line">  <span class="keyword">case</span> <span class="literal">true</span>:</div><div class="line">    <span class="keyword">break</span></div><div class="line">  <span class="keyword">case</span> <span class="literal">false</span>:</div><div class="line">    <span class="comment">// Do something</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们会调用 <code>break</code> 语句。不过，它会从 <code>switch</code>  语句中跳出，而<strong>不是 for 循环</strong>。</p>
+<p>类似的情况：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> &#123;</div><div class="line">  <span class="keyword">select</span> &#123;</div><div class="line">  <span class="keyword">case</span> &lt;-ch:</div><div class="line">  <span class="comment">// Do something</span></div><div class="line">  <span class="keyword">case</span> &lt;-ctx.Done():</div><div class="line">    <span class="keyword">break</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>break</code> 语句与 <code>select</code> 控制相关，而不是 for 循环。</p>
+<p>一种办法是使用<strong>带标签的 break</strong> 从 for/switch 或者 for/select 嵌套中跳出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">loop:</div><div class="line">	<span class="keyword">for</span> &#123;</div><div class="line">		<span class="keyword">select</span> &#123;</div><div class="line">		<span class="keyword">case</span> &lt;-ch:</div><div class="line">		<span class="comment">// Do something</span></div><div class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</div><div class="line">			<span class="keyword">break</span> loop</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<h2 id="错误管理"><a href="#错误管理" class="headerlink" title="错误管理"></a>错误管理</h2><p>Go 语言还在不断发展之中，目前对于错误的处理方式还稍显稚嫩。不出意外的话，错误管理会是 Go 2 版本中最受期待的特性。</p>
+<p>当前版本（Go 1.13 之前）的标准库只提供了一些错误的创建方法，你可以看看 <a href="https://github.com/pkg/errors" target="_blank" rel="external">_pkg/errors</a> 包。</p>
+<p>遵守以下经验法则使用该库是一个比较好的方式，但并非总是如此：</p>
+<blockquote>
+<p>一个错误应当只进行<strong>一次</strong>处理。记录错误日志<strong>也是</strong>对错误的一种处理。所以一个错误<strong>只能</strong>被记录<strong>或者</strong>抛出。</p>
+</blockquote>
+<p>使用当前版本的标准库，很难遵守上面的准则，因为我们会想给一个错误增加一些上下文信息，从而形成某种形式的继承关系。</p>
+<p>让我们举一个例子，在一次 REST 请求产生 DB 报错时，可能希望有如下返回：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">unable to serve HTTP POST request for customer 1234</div><div class="line"> |_ unable to insert customer contract abcd</div><div class="line">     |_ unable to commit transaction</div></pre></td></tr></table></figure>
+<p>我们使用 <em>pkg/errors</em> 库时可能会这样做：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">postHandler</span><span class="params">(customer Customer)</span> <span class="title">Status</span></span> &#123;</div><div class="line">	err := insert(customer.Contract)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		log.WithError(err).Errorf(<span class="string">"unable to serve HTTP POST request for customer %s"</span>, customer.ID)</div><div class="line">		<span class="keyword">return</span> Status&#123;ok: <span class="literal">false</span>&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> Status&#123;ok: <span class="literal">true</span>&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">insert</span><span class="params">(contract Contract)</span> <span class="title">error</span></span> &#123;</div><div class="line">	err := dbQuery(contract)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="keyword">return</span> errors.Wrapf(err, <span class="string">"unable to insert customer contract %s"</span>, contract.ID)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="literal">nil</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">dbQuery</span><span class="params">(contract Contract)</span> <span class="title">error</span></span> &#123;</div><div class="line">	<span class="comment">// Do something then fail</span></div><div class="line">	<span class="keyword">return</span> errors.New(<span class="string">"unable to commit transaction"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>初始的错误（如果不是由外部库返回的）可能是用 <code>errors.New</code> 创建的。中间一层，<code>insert</code> ，对这个错误加入了更多的上下文信息。随后，上一层处理了这个错误，并将其记录了下来。每个层级的逻辑都处理了这个错误或将其抛出。</p>
+<p>我们可能还想检查一下错误的起因，比如用来实现重试机制。比如我们有一个外部的用于访问 数据库的 <code>db</code> 包。这个库可能会返回一个短暂的（临时的）错误叫作 <code>db.DBError</code>。为了判断我们是否需要进行重试，我们必须要确认错误的起因：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">postHandler</span><span class="params">(customer Customer)</span> <span class="title">Status</span></span> &#123;</div><div class="line">	err := insert(customer.Contract)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="keyword">switch</span> errors.Cause(err).(<span class="keyword">type</span>) &#123;</div><div class="line">		<span class="keyword">default</span>:</div><div class="line">			log.WithError(err).Errorf(<span class="string">"unable to serve HTTP POST request for customer %s"</span>, customer.ID)</div><div class="line">			<span class="keyword">return</span> Status&#123;ok: <span class="literal">false</span>&#125;</div><div class="line">		<span class="keyword">case</span> *db.DBError:</div><div class="line">			<span class="keyword">return</span> retry(customer)</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> Status&#123;ok: <span class="literal">true</span>&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">insert</span><span class="params">(contract Contract)</span> <span class="title">error</span></span> &#123;</div><div class="line">	err := db.dbQuery(contract)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="keyword">return</span> errors.Wrapf(err, <span class="string">"unable to insert customer contract %s"</span>, contract.ID)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是通过 <em>pkg/errors</em> 包中的  <code>errors.Cause</code> 来实完成的：</p>
+<p>我见过的一个常见错误是部分使用 <em>pkg/errors</em> 。检查错误时是这样做的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">switch</span> err.(<span class="keyword">type</span>) &#123;</div><div class="line"><span class="keyword">default</span>:</div><div class="line">  log.WithError(err).Errorf(<span class="string">"unable to serve HTTP POST request for customer %s"</span>, customer.ID)</div><div class="line">  <span class="keyword">return</span> Status&#123;ok: <span class="literal">false</span>&#125;</div><div class="line"><span class="keyword">case</span> *db.DBError:</div><div class="line">  <span class="keyword">return</span> retry(customer)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个例子里，如果 <code>db.DBError</code> 被包裹后，就绝对无法触发重试机制了。</p>
+<h2 id="Slice-初始化"><a href="#Slice-初始化" class="headerlink" title="Slice 初始化"></a>Slice 初始化</h2><p>有些时候，我们知道一个 slice 的最终长度。比如我们想将切片 <code>Foo</code> 转化为切片 <code>Bar</code> ，可知两个切片的长度相同。</p>
+<p>我经常见到这样的初始化代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> bars []Bar</div><div class="line">bars := <span class="built_in">make</span>([]Bar, <span class="number">0</span>)</div></pre></td></tr></table></figure>
+<p>切片并不是什么神奇的结构。它在底层实现了一个<strong>扩容</strong>策略，用于应对空间不足的情况。空间不足时，它会自动创建出一个新的数组（<a href="https://www.darkcoding.net/software/go-how-slices-grow/" target="_blank" rel="external">容量更大</a>）然后将现有的数据项拷贝进去。</p>
+<p>现在，想象一下在 <code>[]Foo</code> 包含上万的元素时，我们如何多次重复这种扩容操作？虽然，对于一次插入分摊开的时间复杂度（平均）仍然是 O(1)，但实际上， 这样做会产生<strong>性能影响</strong>。</p>
+<p>所以，如果我们知道切片的最终长度，就可以采用以下的手段：</p>
+<ul>
+<li><p>将它初始化为一个预定义的长度：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">convert</span><span class="params">(foos []Foo)</span> []<span class="title">Bar</span></span> &#123;</div><div class="line">	bars := <span class="built_in">make</span>([]Bar, <span class="built_in">len</span>(foos))</div><div class="line">	<span class="keyword">for</span> i, foo := <span class="keyword">range</span> foos &#123;</div><div class="line">		bars[i] = fooToBar(foo)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> bars</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>或者初始化为预定义的容量，但长度等于零：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">convert</span><span class="params">(foos []Foo)</span> []<span class="title">Bar</span></span> &#123;</div><div class="line">	bars := <span class="built_in">make</span>([]Bar, <span class="number">0</span>, <span class="built_in">len</span>(foos))</div><div class="line">	<span class="keyword">for</span> _, foo := <span class="keyword">range</span> foos &#123;</div><div class="line">		bars = <span class="built_in">append</span>(bars, fooToBar(foo))</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> bars</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>哪一种办法更好？第一种执行速度快一些。不过，你或许更喜欢第二种方式，因为它具有更好的一致性：无论我们是否知道初始的大小，都可以使用 <code>append</code> 在切片末尾加入新的元素。</p>
+<h2 id="上下文管理"><a href="#上下文管理" class="headerlink" title="上下文管理"></a>上下文管理</h2><p><code>context.Context</code> 常常会被开发者误解。官方文档描述如下：</p>
+<blockquote>
+<p><em>一个 Context 包含一个生存期限，一个撤销信号，以及其它跨越 API 边界的数据</em>。</p>
+</blockquote>
+<p>这个描述足以使得一些人感到困惑，为什么以及如何使用它。</p>
+<p>我们试着解释得更详细一些。一个上下文包含：</p>
+<ul>
+<li>一个<strong>生存期限</strong>。它可以是一个时间长度（比如，250 毫秒），或者一个时间点（比如，<code>2019-01-08 01:00:00</code>），当到达截止时间的时候，我们必须取消某个正在运行的活动（比如，一个正在等待 channel 输入的 I/O 请求）。</li>
+<li>一个<strong>撤销信号</strong>（基本上就是一个 <code>&lt;-chan struct{}</code>）。这里的行为也是相似的。一旦我们接受到信号，我们必须终止一个正在运行的活动。举例来说，假设我们有两个请求。一个要插入一些数据，而另一个是撤销第一个请求（因为它没有意义或者其它别的原因）。这里可以使用第一个请求的可撤销上下文（ cancelable context ）来达成目的，一旦我们接收到第二个请求就执行撤销动作。</li>
+<li>一组键值对（都是 <code>interface{}</code> 类型）。</li>
+</ul>
+<p>再补充两点。第一，上下文对象是可组装的。一个上下文可以带有一个生存期限和一组键值对。而且，多个 Go 协程可以<strong>共享</strong>同一个上下文，因此一个撤销信号有能力终止<strong>多个活动</strong>。</p>
+<p>回到我们的主题上来，这里有一个我见过的真实错误案例。</p>
+<p>有一个基于 <a href="https://github.com/urfave/cli" target="_blank" rel="external"><em>urfave/cli</em></a> （以防你不知道，这是一个很好的用来创建命令行程序的 Go 代码库）的 Go 程序。程序一开始，研发人员就使用了库中一个类似程序上下文的东西。 程序终止时，会用这个上下文会发送一个撤销信号。</p>
+<p>我遇到的情况是这个上下文被直接传入到对另一个服务端的 gRPC 调用中。而我们并<strong>不想</strong>这样做。</p>
+<p>相反地，我们想告诉 gRPC 库：<em>请在应用程序终止或者请求超过 100 毫秒后，取消请求</em>。</p>
+<p>为了实现这种效果，我们只要创建一个合成的上下文。如果 <code>parent</code> 是那个应用上下文（由 <code>urfave/cli</code> 创建），那么我们只要这样做：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ctx, cancel := context.WithTimeout(parent, <span class="number">100</span> * time.Millisecond)</div><div class="line">response, err := grpcClient.Send(ctx, request)</div></pre></td></tr></table></figure>
+<p>上下文并没有复杂到无法理解的程度，而且我认为它是 Go 语言最好的特性之一。</p>
+<h2 id="不使用-race-参数"><a href="#不使用-race-参数" class="headerlink" title="不使用 -race 参数"></a>不使用 -race 参数</h2><p>我确实经常见到的一个错误是，测试 Go 应用时不使用 <code>-race</code> 参数。</p>
+<p>就如这份<a href="https://log.zvz.im/2019/07/25/real-world-concurrency-bugs-in-golang/">报告</a>中描述的，尽管 Go 的设计初衷是“让并发编程变得简单可靠”，我们仍然会遇到许多并发问题。</p>
+<p>当然 Go 的竞争探测器（ race detector ）不可能帮你解决所有的并发问题。不过，它仍然是很<strong>有价值的</strong>工具，当进行程序测试时我们总是应该启用它。</p>
+<h2 id="使用文件名作为入参"><a href="#使用文件名作为入参" class="headerlink" title="使用文件名作为入参"></a>使用文件名作为入参</h2><p>另一个普遍的问题是将文件名作为方法的入参。</p>
+<p>假设我们要实现一个功能对文件中的空行进行计数。最自然的实现方式大概是这样的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">count</span><span class="params">(filename <span class="keyword">string</span>)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span> &#123;</div><div class="line">	file, err := os.Open(filename)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>, errors.Wrapf(err, <span class="string">"unable to open %s"</span>, filename)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">defer</span> file.Close()</div><div class="line"></div><div class="line">	scanner := bufio.NewScanner(file)</div><div class="line">	count := <span class="number">0</span></div><div class="line">	<span class="keyword">for</span> scanner.Scan() &#123;</div><div class="line">		<span class="keyword">if</span> scanner.Text() == <span class="string">""</span> &#123;</div><div class="line">			count++</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> count, <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>文件名 <code>filename</code> 作为参数，然后我们打开这个文件执行逻辑，没错吧？</p>
+<p>现在，假设我们要对这个函数进行<strong>单元测试</strong>，使用一个正常的文件，一个空文件，一个采用不同编码的文件，等等。它会很快就变得难以管理。</p>
+<p>而且，如果想对一个 HTTP 的请求体执行相同的逻辑，我们就不得不另外写一个函数了。</p>
+<p>Go 自带两个很棒的接口抽象：<code>io.Reader</code> 和 <code>io.Writer</code> 。我们可以简单地使用一个 <code>io.Reader</code>   <strong>抽象</strong>数据源代替文件名作为入参。</p>
+<p>它是一个文件？一个 HTTP 请求体？或是一个字节缓冲区？这都不重要，因为我们会使用相同的 <code>Read</code> 方法。</p>
+<p>在这个案例中，我们甚至可以将输入缓冲起来逐行读入。这样，我们就可以使用 <code>bufio.Reader</code> 和它的 <code>ReadLine</code> 方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">count</span><span class="params">(reader *bufio.Reader)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span> &#123;</div><div class="line">	count := <span class="number">0</span></div><div class="line">	<span class="keyword">for</span> &#123;</div><div class="line">		line, _, err := reader.ReadLine()</div><div class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">			<span class="keyword">switch</span> err &#123;</div><div class="line">			<span class="keyword">default</span>:</div><div class="line">				<span class="keyword">return</span> <span class="number">0</span>, errors.Wrapf(err, <span class="string">"unable to read"</span>)</div><div class="line">			<span class="keyword">case</span> io.EOF:</div><div class="line">				<span class="keyword">return</span> count, <span class="literal">nil</span></div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(line) == <span class="number">0</span> &#123;</div><div class="line">			count++</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>打开文件的任务就交给 <code>count</code> 函数的使用者了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">file, err := os.Open(filename)</div><div class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">  <span class="keyword">return</span> errors.Wrapf(err, <span class="string">"unable to open %s"</span>, filename)</div><div class="line">&#125;</div><div class="line"><span class="keyword">defer</span> file.Close()</div><div class="line">count, err := count(bufio.NewReader(file))</div></pre></td></tr></table></figure>
+<p>采用第二种实现方式，函数可以<strong>无视</strong>数据源的真实载体进行调用。同时，这也便于我们实现单元测试，因为我们只需使用一个 <code>string</code> 字符串创建一个 <code>bufio.Reader</code> 就可以了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">count, err := count(bufio.NewReader(strings.NewReader(<span class="string">"input"</span>)))</div></pre></td></tr></table></figure>
+<h2 id="Go-协程和循环中的变量"><a href="#Go-协程和循环中的变量" class="headerlink" title="Go 协程和循环中的变量"></a>Go 协程和循环中的变量</h2><p>最后一个常见错误是在协程中使用循环内的变量。</p>
+<p>下面这个例子的输出会是什么？</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ints := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</div><div class="line"><span class="keyword">for</span> _, i := <span class="keyword">range</span> ints &#123;</div><div class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"%v\n"</span>, i)</div><div class="line">  &#125;()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>1 2 3</code> 以任意顺序出现？不对。</p>
+<p>在这个例子中，所有的协程<strong>共用</strong>了同一个变量实例，所以它会打印出 <code>3 3 3</code>（最可能）。</p>
+<p>这个问题有两种解决方案。第一种是将变量 <code>i</code> 的值传递到闭包中（内嵌函数）：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ints := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</div><div class="line"><span class="keyword">for</span> _, i := <span class="keyword">range</span> ints &#123;</div><div class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"%v\n"</span>, i)</div><div class="line">  &#125;(i)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第二种方法是在 for 循环中创建另一个变量：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ints := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</div><div class="line"><span class="keyword">for</span> _, i := <span class="keyword">range</span> ints &#123;</div><div class="line">  i := i</div><div class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Printf(<span class="string">"%v\n"</span>, i)</div><div class="line">  &#125;()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>采用 <code>i := i</code> 的方式看起可能有些奇怪，却是完全有效的。在循环体内就意味着在另一个作用域中。所以 <code>i := i</code> 创建了另一个名为 <code>i</code> 的变量实例。当然，我们可以为了提高可读性而采用另一个名字。</p>
+<blockquote>
+<p>翻译自：<a href="top-10-most-common-mistakes-ive-seen-in-go-projects-4b79d4f6cd65">The Top 10 Most Common Mistakes I’ve Seen in Go Projects</a></p>
+</blockquote>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/11/go-goroutine-and-preemption/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Go：Goroutine 的抢占机制
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/25/real-world-concurrency-bugs-in-golang/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">理解现实中 Go 语言的并发漏洞</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2019/11/09/top-10-golang-mistakes/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

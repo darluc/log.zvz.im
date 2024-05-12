@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>使用 Golang 和 OpenCV 侦测人脸 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="OpenCV 是一个用于计算机视觉处理的代码库，面世已有 20 多年了。大学时期，我曾在个人的 C++ 和 Python项目中使用过它，因为这些编程语言对它有很好的支持。不过随着我开始学习并使用 Go 语言，我开始好奇 Go 语言能否使用 OpenCV。网上有一些关于如何使用 Go 语言调用 OpenCV 的例子和教程，但我发现它们都太过黑科技和复杂了。还好我发现了一个名为 hybridgrou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Golang 和 OpenCV 侦测人脸">
+<meta property="og:url" content="http://log.zvz.im/2021/06/05/go-detect-faces-using-opencv/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="OpenCV 是一个用于计算机视觉处理的代码库，面世已有 20 多年了。大学时期，我曾在个人的 C++ 和 Python项目中使用过它，因为这些编程语言对它有很好的支持。不过随着我开始学习并使用 Go 语言，我开始好奇 Go 语言能否使用 OpenCV。网上有一些关于如何使用 Go 语言调用 OpenCV 的例子和教程，但我发现它们都太过黑科技和复杂了。还好我发现了一个名为 hybridgrou">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/04/d055ce9a0a5c233c.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/04/e5e8627147512749.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2021/05/71175eb78a8f1ec4.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2021/05/8c791ccc15c0ea43.png">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 Golang 和 OpenCV 侦测人脸">
+<meta name="twitter:description" content="OpenCV 是一个用于计算机视觉处理的代码库，面世已有 20 多年了。大学时期，我曾在个人的 C++ 和 Python项目中使用过它，因为这些编程语言对它有很好的支持。不过随着我开始学习并使用 Go 语言，我开始好奇 Go 语言能否使用 OpenCV。网上有一些关于如何使用 Go 语言调用 OpenCV 的例子和教程，但我发现它们都太过黑科技和复杂了。还好我发现了一个名为 hybridgrou">
+<meta name="twitter:image" content="https://img.zvz.im/imgs/2020/04/d055ce9a0a5c233c.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-go-detect-faces-using-opencv" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用 Golang 和 OpenCV 侦测人脸
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2021/06/05/go-detect-faces-using-opencv/" class="article-date">
+  <time datetime="2021-06-05T22:55:29.000Z" itemprop="datePublished">2021-06-05</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://img.zvz.im/imgs/2020/04/d055ce9a0a5c233c.png" alt=""></p>
+<p>OpenCV 是一个用于计算机视觉处理的代码库，面世已有 20 多年了。大学时期，我曾在个人的 C++ 和 Python项目中使用过它，因为这些编程语言对它有很好的支持。不过随着我开始学习并使用 Go 语言，我开始好奇 Go 语言能否使用 OpenCV。网上有一些关于如何使用 Go 语言调用 OpenCV 的例子和教程，但我发现它们都太过黑科技和复杂了。还好我发现了一个名为 <a href="https://github.com/hybridgroup" target="_blank" rel="external"><em>hybridgroup</em></a> 小组的伙计们写的封装库，它很容易使用，而且文档也很全。这里我要向你们展示如何使用 gocv ，并且创建一个简单的 Haar Cascades 面部探测器。</p>
+<p><strong>准备工作</strong></p>
+<ul>
+<li>Go</li>
+<li>OpenCV （下文附有安装链接）</li>
+<li>一个网络摄像头<a id="more"></a>
+</li>
+</ul>
+<p><strong>安装地址</strong></p>
+<p>linux: <a href="https://gocv.io/getting-started/linux/" target="_blank" rel="external">https://gocv.io/getting-started/linux/</a></p>
+<p>macOS: <a href="https://gocv.io/getting-started/macos/" target="_blank" rel="external">https://gocv.io/getting-started/macos/</a></p>
+<p>windows: <a href="https://gocv.io/getting-started/windows/" target="_blank" rel="external">https://gocv.io/getting-started/windows/</a></p>
+<h2 id="实例一"><a href="#实例一" class="headerlink" title="实例一"></a>实例一</h2><p>在第一个例子中，让我们尝试打开一个窗口，并显示从你的摄像头获取到的视频流。</p>
+<p>首先引入我们需要的库。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> (</div><div class="line">   “log”</div><div class="line">   “gocv.io/x/gocv”</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>然后使用 <a href="https://github.com/hybridgroup/gocv/blob/master/videoio.go#L181" target="_blank" rel="external">VideoCaptureDevice</a> 方法创建一个 <a href="https://github.com/hybridgroup/gocv/blob/master/videoio.go#L160" target="_blank" rel="external">VideoCapture</a> 对象。<a href="https://github.com/hybridgroup/gocv/blob/master/videoio.go#L181" target="_blank" rel="external">VideoCaptureDevice</a>  方法能让你从摄像头中获取一个视频流。该方法需要一个表示设备 ID 的整型参数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">webcam, err := gocv.VideoCaptureDevice(<span class="number">0</span>)</div><div class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">    log.Fatalf(“error opening web cam: %v”, err)</div><div class="line">&#125;</div><div class="line"><span class="keyword">defer</span> webcam.Close()</div></pre></td></tr></table></figure>
+<p>我们需要创建一个窗口来展示视频流。可以使用 <a href="https://github.com/hybridgroup/gocv/blob/master/highgui.go#L33" target="_blank" rel="external">NewWindow</a> 方法完成这个任务。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">window := gocv.NewWindow(“webcamwindow”)</div><div class="line"><span class="keyword">defer</span> window.Close()</div></pre></td></tr></table></figure>
+<p>现在到了有趣的时候。</p>
+<p>由于视频是一个持续不断的图像流，我们将不得不使用一个无限循环持续不断地从摄像头读取数据。为此我们将使用 VideoCapture 类型的 <a href="https://github.com/hybridgroup/gocv/blob/master/videoio.go#L217" target="_blank" rel="external">Read</a> 方法。它需要一个 <a href="https://github.com/hybridgroup/gocv/blob/master/core.go#L105" target="_blank" rel="external">Mat 类型</a> （我们在上文创建的矩阵）入参，同时返回一个布尔值表示 VideoCapture 是否成功读取到了帧数据。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> &#123;</div><div class="line">     <span class="keyword">if</span> ok := webcam.Read(&amp;img); !ok || img.Empty() &#123;</div><div class="line">        log.Println(“Unable to read from the webcam”)</div><div class="line">        <span class="keyword">continue</span></div><div class="line">     &#125;</div><div class="line">.</div><div class="line">.</div><div class="line">.</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后我们把图像帧显示在创建的窗口中，等待 50ms 后再处理下一帧。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">window.IMShow(img)</div><div class="line">window.WaitKey(<span class="number">50</span>)</div></pre></td></tr></table></figure>
+<p>当运行程序时，我们可以看到一个窗口会弹出，里面显示着你的摄像头中的视频流。</p>
+<p><img src="https://img.zvz.im/imgs/2020/04/e5e8627147512749.png" alt=""></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"log"</span></div><div class="line"></div><div class="line">	<span class="string">"gocv.io/x/gocv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	webcam, err := gocv.VideoCaptureDevice(<span class="number">0</span>)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">    log.Fatalf(<span class="string">"error opening device: %v"</span>, err)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">defer</span> webcam.Close()</div><div class="line"></div><div class="line">	img := gocv.NewMat()</div><div class="line">	<span class="keyword">defer</span> img.Close()</div><div class="line"></div><div class="line">	window := gocv.NewWindow(<span class="string">"webcamwindow"</span>)</div><div class="line">	<span class="keyword">defer</span> window.Close()</div><div class="line"></div><div class="line">	<span class="keyword">for</span> &#123;</div><div class="line">		<span class="keyword">if</span> ok := webcam.Read(&amp;img); !ok || img.Empty() &#123;</div><div class="line">			log.Println(<span class="string">"Unable to read from the webcam"</span>)</div><div class="line">			<span class="keyword">continue</span></div><div class="line">		&#125;</div><div class="line"></div><div class="line">		window.IMShow(img)</div><div class="line">		window.WaitKey(<span class="number">50</span>)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="实例二"><a href="#实例二" class="headerlink" title="实例二"></a>实例二</h2><p>此例中，我们将在上一个例子的基础上使用 Haar Cascades 进行人脸侦测。</p>
+<p>不过首先。。什么是 Haar Cascades ？</p>
+<p>简单来讲 Haar cascades 是基于哈尔小波（Haar Wavelet）技术训练得到的层叠分类器。它通过分析图片中的像素来侦测其中的特征。想要了解更多关于 Haar-Cascades 的知识你可以访问以下链接。</p>
+<p><a href="https://www.cs.ubc.ca/~lowe/425/slides/13-ViolaJones.pdf" target="_blank" rel="external">Viola-Jones object detection framework</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Cascading_classifiers" target="_blank" rel="external">Cascading classifiers</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Haar-like_feature" target="_blank" rel="external">Haar-like feature</a></p>
+<p>你可以从 <a href="https://github.com/opencv/opencv/tree/master/data/haarcascades" target="_blank" rel="external">opencv 的代码库</a>中下载预先训练好的 Haar-Cascades。此例中我们将使用 Haar-Cascade 帮助我们识别人的面部。</p>
+<p>首先我们创建一个<a href="https://github.com/hybridgroup/gocv/blob/master/objdetect.go#L23" target="_blank" rel="external">分类器</a>并且将预先训练好的 Haar-Cascade 文件给到它。这个例子中我已经下载了 opencv_haarcascade_frontalface_default.xml 文件放到了我们的程序所在的目录。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">harrcascade := “opencv_haarcascade_frontalface_default.xml”</div><div class="line">classifier := gocv.NewCascadeClassifier()</div><div class="line">classifier.Load(harrcascade)</div><div class="line"><span class="keyword">defer</span> classifier.Close()</div></pre></td></tr></table></figure>
+<p>然后调用 <a href="https://github.com/hybridgroup/gocv/blob/master/objdetect.go#L51" target="_blank" rel="external">DetectMultiScale</a> 方法来识别图片中的脸。这个函数会使用刚从摄像头读取到的帧（<a href="https://github.com/hybridgroup/gocv/blob/master/core.go#L105" target="_blank" rel="external">Mat Type</a>）作为参数并且返回一组 <a href="https://golang.org/src/image/geom.go#L85" target="_blank" rel="external">Rectangle</a> 类型数据。数组的大小代表了在图片中识别到的脸的个数。为了确认我们可以考到侦测的结果，让我们遍历这一组矩形并且将它们输出到终端在矩形周围显示边框。你可以通过调用 Rectangle 方法来实现。这个方法的入参有摄像头读取的 Mat，一个由 DetectMultiScale 方法返回的 Rectangle 对象，一个颜色和一个边框粗细。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> _, r := <span class="keyword">range</span> rects &#123;</div><div class="line">fmt.Println(“detected”, r)</div><div class="line">gocv.Rectangle(&amp;img, r, color, <span class="number">2</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后，让我们运行这个程序。</p>
+<p><img src="https://img.zvz.im/imgs/2021/05/71175eb78a8f1ec4.png" alt=""></p>
+<p><img src="https://img.zvz.im/imgs/2021/05/8c791ccc15c0ea43.png" alt=""></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	<span class="string">"image/color"</span></div><div class="line">	<span class="string">"log"</span></div><div class="line"></div><div class="line">	<span class="string">"gocv.io/x/gocv"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	webcam, err := gocv.VideoCaptureDevice(<span class="number">0</span>)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		log.Fatalf(<span class="string">"error opening web cam: %v"</span>, err)</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">defer</span> webcam.Close()</div><div class="line"></div><div class="line">	img := gocv.NewMat()</div><div class="line">	<span class="keyword">defer</span> img.Close()</div><div class="line"></div><div class="line">	window := gocv.NewWindow(<span class="string">"webcamwindow"</span>)</div><div class="line">	<span class="keyword">defer</span> window.Close()</div><div class="line"></div><div class="line">	harrcascade := <span class="string">"opencv_haarcascade_frontalface_default.xml"</span></div><div class="line">	classifier := gocv.NewCascadeClassifier()</div><div class="line">	classifier.Load(harrcascade)</div><div class="line">	<span class="keyword">defer</span> classifier.Close()</div><div class="line"></div><div class="line">	color := color.RGBA&#123;<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>&#125;</div><div class="line">	<span class="keyword">for</span> &#123;</div><div class="line">		<span class="keyword">if</span> ok := webcam.Read(&amp;img); !ok || img.Empty() &#123;</div><div class="line">			log.Println(<span class="string">"Unable to read from the device"</span>)</div><div class="line">			<span class="keyword">continue</span></div><div class="line">		&#125;</div><div class="line"></div><div class="line">		rects := classifier.DetectMultiScale(img)</div><div class="line">		<span class="keyword">for</span> _, r := <span class="keyword">range</span> rects &#123;</div><div class="line">			fmt.Println(<span class="string">"detected"</span>, r)</div><div class="line">			gocv.Rectangle(&amp;img, r, color, <span class="number">3</span>)</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		window.IMShow(img)</div><div class="line">		window.WaitKey(<span class="number">50</span>)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>大功告成！我们有了一个 Go 编写的简单的面部探测器。我计划继续扩展这个系列并且使用 Go 和 OpenCV 构建更多的酷应用。请继续关注后续的文章。</p>
+<p>翻译自：<a href="https://medium.com/@fonseka.live/detect-faces-using-golang-and-opencv-fbe7a48db055" target="_blank" rel="external">Detect faces using Golang and OpenCV</a></p>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/04/01/history-timeline-of-llm/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          大型语言模型的历史、时间线和未来
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/01/30/go-get-private-repo-return-410/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">日知其所无：修复 go get 私有仓库时返回的 410 错误</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2021/06/05/go-detect-faces-using-opencv/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>使用 Go 语言学会 Tensorflow | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Tensorflow 并不是一个专门用于机器学习的库，相反的，它是一个通用的用于图计算的库。它的核心部分是用 C++ 实现的，同时还有其它语言的接口库。Go 语言版本的接口库与 Python 版本的并不一样，它不仅有助于我们使用 Go 语言调用 Tensorflow，同时有助于我们了解 Tensorflow 的底层实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Go 语言学会 Tensorflow">
+<meta property="og:url" content="http://log.zvz.im/2018/07/15/go-tensorflow/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="Tensorflow 并不是一个专门用于机器学习的库，相反的，它是一个通用的用于图计算的库。它的核心部分是用 C++ 实现的，同时还有其它语言的接口库。Go 语言版本的接口库与 Python 版本的并不一样，它不仅有助于我们使用 Go 语言调用 Tensorflow，同时有助于我们了解 Tensorflow 的底层实现。">
+<meta property="og:image" content="https://img.zvz.im/imgs/2019/06/e18bb51e93eb9b04.jpg">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 Go 语言学会 Tensorflow">
+<meta name="twitter:description" content="Tensorflow 并不是一个专门用于机器学习的库，相反的，它是一个通用的用于图计算的库。它的核心部分是用 C++ 实现的，同时还有其它语言的接口库。Go 语言版本的接口库与 Python 版本的并不一样，它不仅有助于我们使用 Go 语言调用 Tensorflow，同时有助于我们了解 Tensorflow 的底层实现。">
+<meta name="twitter:image" content="https://img.zvz.im/imgs/2019/06/e18bb51e93eb9b04.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-go-tensorflow" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用 Go 语言学会 Tensorflow
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2018/07/15/go-tensorflow/" class="article-date">
+  <time datetime="2018-07-15T00:51:03.000Z" itemprop="datePublished">2018-07-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a> <a class="article-category-link" href="/tags/tensorflow/">tensorflow</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Tensorflow 并不是一个专门用于机器学习的库，相反的，它是一个通用的用于图计算的库。它的核心部分是用 C++ 实现的，同时还有其它语言的接口库。Go 语言版本的接口库与 Python 版本的并不一样，它不仅有助于我们使用 Go 语言调用 Tensorflow，同时有助于我们了解 Tensorflow 的底层实现。</p>
+<p><img src="https://img.zvz.im/imgs/2019/06/e18bb51e93eb9b04.jpg" alt=""><br><a id="more"></a></p>
+<h2 id="接口库"><a href="#接口库" class="headerlink" title="接口库"></a>接口库</h2><p>Tensorflow 官方发布的代码库包含：</p>
+<ul>
+<li>C++ 源代码：Tensorflow 核心功能高层 &amp; 底层操作的代码实现。</li>
+<li>Python 接口库 &amp; Python 功能库：接口库是通过 C++ 代码自动生成的，这样我们可以使用 Python 直接调用到 C++ 的方法：numpy 核心代码也是这样实现的。功能库则是对接口库方法的组合调用，它实现了大家所熟知的高层 API 接口。</li>
+<li>Java 接口库</li>
+<li>Go 接口库</li>
+</ul>
+<p>我作为一名 Go 开发者，且不是 Java 爱好者，很自然地选择了使用 Go 版本的接口库，研究它能完成哪些任务。</p>
+<h2 id="Go-接口库"><a href="#Go-接口库" class="headerlink" title="Go 接口库"></a>Go 接口库</h2><p>首件值得注意的事，正如它的维护者们承认的，就是 Go 接口库缺少对 <code>变量</code> 支持：这些接口被设计成用于<strong>使用</strong>训练好的模型，而不是从零开始<strong>训练</strong>模型。这在 <a href="https://www.tensorflow.org/versions/master/install/install_go" target="_blank" rel="external">Installing Tensorflow for Go </a> 中交待得很清楚。</p>
+<blockquote>
+<p>Tensorflow 提供了 Go 程序接口。这些接口特别适于加载 Python 库所创建的模型，然后在 Go 应用中执行。</p>
+</blockquote>
+<p>如果我们对于训练机器学习模型不那么感兴趣：那就恰好！不过，若你对训练模型感兴趣的话，这里有一点建议：</p>
+<blockquote>
+<p>作为一名真正的 Go 爱好者，应当寻求便宜之道！请使用 Python 来定义和训练模型；之后，你总是能用 Go 来加载并使用它们的。</p>
+</blockquote>
+<p>简言之：Go 接口库可以用来<strong>导入并定义</strong>常量图；这里说的「常量」是指没有训练过程参与，所以没有可用于训练的变量。</p>
+<p>让我们立刻开始用 Go 来调用 Tensorflow：创建我们的第一个应用程序。</p>
+<p>接下来，我假设你们已经安装了 Go 环境，并且已经按照 <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/go/README.md" target="_blank" rel="external">README</a> 编译并安装了 Tensorflow 的接口库。</p>
+<h2 id="理解-Tensorflow-的数据结构"><a href="#理解-Tensorflow-的数据结构" class="headerlink" title="理解 Tensorflow 的数据结构"></a>理解 Tensorflow 的数据结构</h2><p>我要在这里重申一下 Tensorflow 的定义（我为大家从 <a href="https://www.tensorflow.org/" target="_blank" rel="external">Tensorflow 站点</a>的说明中划出了重点）：</p>
+<blockquote>
+<p>TensorFlow™ 是一个使用数据流图进行数值计算的开源软件库。图中的节点<strong>代表</strong>数学操作，而图中的边则<strong>代表</strong>节点间相互联系的多维数据数组（张量）。</p>
+</blockquote>
+<p>我们可以把 Tensorflow 看作是一种描述性语言，类似于 SQL，你可以用它描述你的需求，让底层引擎（数据库）解析你的 query 语句，检查语法和语义错误，将其转化为它的内部描述，优化并计算出结果：最后返回给你正确的结果。</p>
+<p>所以，我们使用 API 接口时，实际是在描述一个图：当我们将它放入一个 <code>Session</code> 中，并且开始 <code>Run</code> 时，图的求值过程就开始了。</p>
+<p>理解这些之后，让我们尝试定义一个计算图，并且在一个 <code>Session</code> 中计算它。<a href="https://godoc.org/github.com/tensorflow/tensorflow/tensorflow/go" target="_blank" rel="external">API 文档</a>能为我们清楚地提供  <code>tensorflow</code> （缩写 <code>tf</code> ）和 <code>op</code> 包的方法列表。</p>
+<p>如你所见，这两个包包含了我们对图进行定义和计算所需要的一切。</p>
+<p>前一个包包含了构建类似 <code>Graph</code> 本身等基础「空」结构的方法，后一个则是最重要的包，它包含了从 C++ 实现里自动生成的接口方法。</p>
+<p>假设我们想要计算矩阵 A 和 x 的乘积：</p>
+<p>$ A = \begin{pmatrix}1 &amp; 2\\-1 &amp;-2\end{pmatrix}, x = \begin{pmatrix}10\\100\end{pmatrix} $</p>
+<p>我假设读者已经知道 tensorflow 图定义的概念，知道什么是占位符而且知道它们如何工作。下面的代码是用户第一次使用 Python 接口时可能会做的尝试。我们将其命名为 <code>attempt1.go</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">	<span class="string">"fmt"</span></div><div class="line">	tf <span class="string">"github.com/tensorflow/tensorflow/tensorflow/go"</span></div><div class="line">	<span class="string">"github.com/tensorflow/tensorflow/tensorflow/go/op"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="comment">// 让我们描述我们的需求：创建图</span></div><div class="line"></div><div class="line">	<span class="comment">// 我们想要定义两个运行时使用的 placeholder</span></div><div class="line">	<span class="comment">// 第一个 placeholder A 是 [2, 2] 整数张量</span></div><div class="line">	<span class="comment">// 第二个 placeholder x 是 [2, 1] 整数张量</span></div><div class="line"></div><div class="line">	<span class="comment">// 然后计算 Y = Ax</span></div><div class="line"></div><div class="line">	<span class="comment">// 创建图的节点：一个空节点，作为图的根节点</span></div><div class="line">	root := op.NewScope()</div><div class="line"></div><div class="line">	<span class="comment">// 定义两个占位符</span></div><div class="line">	A := op.Placeholder(root, tf.Int64, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">2</span>)))</div><div class="line">	x := op.Placeholder(root, tf.Int64, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">1</span>)))</div><div class="line"></div><div class="line">	<span class="comment">// 定义可以接受 A &amp; x 作为输入的操作节点</span></div><div class="line">	product := op.MatMul(root, A, x)</div><div class="line"></div><div class="line">	<span class="comment">// 每次我们将 `Scope` 传入一个操作时，我们都将这个操作置于这个作用域内。</span></div><div class="line">	<span class="comment">// 如你所见，我们有一个通过 NewScope 创建空域：</span></div><div class="line">	<span class="comment">// 这个空域是我们所创建的图的根，我们用 “/”表示它。</span></div><div class="line"></div><div class="line">	<span class="comment">// 现在我们让 tensorflow 通过我们的定义来构建图。</span></div><div class="line">	<span class="comment">// 实体的图是通过我们用域和操作组合起来定义的“抽象”图生成的。</span></div><div class="line"></div><div class="line">	graph, err := root.Finalize()</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="comment">// 处理这个错误没有什么用处</span></div><div class="line">		<span class="comment">// 如果我们对图的定义做错了，我们只能手动修正这些定义。</span></div><div class="line"></div><div class="line">		<span class="comment">// 它很想一个 SQL 查询过程：如果查询语句错了，我们只能重写它</span></div><div class="line">		<span class="built_in">panic</span>(err.Error())</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 至此：我们的图定义语法上就没有问题了。</span></div><div class="line">	<span class="comment">// 我们现在可以将其放入一个 Session 中使用了。</span></div><div class="line"></div><div class="line">	<span class="keyword">var</span> sess *tf.Session</div><div class="line">	sess, err = tf.NewSession(graph, &amp;tf.SessionOptions&#123;&#125;)</div><div class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="built_in">panic</span>(err.Error())</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 为了使用占位符，我们必须创建含有数值的张量传入网络中</span></div><div class="line">	<span class="keyword">var</span> matrix, column *tf.Tensor</div><div class="line"></div><div class="line">	<span class="comment">// A = [ [1, 2], [-1, -2] ]</span></div><div class="line">	<span class="keyword">if</span> matrix, err = tf.NewTensor([<span class="number">2</span>][<span class="number">2</span>]<span class="keyword">int64</span>&#123; &#123;<span class="number">1</span>, <span class="number">2</span>&#125;, &#123;<span class="number">-1</span>, <span class="number">-2</span>&#125; &#125;); err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="built_in">panic</span>(err.Error())</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// x = [ [10], [100] ]</span></div><div class="line">	<span class="keyword">if</span> column, err = tf.NewTensor([<span class="number">2</span>][<span class="number">1</span>]<span class="keyword">int64</span>&#123; &#123;<span class="number">10</span>&#125;, &#123;<span class="number">100</span>&#125; &#125;); err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="built_in">panic</span>(err.Error())</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">var</span> results []*tf.Tensor</div><div class="line">	<span class="keyword">if</span> results, err = sess.Run(<span class="keyword">map</span>[tf.Output]*tf.Tensor&#123;</div><div class="line">		A: matrix,</div><div class="line">		x: column,</div><div class="line">	&#125;, []tf.Output&#123;product&#125;, <span class="literal">nil</span>); err != <span class="literal">nil</span> &#123;</div><div class="line">		<span class="built_in">panic</span>(err.Error())</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">for</span> _, result := <span class="keyword">range</span> results &#123;</div><div class="line">		fmt.Println(result.Value().([][]<span class="keyword">int64</span>))</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码内的注释非常丰富，请大家仔细阅读每行注释。</p>
+<p>如果是 Python 版 Tensorflow 的使用者，现在已经可以期待代码编译后能完美运行了。我们看看是否能如愿呢：</p>
+<p><code>go run attempt1.go</code></p>
+<p>会得到如下结果：</p>
+<p><code>panic: failed to add operation &quot;Placeholder&quot;: Duplicate node name in graph: &#39;Placeholder&#39;</code></p>
+<p>稍等，这里发生了什么？错误提示很明显，有两个同名的占位符都叫作“PlaceHolder“。</p>
+<h2 id="第一课：节点-ID"><a href="#第一课：节点-ID" class="headerlink" title="第一课：节点 ID"></a>第一课：节点 ID</h2><p>使用 Python 接口时，每当我们调用定义操作的方法时，无论它是否已经被调用过，都会生成不同的节点。下面的代码就会很顺利的返回结果 3。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">a = tf.placeholder(tf.int32, shape=())</div><div class="line">b = tf.placeholder(tf.int32, shape=())</div><div class="line">add = tf.add(a,b)</div><div class="line">sess = tf.InteractiveSession()</div><div class="line">print(sess.run(add, feed_dict=&#123;a: <span class="number">1</span>,b: <span class="number">2</span>&#125;))</div></pre></td></tr></table></figure>
+<p>要验证这段程序创建了两个不同的节点，我们只需要将占位符的名字打印出来：<code>print(a.name, b.name)</code> 输出 <code>Placeholder:0 Placeholder_1:0</code> 。 这里 <code>b</code> 占位符的名字是 <code>Placeholder_1:0</code> 同时 <code>a</code> 占位符的名字是 <code>Placeholder:0</code> 。</p>
+<p>在 Go 版本里，则不同，之前程序就因为 <code>A</code> 和 <code>x</code> 都叫作 <code>Placeholder</code> 而导致运行失败。我们可以总结如下：</p>
+<p><strong>Go 语言版 API 接口每次在我们调用定义操作的方法时，不会自动为节点生成新的名称</strong>：操作名称是固定的，而且我们没法改变它。</p>
+<p><strong>问答时间：</strong></p>
+<ul>
+<li>关于 Tensorflow 系统我们学到了什么？对于一个图来说，它的每一个节点都必须有唯一的名称。节点是以各自的名字来区分的。</li>
+<li>节点名称是否与定义它的操作名称相同？是的，更确切地讲，不完全是，只是名称的结尾部分相同。</li>
+</ul>
+<p>为了说明第二个答案，让我们来修复节点的重名问题。</p>
+<h2 id="第二课：作用域"><a href="#第二课：作用域" class="headerlink" title="第二课：作用域"></a>第二课：作用域</h2><p>正如我们刚才看到，Python 版的 API 接口会在每次定义操作时，自动生成一个新的名字。从底层实现来看，Python 接口调用了 C++ 的 <code>Scope</code> 类的 <code>WithOpName</code> 方法。以下是此方法的文档和形式声明，来自 <a href="https://github.com/tensorflow/tensorflow/blob/a5b1fb8e56ceda0ee2794ee05f5a7642157875c5/tensorflow/cc/framework/scope.h" target="_blank" rel="external">scope.h</a> 头文件：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/// Return a new scope. All ops created within the returned scope will have</span></div><div class="line"><span class="comment">/// names of the form &lt;name&gt;/&lt;op_name&gt;[_&lt;suffix].</span></div><div class="line"><span class="function">Scope <span class="title">WithOpName</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; op_name)</span> <span class="keyword">const</span></span>;</div></pre></td></tr></table></figure>
+<p>我们可以注意到这个用于命名节点的方法，其返回值是一个 <code>Scope</code> 对象，由此一个节点的名称，实际上是一个 <code>Scope</code> 域对象。一个 <code>Scope</code> 是一个<strong>完整路径</strong>，从根 <code>/</code> （空图）起到 <code>op_name</code> 结束。</p>
+<p>当我们增加一个从<code>/</code> 到 <code>op_name</code> 有相同路径的节点时，会导致在同一个域中的节点重复，此时 <code>WithOpName</code> 方法会为名称添加一个后缀 <code>_&lt;suffix&gt;</code> （<code>&lt;suffix&gt;</code> 是一个计数器）。</p>
+<p>知道这些以后，我们期望找到 <code>Scope 类型</code> 的  <code>WithOpName</code> 方法，来解决重复节点的问题。可惜的是，这个方法暂时还没有实现。</p>
+<p>取而代之的，在<a href="https://godoc.org/github.com/tensorflow/tensorflow/tensorflow/go/op#Scope" target="_blank" rel="external">文档中的 Scope 类型</a>部分我们看到唯一能够返回一个新的 <code>Scope</code> 的方法是 <code>SubScope(namespace string)</code> 。</p>
+<p>引用文档如下：</p>
+<blockquote>
+<p>调用 SubScope 方法会返回一个新的 Scope，使得所有加入图中的操作都被置于命名空间 ‘namespace’ 中。如果命名空间与作用域中已有的命名空间重名，则会加上后缀。</p>
+</blockquote>
+<p>使用后缀进行冲突管理与在 C++ 中使用 <code>WithOpName</code> 方法<strong>不同</strong>：<code>WithOpName</code> 在同一个作用域内的操作名称后加上 <code>suffix</code> 后缀（这样 <code>Placeholder</code> 就变成了 <code>Placeholder_1</code> ），而 Go 使用的 <code>SubScope</code> 的方法则是<strong>对作用域名称</strong>增加后缀名 <code>suffix</code> 。</p>
+<p>这点差异会产生完全不同的图，不过尽管不同（节点放在不同的作用域中），从计算角度看它们是等价的。</p>
+<p>让我们修改一下占位符的定义过程，定义两个不同的节点，然后打印出 <code>Scope</code> 的名称。</p>
+<p>让我们创建文件 <code>attempt2.go</code> 将下面几行代码</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">A := op.Placeholder(root, tf.Int64, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">2</span>)))</div><div class="line">x := op.Placeholder(root, tf.Int64, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">1</span>)))</div></pre></td></tr></table></figure>
+<p>改成</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// define 2 subscopes of the root subscopes, called "input". In this</span></div><div class="line"><span class="comment">// way we expect to have a input/ and a input_1/ scope under the root scope</span></div><div class="line">A := op.Placeholder(root.SubScope(<span class="string">"input"</span>), tf.Int64, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">2</span>)))</div><div class="line">x := op.Placeholder(root.SubScope(<span class="string">"input"</span>), tf.Int64, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">1</span>)))</div><div class="line">	fmt.Println(A.Op.Name(), x.Op.Name())</div></pre></td></tr></table></figure>
+<p>正常编译并运行：<code>go run attempt2.go</code> 。结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">input/Placeholder input_1/Placeholder</div></pre></td></tr></table></figure>
+<p><strong>问答时间：</strong></p>
+<p>关于 Tensorflow 系统我们学到了什么？一个节点可由它被定义的作用域所区分。作用域就是从图的根节点直到操作节点的路径。有两种方式可以定义执行相同操作的节点：在不同的作用域中定义操作（Go 的方式）或者改变操作名称（Python 自动实现或者我们可以使用 C++ 做到）</p>
+<p>我们刚刚解决了节点名称重复的问题，另一个问题又出现了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">panic: failed to add operation &quot;MatMul&quot;: Value for attr &apos;T&apos; of int64 is not in the list of allowed values: half, float, double, int32, complex64, complex128</div></pre></td></tr></table></figure>
+<p>为什么 <code>MatMul</code> 节点定义会报错？我们只是想让两个 <code>tf.int64</code> 矩阵相乘！看起来 <code>int64</code> 是 <code>MatMul</code> 唯一不能接受的参数类型。</p>
+<blockquote>
+<p>属性 ‘T’ 的取值 int64，不在允许的列表中：half，float，double，int32，complex32， complex64， complex128</p>
+</blockquote>
+<p>这是什么列表？为什么我们可以将两个 <code>int32</code> 类型的矩阵相乘却不支持 <code>int64</code> 类型？</p>
+<p>让我们继续研究这个问题，搞清楚到底发生了什么。</p>
+<h2 id="第三课：Tensorflow-类型体系"><a href="#第三课：Tensorflow-类型体系" class="headerlink" title="第三课：Tensorflow 类型体系"></a>第三课：Tensorflow 类型体系</h2><p>让我们深入到 C++ 源码中，看一下 <code>MatMul</code> 操作的函数声明：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">REGISTER_OP("MatMul")</div><div class="line">    .Input("a: T")</div><div class="line">    .Input("b: T")</div><div class="line">    .Output("product: T")</div><div class="line">    .Attr("transpose_a: bool = false")</div><div class="line">    .Attr("transpose_b: bool = false")</div><div class="line">    .Attr("T: &#123;half, float, double, int32, complex64, complex128&#125;")</div><div class="line">    .SetShapeFn(shape_inference::MatMulShape)</div><div class="line">    .Doc(R"doc(</div><div class="line">Multiply the matrix "a" by the matrix "b".</div><div class="line">The inputs must be two-dimensional matrices and the inner dimension of</div><div class="line">"a" (after being transposed if transpose_a is true) must match the</div><div class="line">outer dimension of "b" (after being transposed if transposed_b is</div><div class="line">true).</div><div class="line">*Note*: The default kernel implementation for MatMul on GPUs uses</div><div class="line">cublas.</div><div class="line">transpose_a: If true, "a" is transposed before multiplication.</div><div class="line">transpose_b: If true, "b" is transposed before multiplication.</div><div class="line">)doc");</div></pre></td></tr></table></figure>
+<p>这行代码定义了 <code>MatMul</code> 操作的接口：特别注意，我们使用 <code>REGISTER_OP</code> 宏声明了操作的：</p>
+<ul>
+<li>名称：<code>MatMul</code></li>
+<li>参数：<code>a</code>，<code>b</code></li>
+<li>属性（可选参数）：<code>transpose_a</code>，<code>transpose_b</code></li>
+<li>模板 <code>T</code> 支持的类型：<code>half, float, double, int32, complex64, complex128</code></li>
+<li>输出形式：自动推理的</li>
+<li>文档</li>
+</ul>
+<p>这个宏调用不包含任何 C++ 代码，不过它告诉我们<strong>当定义个一个操作时，即使它使用了模板，我们也必须指定对于指定类型（或属性）<code>T</code> 所支持的类型列表</strong>。例如，属性 <code>.Attr(&quot;T: {half, float, double, int32, complex64, complex128}&quot;)</code> 就限制了类型 <code>T</code> 必须是列表中的某一项。</p>
+<p>我们可以从<a href="https://www.tensorflow.org/extend/adding_an_op" target="_blank" rel="external">教程</a>中看到，甚至在使用模板 <code>T</code> 的时候，我们也必须为每个支持的重载显示地注册到内核中。内核是以 CUAD 方式对 C/C++ 函数进行并行调用执行的。</p>
+<p><code>MatMul</code> 的作者之所以决定只支持之前列出的参数类型，而不支持 <code>int64</code> 类型，可能有以下两个原因：</p>
+<ol>
+<li>疏忽：这是有可能的，毕竟 Tensorflow 的代码也是人写的！</li>
+<li>为了支持那些不完全支持 <code>int64</code> 类型操作的设备，这样内核的这些特定实现就不会到处都是，而导致在本可以支持的硬件上无法运行。</li>
+</ol>
+<p>回到我们的报错上来：修复的方法很明显。我们必须要给 <code>MatMul</code> 方法传递它所支持的数据类型。</p>
+<p>让我们创建 <code>attempt3.go</code> 文件，将每一行用到 <code>int64</code> 的地方改成 <code>int32</code>。</p>
+<p>有件事要注意一下：<strong>Go 语言的接口包定义了一套自有的类型，与 Go 原生类型基本上是 1:1 对应的关系。当我们向图内填入参数时需要对照这个对应关系（比如，对于定义为 <code>tf.Int32</code> 的占位符要传入 <code>int32</code> 类型的值）。从图中读取数据时也要准从相同的法则。</strong>由张量计算返回的<code>*tf.Tensor</code> 类型，自带 <code>Value()</code> 方法，它可以返回一个 <code>interface{}</code> 类型的值，必须由我们去转化为正确的类型（我们构建图的时候可知此类型）。</p>
+<p>正常执行 <code>go run attempt3.go</code> 。结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">input/Placeholder input_1/Placeholder</div><div class="line">[[210] [-210]]</div></pre></td></tr></table></figure>
+<p>棒极了！</p>
+<p>这儿有一份完整的 <code>attempt3</code> 的代码，你可以编译并运行它。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main                                        </div><div class="line"></div><div class="line"><span class="keyword">import</span> (                                            </div><div class="line">        <span class="string">"fmt"</span>                                       </div><div class="line">        tf <span class="string">"github.com/tensorflow/tensorflow/tensorflow/go"</span>                                              </div><div class="line">        <span class="string">"github.com/tensorflow/tensorflow/tensorflow/go/op"</span>                                              </div><div class="line">)                                                   </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;                                       </div><div class="line">        <span class="comment">// Let's describe what we want: create the graph                                                 </span></div><div class="line"></div><div class="line">        <span class="comment">// We want to define two placeholder to fill at runtime                                          </span></div><div class="line">        <span class="comment">// the first placeholder A will be a [2, 2] tensor of integers                                   </span></div><div class="line">        <span class="comment">// the second placeholder x will be a [2, 1] tensor of intergers                                 </span></div><div class="line"></div><div class="line">        <span class="comment">// Then we want to compute Y = Ax           </span></div><div class="line"></div><div class="line">        <span class="comment">// Create the first node of the graph: an empty node, the root of our graph                      </span></div><div class="line">        root := op.NewScope()                       </div><div class="line"></div><div class="line">        <span class="comment">// Define the 2 placeholders                </span></div><div class="line">        <span class="comment">// define 2 subscopes of the root subscopes, called "input". In this                             </span></div><div class="line">        <span class="comment">// way we expect the have a input/ and a input_1/ scope under the root scope                     </span></div><div class="line">        A := op.Placeholder(root.SubScope(<span class="string">"input"</span>), tf.Int32, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">2</span>)))   </div><div class="line">        x := op.Placeholder(root.SubScope(<span class="string">"input"</span>), tf.Int32, op.PlaceholderShape(tf.MakeShape(<span class="number">2</span>, <span class="number">1</span>)))   </div><div class="line">        fmt.Println(A.Op.Name(), x.Op.Name())       </div><div class="line"></div><div class="line">        <span class="comment">// Define the operation node that accepts A &amp; x as inputs                                        </span></div><div class="line">        product := op.MatMul(root, A, x)            </div><div class="line"></div><div class="line">        <span class="comment">// Every time we passed a `Scope` to an operation, we placed that operation **under**            </span></div><div class="line">        <span class="comment">// that scope.                              </span></div><div class="line">        <span class="comment">// As you can see, we have an empty scope (created with NewScope): the empty scope               </span></div><div class="line">        <span class="comment">// is the root of our graph and thus we denote it with "/".                                      </span></div><div class="line"></div><div class="line">        <span class="comment">// Now we ask tensorflow to build the graph from our definition.                                 </span></div><div class="line">        <span class="comment">// The concrete graph is created from the "abstract" graph we defined using the combination      </span></div><div class="line">        <span class="comment">// of scope and op.                         </span></div><div class="line"></div><div class="line">        graph, err := root.Finalize()               </div><div class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;                             </div><div class="line">                <span class="comment">// It's useless trying to handle this error in any way:                                  </span></div><div class="line">                <span class="comment">// if we defined the graph wrongly we have to manually fix the definition.               </span></div><div class="line"></div><div class="line">                <span class="comment">// It's like a SQL query: if the query is not syntactically valid we have to rewrite it  </span></div><div class="line">                <span class="built_in">panic</span>(err.Error())                  </div><div class="line">        &#125;                                           </div><div class="line"></div><div class="line">        <span class="comment">// If here: our graph is syntatically valid.</span></div><div class="line">        <span class="comment">// We can now place it within a Session and execute it.</span></div><div class="line"></div><div class="line">        <span class="keyword">var</span> sess *tf.Session                        </div><div class="line">        sess, err = tf.NewSession(graph, &amp;tf.SessionOptions&#123;&#125;)                                           </div><div class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;                             </div><div class="line">                <span class="built_in">panic</span>(err.Error())                  </div><div class="line">        &#125;                                           </div><div class="line"></div><div class="line">        <span class="comment">// In order to use placeholders, we have to create the Tensors containing the values to feed into                                                                                                          </span></div><div class="line">        <span class="comment">// the network                              </span></div><div class="line">        <span class="keyword">var</span> matrix, column *tf.Tensor               </div><div class="line"></div><div class="line">        <span class="comment">// A = [ [1, 2], [-1, -2] ]                 </span></div><div class="line">        <span class="keyword">if</span> matrix, err = tf.NewTensor([<span class="number">2</span>][<span class="number">2</span>]<span class="keyword">int32</span>&#123;&#123;<span class="number">1</span>, <span class="number">2</span>&#125;, &#123;<span class="number">-1</span>, <span class="number">-2</span>&#125;&#125;); err != <span class="literal">nil</span> &#123;                       </div><div class="line">                <span class="built_in">panic</span>(err.Error())                  </div><div class="line">        &#125;                                           </div><div class="line">        <span class="comment">// x = [ [10], [100] ]                      </span></div><div class="line">        <span class="keyword">if</span> column, err = tf.NewTensor([<span class="number">2</span>][<span class="number">1</span>]<span class="keyword">int32</span>&#123;&#123;<span class="number">10</span>&#125;, &#123;<span class="number">100</span>&#125;&#125;); err != <span class="literal">nil</span> &#123;                            </div><div class="line">                <span class="built_in">panic</span>(err.Error())                  </div><div class="line">        &#125;                                           </div><div class="line"></div><div class="line">        <span class="keyword">var</span> results []*tf.Tensor                    </div><div class="line">        <span class="keyword">if</span> results, err = sess.Run(<span class="keyword">map</span>[tf.Output]*tf.Tensor&#123;                                             </div><div class="line">                A: matrix,                          </div><div class="line">                x: column,                          </div><div class="line">        &#125;, []tf.Output&#123;product&#125;, <span class="literal">nil</span>); err != <span class="literal">nil</span> &#123; </div><div class="line">                <span class="built_in">panic</span>(err.Error())                  </div><div class="line">        &#125;                                           </div><div class="line">        <span class="keyword">for</span> _, result := <span class="keyword">range</span> results &#123;            </div><div class="line">                fmt.Println(result.Value().([][]<span class="keyword">int32</span>))                                                  </div><div class="line">        &#125;                                           </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>问答时间：</strong></p>
+<p>关于 Tensorflow 系统我们学到了什么？每个操作都有它自己的关联核心实现。Tensorflow 可以看作是一种强类型的描述性语言。它不仅要遵守 C++ 的类型规则，它还得在注册操作时指定执行时使用数据的类型。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>使用 Go 语言定义图并进行运算，带给我们一次深入理解 Tensorflow 底层架构的机会。采取逐步试错的方式，我们解决了这个简单的问题，而且一步步学习到了关于图，图的节点以及类型体系的新知识。</p>
+<p>翻译自：<a href="https://pgaleone.eu/tensorflow/go/2017/05/29/understanding-tensorflow-using-go/" target="_blank" rel="external">Understanding Tensorflow using Go</a></p>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/18/parsing-json-in-golang/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          如何使用 Go 语言解析 JSON
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/28/handling-million-requests-with-golang/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">百万请求一分钟，Golang 轻松来搞定</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2018/07/15/go-tensorflow/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

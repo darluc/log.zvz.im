@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>如何使用 Go 语言解析 JSON | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当静态编程语言使用到 JSON 的时候，总是会有些费力。一方面，JSON 数据可能是任何形式的，从一个简单的数字，到一个复杂的包含内嵌对象的数组。当使用 Go 语言的时候，这意味着你要将这些变化多端的 JSON 数据放入结构化的变量中去。
+幸运地是，Go 尽力尝试帮我们降低编码难度，为我们提供了许多方式来解析 JSON 数据。
+概述Go 标准库的 json 包为我们提供了我们想要的功能。对于任意的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用 Go 语言解析 JSON">
+<meta property="og:url" content="http://log.zvz.im/2019/02/18/parsing-json-in-golang/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="当静态编程语言使用到 JSON 的时候，总是会有些费力。一方面，JSON 数据可能是任何形式的，从一个简单的数字，到一个复杂的包含内嵌对象的数组。当使用 Go 语言的时候，这意味着你要将这些变化多端的 JSON 数据放入结构化的变量中去。
+幸运地是，Go 尽力尝试帮我们降低编码难度，为我们提供了许多方式来解析 JSON 数据。
+概述Go 标准库的 json 包为我们提供了我们想要的功能。对于任意的">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.157Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何使用 Go 语言解析 JSON">
+<meta name="twitter:description" content="当静态编程语言使用到 JSON 的时候，总是会有些费力。一方面，JSON 数据可能是任何形式的，从一个简单的数字，到一个复杂的包含内嵌对象的数组。当使用 Go 语言的时候，这意味着你要将这些变化多端的 JSON 数据放入结构化的变量中去。
+幸运地是，Go 尽力尝试帮我们降低编码难度，为我们提供了许多方式来解析 JSON 数据。
+概述Go 标准库的 json 包为我们提供了我们想要的功能。对于任意的">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-parsing-json-in-golang" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何使用 Go 语言解析 JSON
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2019/02/18/parsing-json-in-golang/" class="article-date">
+  <time datetime="2019-02-18T01:17:13.000Z" itemprop="datePublished">2019-02-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当静态编程语言使用到 JSON 的时候，总是会有些费力。一方面，JSON 数据可能是任何形式的，从一个简单的数字，到一个复杂的包含内嵌对象的数组。当使用 Go 语言的时候，这意味着你要将这些变化多端的 JSON 数据放入结构化的变量中去。</p>
+<p>幸运地是，Go 尽力尝试帮我们降低编码难度，为我们提供了许多方式来解析 JSON 数据。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Go 标准库的 json 包为我们提供了我们想要的功能。对于任意的 JSON 字符串，标准的解析方法如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">"encoding/json"</span></div><div class="line"><span class="comment">//...</span></div><div class="line"></div><div class="line"><span class="comment">// ... </span></div><div class="line">myJsonString := <span class="string">`&#123;"some":"json"&#125;`</span></div><div class="line"></div><div class="line"><span class="comment">// `&amp;myStoredVariable` is the address of the variable we want to store our</span></div><div class="line"><span class="comment">// parsed data in</span></div><div class="line">json.Unmarshall([]<span class="keyword">byte</span>(myJsonString), &amp;myStoredVariable)</div><div class="line"><span class="comment">//...</span></div></pre></td></tr></table></figure>
+<p>本文中我们要讨论的是，对于 <code>myStoredVariable</code> 变量的类型，你可以有哪些不同的选择，以及决定何时采用何种类型。<br><a id="more"></a></p>
+<p>在处理 JSON 数据时，你会遇到两种情况：</p>
+<ol>
+<li>结构化数据</li>
+<li>非结构化数据</li>
+</ol>
+<h2 id="结构化数据"><a href="#结构化数据" class="headerlink" title="结构化数据"></a>结构化数据</h2><p>我们先从结构化数据开始，因为它们处理起来相对容易一些。对于这类数据我们需要提前知晓其结构。比如，你有一个 <code>Bird</code> 对象，每种鸟都有 <code>species</code> 字段和一个 <code>description</code> 字段：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"species"</span>: <span class="string">"pigeon"</span>,</div><div class="line">  <span class="attr">"decription"</span>: <span class="string">"likes to perch on rocks"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>读取此类数据，只要创建一个 <code>struct</code> 结构体，作为你想要解析的数据的镜像。对于这个例子，我们会创建一个包含 <code>Species</code> 和 <code>Description</code> 字段的 <code>Bird</code> 结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Bird <span class="keyword">struct</span> &#123;</div><div class="line">  Species <span class="keyword">string</span></div><div class="line">  Description <span class="keyword">string</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后将数据解析出来，如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">birdJson := <span class="string">`&#123;"species": "pigeon","description": "likes to perch on rocks"&#125;`</span></div><div class="line"><span class="keyword">var</span> bird Bird	</div><div class="line">json.Unmarshal([]<span class="keyword">byte</span>(birdJson), &amp;bird)</div><div class="line">fmt.Printf(<span class="string">"Species: %s, Description: %s"</span>, bird.Species, bird.Description)</div><div class="line"><span class="comment">//Species: pigeon, Description: likes to perch on rocks</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>转换时，Go 不区分名称大小写问题，使用 JSON 属性与字段都转为小写后相同作为映射依据。所以， <code>Bird</code> 结构的 <code>Species</code> 字段会映射到名为 <code>species</code> ，或者 <code>Species</code> 或者 <code>sPeCiEs</code> 的 JSON 属性。</p>
+</blockquote>
+<h3 id="JSON-数组"><a href="#JSON-数组" class="headerlink" title="JSON 数组"></a>JSON 数组</h3><p>当遇到一个 <code>Bird</code> 数组的时候，又会发生什么呢？</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">  &#123;</div><div class="line">    <span class="attr">"species"</span>: <span class="string">"pigeon"</span>,</div><div class="line">    <span class="attr">"decription"</span>: <span class="string">"likes to perch on rocks"</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">"species"</span>:<span class="string">"eagle"</span>,</div><div class="line">    <span class="attr">"description"</span>:<span class="string">"bird of prey"</span></div><div class="line">  &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>既然这个数组的每个元素都是一个 <code>Bird</code> ，你可以创建一个 <code>Bird</code> 类型的数组来解析它：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">birdJson := <span class="string">`[&#123;"species":"pigeon","decription":"likes to perch on rocks"&#125;,&#123;"species":"eagle","description":"bird of prey"&#125;]`</span></div><div class="line"><span class="keyword">var</span> birds []Bird</div><div class="line">json.Unmarshal([]<span class="keyword">byte</span>(birdJson), &amp;birds)</div><div class="line">fmt.Printf(<span class="string">"Birds : %+v"</span>, birds)</div><div class="line"><span class="comment">//Birds : [&#123;Species:pigeon Description:&#125; &#123;Species:eagle Description:bird of prey&#125;]</span></div></pre></td></tr></table></figure>
+<h3 id="嵌套对象"><a href="#嵌套对象" class="headerlink" title="嵌套对象"></a>嵌套对象</h3><p>现在，考虑这种情况，<code>Bird</code> 有一个 <code>Dimensions</code> 属性，用来描述它的 <code>Height</code> （高度）和 <code>Length</code> （身长）：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"species"</span>: <span class="string">"pigeon"</span>,</div><div class="line">  <span class="attr">"decription"</span>: <span class="string">"likes to perch on rocks"</span>,</div><div class="line">  <span class="attr">"dimensions"</span>: &#123;</div><div class="line">    <span class="attr">"height"</span>: <span class="number">24</span>,</div><div class="line">    <span class="attr">"width"</span>: <span class="number">10</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>和上一个例子类似，我们需要将这个新的问题对象映射到我们的 Go 代码中。在机构体中加入一个内嵌的 <code>dimensions</code> 字段，让我们先申明一个 <code>dimensions</code> 的结构体类型：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Dimensions <span class="keyword">struct</span> &#123;</div><div class="line">  Height <span class="keyword">int</span></div><div class="line">  Width <span class="keyword">int</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后，<code>Bird</code> 结构体可以包含一个 <code>Dimensions</code> 字段：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Bird <span class="keyword">struct</span> &#123;</div><div class="line">  Species <span class="keyword">string</span></div><div class="line">  Description <span class="keyword">string</span></div><div class="line">  Dimensions Dimensions</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如此就能用与之前一样的方法进行数据解析了：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">birdJson := <span class="string">`&#123;"species":"pigeon","description":"likes to perch on rocks", "dimensions":&#123;"height":24,"width":10&#125;&#125;`</span></div><div class="line"><span class="keyword">var</span> birds Bird</div><div class="line">json.Unmarshal([]<span class="keyword">byte</span>(birdJson), &amp;birds)</div><div class="line">fmt.Printf(bird)</div><div class="line"><span class="comment">// &#123;pigeon likes to perch on rocks &#123;24 10&#125;&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="自定义属性名称"><a href="#自定义属性名称" class="headerlink" title="自定义属性名称"></a>自定义属性名称</h3><p>前面提到过 Go 会进行大小写转换来确定结构体字段和 JSON 属性的映射关系。不过很多时候，你会需要一个和 JSON 数据属性不同名的字段名称。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"birdType"</span>: <span class="string">"pigeon"</span>,</div><div class="line">  <span class="attr">"what it does"</span>: <span class="string">"likes to perch on rocks"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于上面的 JSON 数据，我想让 <code>birdType</code> 属性映射到 Go 代码中的 <code>Species</code> 字段。同时我也没法给 <code>&quot;what it does&quot;</code> 提供一个合适的字段名称。</p>
+<p>为了解决这些情况，我们可以使用结构体字段标签：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Bird <span class="keyword">struct</span> &#123;</div><div class="line">  Species <span class="keyword">string</span> <span class="string">`json:"birdType"`</span></div><div class="line">  Description <span class="keyword">string</span> <span class="string">`json:"what it does"`</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在，我们可以明确地告诉代码，某个 JSON 属性应该映射到哪个字段上了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">birdJson := <span class="string">`&#123;"birdType": "pigeon","what it does": "likes to perch on rocks"&#125;`</span></div><div class="line"><span class="keyword">var</span> bird Bird</div><div class="line">json.Unmarshal([]<span class="keyword">byte</span>(birdJson), &amp;bird)</div><div class="line">fmt.Println(bird)</div><div class="line"><span class="comment">// &#123;pigeon likes to perch on rocks&#125;</span></div></pre></td></tr></table></figure>
+<h2 id="非结构化数据"><a href="#非结构化数据" class="headerlink" title="非结构化数据"></a>非结构化数据</h2><p>如果你遇到一些数据，它们的结构和属性名都不确定，那么你就无法使用结构体来解析这些数据了。取而代之地，你可以使用映射（maps）类型。考虑以下的 JSON 形式：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"birds"</span>: &#123;</div><div class="line">    <span class="attr">"pigeon"</span>:<span class="string">"likes to perch on rocks"</span>,</div><div class="line">    <span class="attr">"eagle"</span>:<span class="string">"bird of prey"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"animals"</span>: <span class="string">"none"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们没法构建一个结构体来描述上面的数据，因为鸟儿的名字作为对象的键值总是可以变换，而这会导致数据结构的变化。</p>
+<p>为了处理这种情况，我们创建一个字符串对应空接口的 map：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">birdJson := <span class="string">`&#123;"birds":&#123;"pigeon":"likes to perch on rocks","eagle":"bird of prey"&#125;,"animals":"none"&#125;`</span></div><div class="line"><span class="keyword">var</span> result <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;</div><div class="line">json.Unmarshal([]<span class="keyword">byte</span>(birdJson), &amp;result)</div><div class="line"></div><div class="line"><span class="comment">// The object stored in the "birds" key is also stored as </span></div><div class="line"><span class="comment">// a map[string]interface&#123;&#125; type, and its type is asserted from</span></div><div class="line"><span class="comment">// the interface&#123;&#125; type</span></div><div class="line">birds := result[<span class="string">"birds"</span>].(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;)</div><div class="line"></div><div class="line"><span class="keyword">for</span> key, value := <span class="keyword">range</span> birds &#123;</div><div class="line">  <span class="comment">// Each value is an interface&#123;&#125; type, that is type asserted as a string</span></div><div class="line">  fmt.Println(key, value.(<span class="keyword">string</span>))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>每个字符串对应一个 JSON 属性的名称， <code>interface{}</code> 类型对应它的值，这个值可以是任意类型。在代码中，其数据类型通过对 <code>interface{}</code> 进行断言就可以获取到。而且这些映射解析动作可以迭代执行，如此一来，可变数量的键通过一次循环中就能够处理完成。</p>
+<h2 id="如何选择"><a href="#如何选择" class="headerlink" title="如何选择"></a>如何选择</h2><p>通常情况下，只要你能够使用结构体来描述你的 JSON 数据，你就应该使用它们。只有当遇到数据中有不确定的键或值时，无法使用结构体进行描述，才是你使用映射（map）的唯一理由。</p>
+<p>翻译自：<a href="https://www.sohamkamani.com/blog/2017/10/18/parsing-json-in-golang/" target="_blank" rel="external">Parsing JSON in Golang</a></p>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/09/golang-writing-unit-tests/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Go 语言基础 - 编写单元测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/15/go-tensorflow/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用 Go 语言学会 Tensorflow</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2019/02/18/parsing-json-in-golang/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

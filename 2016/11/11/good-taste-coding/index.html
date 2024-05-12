@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>如何拥有 Linus Torvalds 所说的编码“好品味” | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在最近一次对 Linus Torvalds （ Linux 之父 ） 的采访视频中，约 14 分 20 秒的位置，他提到了带着“好品味”编程的观点。好品味？采访者对其细节进行了追问，而 Linus 则是早有准备。
+他首先展示了一个代码段。不过这不是一个有着“好品味”的代码。这个代码段是个坏样例，用作对比的原始代码。
+1234567891011121314151617181920remove_lis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何拥有 Linus Torvalds 所说的编码“好品味”">
+<meta property="og:url" content="http://log.zvz.im/2016/11/11/good-taste-coding/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="在最近一次对 Linus Torvalds （ Linux 之父 ） 的采访视频中，约 14 分 20 秒的位置，他提到了带着“好品味”编程的观点。好品味？采访者对其细节进行了追问，而 Linus 则是早有准备。
+他首先展示了一个代码段。不过这不是一个有着“好品味”的代码。这个代码段是个坏样例，用作对比的原始代码。
+1234567891011121314151617181920remove_lis">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何拥有 Linus Torvalds 所说的编码“好品味”">
+<meta name="twitter:description" content="在最近一次对 Linus Torvalds （ Linux 之父 ） 的采访视频中，约 14 分 20 秒的位置，他提到了带着“好品味”编程的观点。好品味？采访者对其细节进行了追问，而 Linus 则是早有准备。
+他首先展示了一个代码段。不过这不是一个有着“好品味”的代码。这个代码段是个坏样例，用作对比的原始代码。
+1234567891011121314151617181920remove_lis">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-good-taste-coding" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何拥有 Linus Torvalds 所说的编码“好品味”
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/11/11/good-taste-coding/" class="article-date">
+  <time datetime="2016-11-11T13:57:43.000Z" itemprop="datePublished">2016-11-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/coding/">coding</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在<a href="https://www.ted.com/talks/linus_torvalds_the_mind_behind_linux" target="_blank" rel="external">最近一次对 Linus Torvalds （ Linux 之父 ） 的采访</a>视频中，约 14 分 20 秒的位置，他提到了带着“好品味”编程的观点。好品味？采访者对其细节进行了追问，而 Linus 则是早有准备。</p>
+<p>他首先展示了一个代码段。不过这不是一个有着“好品味”的代码。这个代码段是个坏样例，用作对比的原始代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">remove_list_entry(entry) </div><div class="line">&#123;</div><div class="line">  prev = <span class="literal">NULL</span>;</div><div class="line">  walk = head;</div><div class="line">  </div><div class="line">  <span class="comment">// Walk the list</span></div><div class="line">  </div><div class="line">  <span class="keyword">while</span> (walk != entry) &#123;</div><div class="line">    prev = walk;</div><div class="line">    walk = walk-&gt;next;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// Remove the entry by updating the</span></div><div class="line">  <span class="comment">// head or the previous entry</span></div><div class="line">  </div><div class="line">  <span class="keyword">if</span> (!prev)</div><div class="line">    head = entry-&gt;next;</div><div class="line">  <span class="keyword">else</span></div><div class="line">    prev-&gt;head = entry-&gt;next;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>无品味的代码示例</em><br><a id="more"></a></p>
+<p>这是个 C 语言实现的函数，用于移除链表中的某个节点。共 10 行代码。</p>
+<p>他让我们注意底部的 if 语句。就是这条 if 语句招致了他的批评。</p>
+<p>我暂停了视频，研究了一下幻灯片。最近我有写过一些类似的代码。觉得 Linus 实际上就是在说我的品味差。我只好暂时放下我的自尊心，继续看视频。</p>
+<p>Linus 向观众解释，从链表中移除一个节点时，有两种情况需要考虑。如果节点处于链表头，会于节点处于链表中的处理方式有所不同。而这就是那个 if 语句”坏品味“的来源。</p>
+<p>不过既然他也承认这种特殊处理是必须的，那它到底坏在哪里？</p>
+<p>接着，他又向观众展示了第二张幻灯片。这是他实现的同一个函数，不过是有着“好品味”的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">remove_list_entry(entry)</div><div class="line">&#123;</div><div class="line">  <span class="comment">// The "indirect" pointer points to the</span></div><div class="line">  <span class="comment">// *address* of the thing we'll update</span></div><div class="line">  indirect = &amp;head;</div><div class="line">  </div><div class="line">  <span class="comment">// Walk the list, looking for the thing that</span></div><div class="line">  <span class="comment">// points to the entry we want to remove</span></div><div class="line">  </div><div class="line">  <span class="keyword">while</span> ((*indirect) != entry)</div><div class="line">    indirect = &amp;(*indirect)-&gt;next;</div><div class="line">  </div><div class="line">  <span class="comment">// .. and just remove it</span></div><div class="line">  *indirect = entry-&gt;next;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>好品味代码示例</em></p>
+<p>最初的 10 行代码现在缩减为了 4 行。</p>
+<p>但是重点并不在于代码行数的减少。重点是那个 if 语句消失了，不再被需要。代码重构后， 无论节点在链表中的什么位置，都可以采用相同的处理过程来进行移除。</p>
+<p>Linus 解释了这段新代码对于边界情况的消除才是重点。采访继续，进入了下个话题。</p>
+<p>我研究了一会这个代码。Linus 是对的。第二个幻灯片所展示的代码更好。如果这是一道测试编码好坏的题目，那我可能已经挂了。消除条件判断的想法从未在我的脑子里出现过。而且我也像那坏例子一样写了不止一次了，因为我经常进行链表处理操作。</p>
+<p>这个关于品味的展示，好处不仅仅在于教会你如何从一个链表中去除节点， 它还使你去思考你曾经写过的代码，你曾经在程序中写过的小小算法或许还有改进的空间，并且以一种你从未想过的方式出现。</p>
+<p>所以最近我审阅项目代码时，这成为了我的关注点。很巧的是，这个项目也是使用的 C 语言。</p>
+<p>就我的理解而言，“好品味”的关键是消除边界情况，而这些情况一般表现为条件判断语句。越少使用条件判断，你的代码“品味”就会更好。</p>
+<p>下面有个我对代码进行改进的例子分享给大家。</p>
+<h2 id="初始化网格边缘"><a href="#初始化网格边缘" class="headerlink" title="初始化网格边缘"></a>初始化网格边缘</h2><p>以下是我写的一个算法，用于初始化网格边缘的点，该网格使用一个多维数组表示：<strong>grid[rows][cols]</strong> 。</p>
+<p>这段代码的作用是初始化网格的边缘座标点 —— 即顶部一行，底部一行，左侧一列，和右侧一列。</p>
+<p>为了完成工作，一开始我遍历了网格中的每个点，并且利用条件来判断他们是否处于边缘。代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (r = <span class="number">0</span>; r &lt; GRID_SIZE; ++ r) &#123;</div><div class="line">  <span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; GRID_SIZE; ++ c) &#123;</div><div class="line">    </div><div class="line">    <span class="comment">// Top Edge</span></div><div class="line">    <span class="keyword">if</span> (r == <span class="number">0</span>)</div><div class="line">      grid[r][c] = <span class="number">0</span>;</div><div class="line">    </div><div class="line">    <span class="comment">// Left Edge</span></div><div class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>)</div><div class="line">      grid[r][c] = <span class="number">0</span>;</div><div class="line">    </div><div class="line">    <span class="comment">// Right Edge</span></div><div class="line">    <span class="keyword">if</span> (c == GRID_SIZE - <span class="number">1</span>)</div><div class="line">      grid[r][c] = <span class="number">0</span>;</div><div class="line">    </div><div class="line">    <span class="comment">// Bottom Edge</span></div><div class="line">    <span class="keyword">if</span> (r == GRID_SIZE - <span class="number">1</span>)</div><div class="line">      grid[r][c] = <span class="number">0</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>虽然这段代码可以正常工作，回头来看，确实有点问题：</p>
+<ol>
+<li>复杂度 —— 在二重循环中使用 4 个条件判断语句，看起来有些过于复杂了。</li>
+<li>效率 —— 如果 GRID_SIZE 等于 64，这个循环迭代了 4096 次，只是为了给 256 个边缘点赋值。</li>
+</ol>
+<p>Linus 应该会觉得，这可真没品味。</p>
+<p>所有我对它进行了一些修补。花了些时间后，我可以降低它的复杂度，使其只需要一个包含四个条件判断的 for 循环。这只是在复杂度上改进了一点点，却极大地提升了性能，因为它只循环了 256 次，每个边缘上的座标点对应一次循环。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; GRID_SIZE * <span class="number">4</span>; ++ i) &#123;</div><div class="line">  </div><div class="line">  <span class="comment">// Top Edge</span></div><div class="line">  <span class="keyword">if</span> (i &lt; GRID_SIZE)</div><div class="line">    grid[<span class="number">0</span>][i] = <span class="number">0</span>;</div><div class="line">  </div><div class="line">  <span class="comment">// Right Edge</span></div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (i &lt; GRID_SIZE * <span class="number">2</span>)</div><div class="line">    grid[i - GRID_SIZE][GRID_SIZE - <span class="number">1</span>] = <span class="number">0</span>;</div><div class="line">  </div><div class="line">  <span class="comment">// Left Edge</span></div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (i &lt; GRID_SIZE * <span class="number">3</span>)</div><div class="line">    grid[i - (GRID_SIZE * <span class="number">2</span>)][<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line">  </div><div class="line">  <span class="comment">// Bottom Edge</span></div><div class="line">  <span class="keyword">else</span></div><div class="line">    grid[GRID_SIZE - <span class="number">1</span>][i - (GRID_SIZE * <span class="number">3</span>)] = <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这的确是一次改进。但是代码真是太丑陋了。而且并不易于理解。因此，我对这段代码并不满意。</p>
+<p>所以我继续修改。这段代码是否能进一步优化呢？事实上，答案是肯定的。而且我最终形成的代码是令人吃惊得简单而优美，我都不敢相信，我居然花了这么长时间才发现这个办法。</p>
+<p>下面就是代码的最终版本。它只包含了一个循环，而且没有条件判断。不但如此，循环也只需要 64 次。极大地改善了复杂度，并且提升了效率。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; GRID_SIZE; ++i) &#123;</div><div class="line">  </div><div class="line">  <span class="comment">// Top Edge</span></div><div class="line">  grid[<span class="number">0</span>][i] = <span class="number">0</span>;</div><div class="line">  </div><div class="line">  <span class="comment">// Bottom Edge</span></div><div class="line">  grid[GRID_SIZE - <span class="number">1</span>][i] = <span class="number">0</span>;</div><div class="line">  </div><div class="line">  <span class="comment">// Left Edge</span></div><div class="line">  grid[i][<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line">  </div><div class="line">  <span class="comment">// Right Edge</span></div><div class="line">  grid[i][GRID_SIZE - <span class="number">1</span>] = <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码每次循环都为四条不同的边缘进行初始化操作。它并不复杂，而且非常高效，又很容易理解。与最初版本相比，哪怕是与第二个版本相比，都称得上是天壤之别。</p>
+<p>我表示非常满意。</p>
+<p>那么，我就是一个有品味的程序员了么？</p>
+<p>我认为我是，但并不是因为我上面完成的示例，或者其它别的什么原因…因为带着“好品味”编程比任何一段代码概念上都要广泛得多。Linus 也说他提供的例证太渺小了，并不足以将他的观点表达完全，描述清楚。</p>
+<p>我认为 Linus 的意思是，拥有“好品味”的开发者，总是在开始编码前先概念化（ conceptualize ）他们将要构建的东西。他们定义工作中使用到的组件的边界，以及组件间彼此交互的方式。他们尽力确保所有东西都能彼此契合，且执行过程优雅。</p>
+<p>这样做得到的结果，与 Linus  的“好品味”示例，或者我的示例会一样棒，只不过规模要大得多。</p>
+<p>那么，在你的下个项目中，你想要如何展示出“好品味”呢？</p>
+<blockquote>
+<p>翻译自：<a href="https://medium.com/@bartobri/applying-the-linus-tarvolds-good-taste-coding-requirement-99749f37684a#.y4pz33nn2" target="_blank" rel="external">Applying the Linus Torvalds “Good Taste” Coding Requirement</a></p>
+</blockquote>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/30/utf8-in-javascript/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Javascript 中的 UTF-8
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/13/build-todo-app/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用 Redux 秒做 todo-list 应用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2016/11/11/good-taste-coding/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

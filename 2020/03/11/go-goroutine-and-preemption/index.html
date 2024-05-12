@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Go：Goroutine 的抢占机制 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ℹ︎本文内容基于 Go 1.13 版本。
+Go 语言利用内部的调度器管理 goroutine。这个调度器致力于对 goroutine 进行切换，确保它们都能够获得执行时间。不过，调度器有时会抢占这些 goroutine 的运行时间以保证正确的轮换。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go：Goroutine 的抢占机制">
+<meta property="og:url" content="http://log.zvz.im/2020/03/11/go-goroutine-and-preemption/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="ℹ︎本文内容基于 Go 1.13 版本。
+Go 语言利用内部的调度器管理 goroutine。这个调度器致力于对 goroutine 进行切换，确保它们都能够获得执行时间。不过，调度器有时会抢占这些 goroutine 的运行时间以保证正确的轮换。">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/f1eb2d0c781c6429.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/c99454113005d9e4.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/2642990de8ce33d0.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/99b3bfeed8081050.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/07e3cba823a8e131.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/eb10dd47a8eb65ed.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/069ad543fdbb429e.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/5da58bc015fec606.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/10c5c18af9634270.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/ea0c3522f02f71c9.png">
+<meta property="og:image" content="https://img.zvz.im/imgs/2020/03/7e2c3bd1d9bead3c.png">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go：Goroutine 的抢占机制">
+<meta name="twitter:description" content="ℹ︎本文内容基于 Go 1.13 版本。
+Go 语言利用内部的调度器管理 goroutine。这个调度器致力于对 goroutine 进行切换，确保它们都能够获得执行时间。不过，调度器有时会抢占这些 goroutine 的运行时间以保证正确的轮换。">
+<meta name="twitter:image" content="https://img.zvz.im/imgs/2020/03/f1eb2d0c781c6429.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-go-goroutine-and-preemption" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Go：Goroutine 的抢占机制
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2020/03/11/go-goroutine-and-preemption/" class="article-date">
+  <time datetime="2020-03-11T01:16:02.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://img.zvz.im/imgs/2020/03/f1eb2d0c781c6429.png" alt=""></p>
+<p>ℹ︎<em>本文内容基于 Go 1.13 版本。</em></p>
+<p>Go 语言利用内部的调度器管理 goroutine。这个调度器致力于对 goroutine 进行切换，确保它们都能够获得执行时间。不过，调度器有时会抢占这些 goroutine 的运行时间以保证正确的轮换。</p>
+<a id="more"></a>
+<h2 id="调度器和抢占机制"><a href="#调度器和抢占机制" class="headerlink" title="调度器和抢占机制"></a>调度器和抢占机制</h2><p>让我们使用一个简单的例子来说明调度器是如何工作的：<em>为了便于阅读，这些例子不会使用原子操作</em>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">   <span class="keyword">var</span> total <span class="keyword">int</span></div><div class="line">   <span class="keyword">var</span> wg sync.WaitGroup</div><div class="line"></div><div class="line">   <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</div><div class="line">      wg.Add(<span class="number">1</span>)</div><div class="line">      <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">         <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">1000</span>; j++ &#123;</div><div class="line">            total += readNumber()</div><div class="line">         &#125;</div><div class="line">         wg.Done()</div><div class="line">      &#125;()</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   wg.Wait()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//go:noinline</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">readNumber</span><span class="params">()</span> <span class="title">int</span></span> &#123;</div><div class="line">   <span class="keyword">return</span> rand.Intn(<span class="number">10</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面是追踪信息（tracing）：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/c99454113005d9e4.png" alt=""></p>
+<p>我们可以清楚地观察到调度器控制 goroutine 在处理器上进行轮换，对它们全部给予相应的执行时间。当 goroutine 由于系统调用，channel 阻塞，睡眠，等待互斥量等操作而停止时，Go 会对其进行调度。在上一个例子中，调度器利用了数字生成器中的互斥量，从而给所有 goroutine 执行时间。在追踪信息中也是可以看到的：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/2642990de8ce33d0.png" alt=""></p>
+<p>不过，如果 goroutine 自身没有任何的停滞，Go 还是需要有办法停止正在运行的 goroutine。这种行为被称作抢占（preemption），它允许调度器对 goroutine 的执行进行切换。任何执行时间超过 10 毫秒的 goroutine 会被标记为可抢占。而后，抢占行为会发生在函数调用的开始阶段，goroutine 调用栈增加的时候。</p>
+<p>让我们来看一个例子，它与上个例子的区别在于去除了数字生成器中的锁：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">   <span class="keyword">var</span> total <span class="keyword">int</span></div><div class="line">   <span class="keyword">var</span> wg sync.WaitGroup</div><div class="line"></div><div class="line">   <span class="keyword">for</span> i := gen(<span class="number">0</span>); i &lt; <span class="number">20</span>; i++ &#123;</div><div class="line">      wg.Add(<span class="number">1</span>)</div><div class="line">      <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(g gen)</span></span> &#123;</div><div class="line">         <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">1e7</span>; j++ &#123;</div><div class="line">            total += g.readNumber()</div><div class="line">         &#125;</div><div class="line">         wg.Done()</div><div class="line">      &#125;(i)</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   wg.Wait()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> generators [<span class="number">20</span>]*rand.Rand</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">   <span class="keyword">for</span> i := <span class="keyword">int64</span>(<span class="number">0</span>); i &lt; <span class="number">20</span>; i++  &#123;</div><div class="line">      generators[i] = rand.New(rand.NewSource(i).(rand.Source64))</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">type</span> gen <span class="keyword">int</span></div><div class="line"><span class="comment">//go:noinline</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g gen)</span> <span class="title">readNumber</span><span class="params">()</span> <span class="title">int</span></span> &#123;</div><div class="line">   <span class="keyword">return</span> generators[<span class="keyword">int</span>(g)].Intn(<span class="number">10</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里是追踪信息：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/99b3bfeed8081050.png" alt=""></p>
+<p>而且，goroutine 是在函数调用开始阶段被抢占的：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/07e3cba823a8e131.png" alt=""></p>
+<p>这个检查过程是由编译器自动加入的；这里有一段上例生成的汇编代码：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/eb10dd47a8eb65ed.png" alt=""></p>
+<p>通过将指令插入在每个函数执行前，这个 runtime 调用确保栈可以增加。同时使得调度器在必要时可以运行。</p>
+<p>绝大多数情况下，goroutine 都会给调度器对它们进行调度的能力。但是，一个没有函数调用的循环却可以阻塞调度。</p>
+<h2 id="强制抢占"><a href="#强制抢占" class="headerlink" title="强制抢占"></a>强制抢占</h2><p>我们从一个简单的例子开始展示一个循环是如何阻塞调度过程的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">   <span class="keyword">var</span> total <span class="keyword">int</span></div><div class="line">   <span class="keyword">var</span> wg sync.WaitGroup</div><div class="line"></div><div class="line">   <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">20</span>; i++ &#123;</div><div class="line">      wg.Add(<span class="number">1</span>)</div><div class="line">      <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</div><div class="line">         <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">1e6</span>; j++ &#123;</div><div class="line">            total ++</div><div class="line">         &#125;</div><div class="line">         wg.Done()</div><div class="line">      &#125;()</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   wg.Wait()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于没有调用函数，所以这些 goroutine 永远不会被阻塞，调度器也无法进行抢占。我们在追踪信息中可以看到：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/069ad543fdbb429e.png" alt=""></p>
+<center><small>Goroutine 无法被抢占</small></center>
+
+<p>不过，Go 语言提供了几种解决方案来修复此问题：</p>
+<ul>
+<li>使用 <code>runtime.Gosched()</code> 强制调度器执行</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="number">1e8</span>; j++ &#123;</div><div class="line">   <span class="keyword">if</span> j % <span class="number">1e7</span> == <span class="number">0</span> &#123;</div><div class="line">      runtime.Gosched()</div><div class="line">   &#125;</div><div class="line">   total ++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>新的追踪信息如下：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/5da58bc015fec606.png" alt=""></p>
+<ul>
+<li>使用实验特性让循环可以被抢占。要启用这个特性，可以使用指令 <code>GOEXPERIMENT=preemptibleloops</code> 重新编译 Go 工具链，或者在 <code>go build</code> 时增加参数 <code>-gcflags -d=ssa/insert_resched_checks/on</code> 。这次就无需修改代码；以下是新的追踪信息：</li>
+</ul>
+<p><img src="https://img.zvz.im/imgs/2020/03/10c5c18af9634270.png" alt=""></p>
+<p>当循环中的抢占被启用时，编译器会在生成 SSA 代码时加入一段过程。</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/ea0c3522f02f71c9.png" alt=""></p>
+<p>这一段过程会添加一些指令时不时地调用一下调度器：</p>
+<p><img src="https://img.zvz.im/imgs/2020/03/7e2c3bd1d9bead3c.png" alt=""></p>
+<p><em>想要了解更多关于 Go 编译器的内容，我建议你阅读我的文章「Go: 编译器概览」。</em></p>
+<p>然而，这种方式会降低一点代码的执行速度，因为它强制调用调度器的次数，可能比实际需要的更多。这里有两个版本的跑分比较：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">name    old time/op  new time/op  delta</div><div class="line">Loop-8   2.18s ± 2%   2.05s ± 1%  -6.23%</div></pre></td></tr></table></figure>
+<h2 id="即将到来的改进"><a href="#即将到来的改进" class="headerlink" title="即将到来的改进"></a>即将到来的改进</h2><p>到目前为止，调度器采用的是可以覆盖绝大多数情况的合作式抢占技术。不过，在某些特殊的场景下，它可能成为一个痛点。一个关于「非合作式抢占」的新提案已经提交，它着眼于解决文档中说明的此类问题：</p>
+<blockquote>
+<p>我提议将 Go 的实现切换为非合作式抢占，它应该允许 goroutine 大体上在任意执行点可以被抢占，而不需要显示地进行抢占检查。这种方式可以解决抢占延迟的问题而且不占用运行时开支。</p>
+</blockquote>
+<p>这份文档给出了几种建议的优缺点，并且可能会在下个版本的 Go 中落地。</p>
+<p>翻译自：<a href="https://medium.com/a-journey-with-go/go-goroutine-and-preemption-d6bc2aa2f4b7" target="_blank" rel="external">Go: Goroutine and Preemption</a></p>
+<blockquote>
+<p>译者注：Go 1.14 版本目前已经改变了 goroutine 的抢占方式。具体可参考 <a href="https://golang.org/doc/go1.14#runtime" target="_blank" rel="external">Go 1.14 Release Notes</a></p>
+</blockquote>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/21/go-ent-graph-based-orm/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Go:ent，基于图的 ORM 框架 - Facebook 出品
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/09/top-10-golang-mistakes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Go 项目最常见的 10 种错误</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2020/03/11/go-goroutine-and-preemption/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

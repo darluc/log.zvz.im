@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>搞不明白的 Javascript 闭包 | Z - Computer &amp; Programming Technology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在 Javascript 语言中，闭包就是一个函数，只是它上下文中的变量以引用的形式与其绑定在了一起。
+123456789function getMeAClosure() &amp;#123;  var canYouSeeMe = &quot;here I am&quot;;  return (function theClosure() &amp;#123;    return &amp;#123;canYouSeeIt: canYouSe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搞不明白的 Javascript 闭包">
+<meta property="og:url" content="http://log.zvz.im/2016/09/03/understand-js-closure/index.html">
+<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:description" content="在 Javascript 语言中，闭包就是一个函数，只是它上下文中的变量以引用的形式与其绑定在了一起。
+123456789function getMeAClosure() &amp;#123;  var canYouSeeMe = &quot;here I am&quot;;  return (function theClosure() &amp;#123;    return &amp;#123;canYouSeeIt: canYouSe">
+<meta property="og:updated_time" content="2024-05-12T13:15:10.157Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搞不明白的 Javascript 闭包">
+<meta name="twitter:description" content="在 Javascript 语言中，闭包就是一个函数，只是它上下文中的变量以引用的形式与其绑定在了一起。
+123456789function getMeAClosure() &amp;#123;  var canYouSeeMe = &quot;here I am&quot;;  return (function theClosure() &amp;#123;    return &amp;#123;canYouSeeIt: canYouSe">
+  
+    <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8NRBEZPWYN');
+</script>
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8768699638326268",
+      enable_page_level_ads: true
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <section id="main"><article id="post-understand-js-closure" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      搞不明白的 Javascript 闭包
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/09/03/understand-js-closure/" class="article-date">
+  <time datetime="2016-09-03T23:32:18.000Z" itemprop="datePublished">2016-09-03</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/javascript/">javascript</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在 Javascript 语言中，闭包就是一个函数，只是它上下文中的变量以引用的形式与其绑定在了一起。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMeAClosure</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> canYouSeeMe = <span class="string">"here I am"</span>;</div><div class="line">  <span class="keyword">return</span> (<span class="function"><span class="keyword">function</span> <span class="title">theClosure</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> &#123;<span class="attr">canYouSeeIt</span>: canYouSeeMe ? <span class="string">"yes"</span> : <span class="string">"no"</span>&#125;;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> closure = getMeAClosure();</div><div class="line">closure().canYouSeeIt; <span class="comment">//"yes"</span></div></pre></td></tr></table></figure>
+<p>实际上每个 Javascript 函数在生成的时候都形成了闭包。稍后我会给大家解释闭包的产生原因和过程，然后纠正一些关于闭包的错误概念，最后再给出一些闭包的实际用例。不过首先简单介绍一下闭包相关的基础概念：Javascript 的闭包是通过 <code>词法域 (lexical scope)</code> 和 <code>变量环境 (VariableEnvironment)</code> 实现的。<br><a id="more"></a></p>
+<h2 id="词法域（-Lexical-Scope-）"><a href="#词法域（-Lexical-Scope-）" class="headerlink" title="词法域（ Lexical Scope ）"></a>词法域（ Lexical Scope ）</h2><p>“词法”这个词一般都是语言相关。所以函数的词法域是静态的，是由函数代码在源代码中的位置决定的。</p>
+<p>参考以下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = <span class="string">"global"</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> y = <span class="string">"outer"</span>;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> x = <span class="string">"inner"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>函数 <code>inner</code> 在代码中被函数 <code>outer</code> 包裹着，而 <code>outer</code> 又被全局上下文包含在内。这样就形成了一个词法继承关系：</p>
+<p>global</p>
+<p>— outer</p>
+<p>—— inner</p>
+<p>每个函数的外部词法域都是由词法继承关系中它的祖先决定的。因此，<code>inner</code> 函数的外部词法域就是由全局对象和函数 <code>outer</code> 组成的。</p>
+<h2 id="变量环境（-VariableEnvironment-）"><a href="#变量环境（-VariableEnvironment-）" class="headerlink" title="变量环境（ VariableEnvironment ）"></a>变量环境（ VariableEnvironment ）</h2><p>全局对象有一个相关的执行上下文。而且每一次函数调用也会建立并进入一个新的执行上下文。这个执行上下文相对于静态的词法域是动态生成的。每一个执行上下文都确定了一个变量环境，它是在该上下文中所声明变量的容器。（<a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-262.pdf" target="_blank" rel="external">ES 5</a> 10.4，10.5）</p>
+<blockquote>
+<p>注意，在 EcmaScript 3 中，函数的变量环境（ VariableEnvironment ）被称为活动对象（ ActivationObject ）</p>
+</blockquote>
+<p>以下伪代码可以用来描述变量环境</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//variableEnvironment: &#123;x: undefined, etc.&#125;;</span></div><div class="line"><span class="keyword">var</span> x = <span class="string">"global"</span></div><div class="line"><span class="comment">//variableEnvironment: &#123;x: "global", etc.&#125;;</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">//variableEnvironment: &#123;y: undefined&#125;;</span></div><div class="line">  <span class="keyword">var</span> y = <span class="string">"outer"</span>;</div><div class="line">  <span class="comment">//variableEnvironment: &#123;y: "outer"&#125;;</span></div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">//variableEnviroment: &#123;x: undefined&#125;;</span></div><div class="line">    <span class="keyword">var</span> x = <span class="string">"inner"</span>;</div><div class="line">    <span class="comment">//variableEnvironment: &#123;x: "inner"&#125;;</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>不过，这只描述了整个图景中的一部分。每个变量环境都会继承它所属词法域的变量环境。</p>
+<h2 id="scope-属性"><a href="#scope-属性" class="headerlink" title="[[scope]]属性"></a>[[scope]]属性</h2><p>当一个函数定义过程发生在某个执行上下文环境中时，会生成一个新的函数对象，此函数对象会包含一个名为 [[scope]] 的内部属性引用当前的变量环境。（<a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-262.pdf" target="_blank" rel="external">ES 5</a> 13.0-2）</p>
+<p>每个函数都有这样一个 [[scope]] 属性，而且当函数被调用时，这个 [[scope]] 属性会被赋值给变量环境的 <em>outerLex</em> 属性，该属性是对外层词法环境的引用（ outer lexical environment reference 简写为 outerLex ）。这样一来，每个变量环境都继承了它父级的变量环境。这个 [[scope]] 链会一直延伸至全局对象，与词法继承的长度一样。</p>
+<p>现在让我们再来看一下伪代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//VariableEnvironment: &#123;x: undefined, etc.&#125;;</span></div><div class="line"><span class="keyword">var</span> x = <span class="string">"global"</span>;</div><div class="line"><span class="comment">//VariableEnvironment: &#123;x: "global", etc.&#125;;</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">//VariableEnvironment:&#123;y: undefined, outerLex: &#123;x: "global", etc.&#125;&#125;;</span></div><div class="line">  <span class="keyword">var</span> y = <span class="string">"outer"</span>;</div><div class="line">  <span class="comment">//VariableEnvironment: &#123;y: "outer", outerLex: &#123;x: "global", etc.&#125;&#125;;</span></div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">//VariableEnvironment: &#123;x: undefined, outerLex: &#123;y: "outer", outerLex: &#123;x:"global", etc.&#125;&#125;;</span></div><div class="line">    <span class="keyword">var</span> x = <span class="string">"inner"</span>;</div><div class="line">    <span class="comment">//VariableEnvironment: &#123;x: "inner", outerLex: &#123;y: "outer", outerLex: &#123;x:"global", etc.&#125;&#125;;</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于层层嵌套的变量环境来说，[[scope]] 属性起到了桥接的作用，使得外层变量被嵌入到内层的变量环境中（并且访问优先级与词法接近程度一致）。[[scope]] 属性还成全了闭包，因为假如没有它的话，当外层函数返回时，函数中的变量就会被解除引用而被当作垃圾回收。</p>
+<p>这儿就是所谓的闭包出现的地方，它只不过是词法域作用（lexical scoping）时产生的副作用而已😉</p>
+<h2 id="辟谣"><a href="#辟谣" class="headerlink" title="辟谣"></a>辟谣</h2><p>既然知道了闭包是如何工作的，我们就可以开始纠正一些关于闭包的错误理解了。</p>
+<h3 id="错误1-闭包是在一个内层函数作为结果返回后才生成的"><a href="#错误1-闭包是在一个内层函数作为结果返回后才生成的" class="headerlink" title="错误1. 闭包是在一个内层函数作为结果返回后才生成的"></a>错误1. 闭包是在一个内层函数作为结果返回后才生成的</h3><p>当一个函数被创建时，就被赋予了 [[scope]] 属性，该属性引用了外层语法域中的变量并防止它们被回收。所以闭包是在函数创建时就生成的。</p>
+<p>并不是说一个函数必须在它被返回之后才成为闭包。以下就是一个函数没有被返回却是一个闭包的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> callLater = <span class="function"><span class="keyword">function</span>(<span class="params">fn, args, context</span>) </span>&#123;</div><div class="line">  setTimetout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;fn.apply(context, args)&#125;, <span class="number">2000</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">callLater(alert, [<span class="string">'hello'</span>]);</div></pre></td></tr></table></figure>
+<h3 id="错误2-外层变量的值会被复制或固化在闭包中"><a href="#错误2-外层变量的值会被复制或固化在闭包中" class="headerlink" title="错误2. 外层变量的值会被复制或固化在闭包中"></a>错误2. 外层变量的值会被复制或固化在闭包中</h3><p>如下例所见，闭包会引用变量而不是变量的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Bad Example</span></div><div class="line"><span class="comment">//Create an array of functions that add 1,2 and 3 respectively</span></div><div class="line"><span class="keyword">var</span> createAdders = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> fns = [];</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i ++) &#123;</div><div class="line">    fns[i] = (<span class="function"><span class="keyword">function</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">      <span class="keyword">return</span> i + n;</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> fns;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> adders = createAdders();</div><div class="line">adders[<span class="number">1</span>](<span class="number">7</span>); <span class="comment">//11 ??</span></div><div class="line">adders[<span class="number">2</span>](<span class="number">7</span>); <span class="comment">//11 ??</span></div><div class="line">adders[<span class="number">3</span>](<span class="number">7</span>); <span class="comment">//11 ??</span></div></pre></td></tr></table></figure>
+<p>这三个加数函数都引用了同一个变量 <em>i</em> 。等到三个函数被调用的时候，<em>i</em> 的值已经是 4 了。</p>
+<p>有一种解决方案是通过调用匿名函数传递每个参数。由于每次函数调用都发生在一个独立的执行上下文中，即使连续调用，我们也可以保证参数变量的唯一性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Good Example</span></div><div class="line"><span class="comment">//Create an array of functions add 1,2 and 3 respectively</span></div><div class="line"><span class="keyword">var</span> createAdders = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> fns = [];</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">4</span>; i ++) &#123;</div><div class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</div><div class="line">      fns[i] = (<span class="function"><span class="keyword">function</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> i + n;</div><div class="line">      &#125;);</div><div class="line">    &#125;)(i)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> fns;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> adders = createAdders();</div><div class="line">adders[<span class="number">1</span>](<span class="number">7</span>); <span class="comment">//8 :-)</span></div><div class="line">adders[<span class="number">2</span>](<span class="number">7</span>); <span class="comment">//9 :-)</span></div><div class="line">adders[<span class="number">3</span>](<span class="number">7</span>); <span class="comment">//10 :-)</span></div></pre></td></tr></table></figure>
+<h3 id="错误3-闭包一定是内层函数"><a href="#错误3-闭包一定是内层函数" class="headerlink" title="错误3. 闭包一定是内层函数"></a>错误3. 闭包一定是内层函数</h3><p>不可否认外层函数所创建的闭包毫无意思，因为它的 [[scope]] 属性只是引用了全局变量域而已，在任何情况下都是可以访问到的。对于每个函数来说闭包的产生过程都是一样的，而且每个函数都会产生闭包，记住这点很重要。</p>
+<h3 id="错误4-闭包一定是匿名函数"><a href="#错误4-闭包一定是匿名函数" class="headerlink" title="错误4. 闭包一定是匿名函数"></a>错误4. 闭包一定是匿名函数</h3><p>我在许多文章里看到过这种说法。悲哀！实在是悲哀！😉</p>
+<h3 id="错误5-闭包会导致内存泄漏"><a href="#错误5-闭包会导致内存泄漏" class="headerlink" title="错误5. 闭包会导致内存泄漏"></a>错误5. 闭包会导致内存泄漏</h3><p>闭包本身并不会产生循环引用。在文章开头的例子中，<code>inner</code> 函数通过它的 [[scope]] 属性引用了外层变量，但是外层变量和 <code>outer</code> 函数都没有引用 <code>inner</code> 函数或其内部变量。</p>
+<p>老版本的 IE 浏览器因内存泄漏而声名狼藉，闭包却替它背了锅。一个典型的起因是，一个 DOM 元素被函数引用，同时这个 DOM 元素的一个属性引用了此函数词法域中的另一个对象。从 IE6 发展到 IE8 这类循环引用问题绝大多数都已经被解决了。</p>
+<h2 id="经典用例"><a href="#经典用例" class="headerlink" title="经典用例"></a>经典用例</h2><h3 id="函数模版"><a href="#函数模版" class="headerlink" title="函数模版"></a>函数模版</h3><p>有时我们想要定义一个函数的多个版本，每个版本都遵从同一个蓝图，却能根据提供的参数产生不同的变化。比如，我们可以创建一套标准的度量单位转换函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeConverter</span>(<span class="params">toUnit, factor, offset</span>) </span>&#123;</div><div class="line">  offset = offset || <span class="number">0</span>;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">input</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> [((offset + input) * factor).toFixed(<span class="number">2</span>), toUnit].join(<span class="string">" "</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> milesToKm = makeConverter(<span class="string">'km'</span>, <span class="number">1.60936</span>);</div><div class="line"><span class="keyword">var</span> poundsToKg = makeConverter(<span class="string">'kg'</span>, <span class="number">0.45460</span>);</div><div class="line"><span class="keyword">var</span> farenheitToCelsius = makeConverter(<span class="string">'degree C'</span>, <span class="number">0.5556</span>, <span class="number">-32</span>);</div><div class="line"></div><div class="line">milesToKm(<span class="number">10</span>); <span class="comment">//"16.09 km"</span></div><div class="line">poundsToKg(<span class="number">2.5</span>); <span class="comment">//"1.14 kg"</span></div><div class="line">farenheitToCelsius(<span class="number">98</span>); <span class="comment">//"36.67 degrees C"</span></div></pre></td></tr></table></figure>
+<p>如果和我一样，你喜欢函数式抽象，那么再深入一步就是进行函数参数的增量绑定（<a href="https://javascriptweblog.wordpress.com/2010/04/05/curry-cooking-up-tastier-functions/" target="_blank" rel="external">currify</a>）了。</p>
+<h3 id="函数式-Javascript（Functional-Javascript）"><a href="#函数式-Javascript（Functional-Javascript）" class="headerlink" title="函数式 Javascript（Functional Javascript）"></a>函数式 Javascript（Functional Javascript）</h3><p>除去函数——这个Javascript 中第一级别的对象外，函数式 Javascript 最好的伙伴就是闭包了。</p>
+<p>bind, <a href="https://javascriptweblog.wordpress.com/2010/04/05/curry-cooking-up-tastier-functions/" target="_blank" rel="external">curry</a>, <a href="https://javascriptweblog.wordpress.com/2010/05/17/partial-currys-flashy-cousin/" target="_blank" rel="external">partial</a> 和 <a href="https://javascriptweblog.wordpress.com/2010/04/14/compose-functions-as-building-blocks/" target="_blank" rel="external">compose</a> 的典型实现方式，都依赖于闭包为新函数提供原始函数及参数的引用。</p>
+<p>如下例的 curry （参数增量绑定）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Function</span>.prototype.curry = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="built_in">arguments</span>.length &lt; <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>; <span class="comment">//nothing to curry with - return function</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> __method = <span class="keyword">this</span>;</div><div class="line">  <span class="keyword">var</span> args = toArray(<span class="built_in">arguments</span>);</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> __method.apply(<span class="keyword">this</span>, args.concat([].slice.apply(<span class="literal">null</span>, <span class="built_in">arguments</span>)));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们用 curry 的方式重写上面的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">converter</span>(<span class="params">toUnit, factor, offset, input</span>) </span>&#123;</div><div class="line">  offset = offset || <span class="number">0</span>;</div><div class="line">  <span class="keyword">return</span> [((offset + input) * factor).toFixed(<span class="number">2</span>), toUnit].join(<span class="string">" "</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> milesToKm = converter.curry(<span class="string">'km'</span>, <span class="number">1.60936</span>, <span class="literal">undefined</span>);</div><div class="line"><span class="keyword">var</span> poundsToKg = converter.curry(<span class="string">'kg'</span>, <span class="number">0.45460</span>, <span class="literal">undefined</span>);</div><div class="line"><span class="keyword">var</span> farenheitToCelsius = converter.curry(<span class="string">'degrees C'</span>, <span class="number">0.5556</span>, <span class="number">-32</span>);</div><div class="line"></div><div class="line">milesToKm(<span class="number">10</span>); <span class="comment">//"16.09 km"</span></div><div class="line">poundsToKg(<span class="number">2.5</span>); <span class="comment">//"1.14 kg"</span></div><div class="line">farenheitToCelsius(<span class="number">98</span>); <span class="comment">//"36.67 degrees C"</span></div></pre></td></tr></table></figure>
+<p>还有许多很漂亮的函数调节器（modifier）也是利用闭包实现的。下面这个如宝石般漂亮的代码，来自于<a href="http://osteele.com/" target="_blank" rel="external">Oliver Steele</a> ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Returns a function that takes an object, and returns the value of its 'name' property</div><div class="line"> */</div><div class="line"><span class="keyword">var</span> pluck = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">object</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> object[name];</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="keyword">var</span> getLength = pluck(<span class="string">'length'</span>);</div><div class="line">getLength(<span class="string">"SF Giants are going to the World Series!"</span>); <span class="comment">//40</span></div></pre></td></tr></table></figure>
+<h3 id="模块化模式"><a href="#模块化模式" class="headerlink" title="模块化模式"></a>模块化模式</h3><p>这是个<a href="https://javascriptweblog.wordpress.com/2010/04/22/the-module-pattern-in-a-nutshell/" target="_blank" rel="external">广为人知的技术</a>，它使用闭包维护了一个私有的、独占的对外层域中变量的引用。这里我用模块化模式实现了一个“猜数字”游戏。注意在此例中，闭包（<em>guess</em>）与 <em>secretNumber</em> 变量有着唯一的联系，而 <em>responses</em> 对象则只在创建时使用了它的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> secretNumberGame = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> secretNumber = <span class="number">21</span>;</div><div class="line">  </div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">responses</span>:&#123;</div><div class="line">      <span class="attr">true</span>: <span class="string">"You are correct! Answer is "</span> + secretNumber,</div><div class="line">      <span class="attr">lower</span>: <span class="string">"Too high!"</span>,</div><div class="line">      <span class="attr">higher</span>: <span class="string">"Too low!"</span></div><div class="line">    &#125;,</div><div class="line">    </div><div class="line">    <span class="attr">guess</span>: <span class="function"><span class="keyword">function</span>(<span class="params">guess</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> key = (guess == secretNumber) || (guess &lt; secretNumber ? <span class="string">"higher"</span> : <span class="string">"lower"</span>);</div><div class="line">      alert(<span class="keyword">this</span>.responses[key]);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> game = secretNumberGame();</div><div class="line">game.guess(<span class="number">45</span>); <span class="comment">//"Too high!"</span></div><div class="line">game.guess(<span class="number">18</span>); <span class="comment">//"Too low!"</span></div><div class="line">game.guess(<span class="number">21</span>); <span class="comment">//"You are correct! Answer is 21"</span></div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在编程术语中，闭包代表了优雅和精致。它使得代码更简洁漂亮、可读性更高，同时提升了代码的重用性。了解闭包的工作原理，就可以避免使用中的不确定性。我希望这篇文章能够帮到你，如果有问题、想法或其它事，都请留下您的评论。</p>
+<h2 id="进一步的阅读"><a href="#进一步的阅读" class="headerlink" title="进一步的阅读"></a>进一步的阅读</h2><p><a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-262.pdf" target="_blank" rel="external">ECMA-262 5th Edition</a></p>
+<ul>
+<li>10.4 创建变量环境</li>
+<li>10.4.3.5-7 在变量环境中引用 [[scope]] 属性</li>
+<li>10.5 填入变量环境</li>
+<li>13.0-2 函数创建时为 [[scope]] 属性赋值</li>
+</ul>
+<blockquote>
+<p>翻译自：<a href="https://javascriptweblog.wordpress.com/2010/10/25/understanding-javascript-closures/" target="_blank" rel="external">Understanding Javascript Closures</a></p>
+</blockquote>
+
+      
+
+      
+        
+    </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/13/build-todo-app/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用 Redux 秒做 todo-list 应用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/01/PHP-Coroutine/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用PHP协程实现多任务协作</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<script type='text/javascript'>window.notIndexPage = true;</script>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'imzvz'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>
+    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+</section>
+</section>
+        <aside id="sidebar">
+  <nav class="menus">
+  	<ul>
+  		<li><a href="/"><i class="icon icon-home"></i></a></li>
+  		
+			<li><a href="/archives"><i class="icon icon-fenlei"></i></a></li>
+  		
+  		
+			<li><a href="/tags"><i class="icon icon-tag"></i></a></li>
+  		
+  		
+  	</ul>
+  </nav>
+  <a id="go-top" href="#"><i class="icon icon-up"></i></a>
+</aside>
+      </div>
+      <footer id="footer">
+  
+	<div id="footer-info" class="inner">
+	Linked with:&nbsp;&nbsp;&nbsp; 
+	<a href="http://mritd.me" target="_blank">mritd.me</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://www.mghio.cn" target="_blank">mghio's blog</a>&nbsp;&nbsp;&nbsp;
+	<a href="https://sillydong.com" target="_blank">傻东の学习笔记</a>&nbsp;&nbsp;&nbsp;
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tag</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'imzvz';
+  
+  var disqus_url = 'http://log.zvz.im/2016/09/03/understand-js-closure/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+<script>
+  if(window.notIndexPage)
+  $(function(){
+    $.get('//manage.zvz.im/api/posts/adv', function(res) {
+      if(res.data.length) {
+        $.each(res.data, function(idx, adv) {
+          if(idx == 0) {
+            if($('h2:first').length > 0) {
+              $(adv).insertBefore('h2:first');
+              return;
+            }
+          }
+          $(adv).insertAfter('.article-inner');
+        });
+      }
+    });
+  });
+</script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/require.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>
