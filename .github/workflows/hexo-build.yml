@@ -12,6 +12,11 @@ jobs:
       with:
         submodules: true 
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
     - name: Build and Deploy
       uses: sma11black/hexo-action@v1.0.3
       with:
