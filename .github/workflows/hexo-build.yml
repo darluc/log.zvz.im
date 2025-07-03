@@ -17,3 +17,4 @@ jobs:
       env:
         PERSONAL_TOKEN: ${{ secrets.HEXO_TOKEN }}
         PUBLISH_DIR: ./public
+        BRANCH: gh-pages
