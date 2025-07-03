@@ -14,8 +14,8 @@ jobs:
 
     - name: Build and Deploy
       uses: renzhaosy/hexo-deploy-action@master
-      env:
-        PERSONAL_TOKEN: ${{ secrets.HEXO_TOKEN }}
-        PUBLISH_REPOSITORY: darluc/log.zvz.im # The repository the action should deploy to.
-        BRANCH: gh-pages  # The branch the action should deploy to.
-        PUBLISH_DIR: ./public # The folder the action should deploy.
+      with:
+        deploy-key: ${{ secrets.HEXO_TOKEN }}
+        commit-msg: ${{ github.event.head_commit.message }}
+        user-name: ${{ github.event.head_commit.author.name }}
+        user-email: ${{ github.event.head_commit.author.email }}
