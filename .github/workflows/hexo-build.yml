@@ -18,7 +18,9 @@ jobs:
         node-version: '16'
 
     - name: Install Dependencies
-      run: npm install
+      run: |
+        npm config set registry https://registry.npmjs.org/
+        npm install
 
     - name: Build Hexo
       run: ./node_modules/hexo/bin/hexo generate
