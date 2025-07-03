@@ -17,7 +17,15 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Build and Deploy
-      uses: sma11black/hexo-action@v1.0.3
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Hexo
+      run: ./node_modules/hexo/bin/hexo generate
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        deploy_key: ${{ secrets.HEXO_TOKEN }}
+        github_token: ${{ secrets.HEXO_TOKEN }}
+        publish_dir: ./public
+        publish_branch: gh-pages
