@@ -13,9 +13,6 @@ jobs:
         submodules: true 
 
     - name: Build and Deploy
-      uses: renzhaosy/hexo-deploy-action@master
-      env:
-        PERSONAL_TOKEN: ${{ secrets.HEXO_TOKEN }}
-        PUBLISH_REPOSITORY: darluc/log.zvz.im
-        BRANCH: gh-pages
-        PUBLISH_DIR: ./public
+      uses: sma11black/hexo-action@v1.0.3
+      with:
+        deploy_key: ${{ secrets.HEXO_TOKEN }}
