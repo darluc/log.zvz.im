@@ -14,8 +14,6 @@ jobs:
 
     - name: Build and Deploy
       uses: renzhaosy/hexo-deploy-action@master
-      with:
-        deploy-key: ${{ secrets.HEXO_TOKEN }}
-        commit-msg: ${{ github.event.head_commit.message }}
-        user-name: ${{ github.event.head_commit.author.name }}
-        user-email: ${{ github.event.head_commit.author.email }}
+      env:
+        PERSONAL_TOKEN: ${{ secrets.HEXO_TOKEN }}
+        PUBLISH_DIR: ./public
