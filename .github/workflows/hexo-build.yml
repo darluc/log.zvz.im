@@ -16,5 +16,6 @@ jobs:
       uses: renzhaosy/hexo-deploy-action@master
       env:
         PERSONAL_TOKEN: ${{ secrets.HEXO_TOKEN }}
-        PUBLISH_DIR: ./public
+        PUBLISH_REPOSITORY: darluc/log.zvz.im
         BRANCH: gh-pages
+        PUBLISH_DIR: ./public
