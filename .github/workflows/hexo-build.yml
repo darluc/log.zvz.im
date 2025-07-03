@@ -20,6 +20,7 @@ jobs:
     - name: Install Dependencies
       run: |
         npm config set registry https://registry.npmjs.org/
+        rm -rf package-lock.json node_modules
         npm install
 
     - name: Build Hexo
