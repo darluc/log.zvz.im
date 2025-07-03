@@ -5,22 +5,19 @@
   
   <title>Javascript 中的 UTF-8 | Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 decodeURIComponent 函数对 escape 编码过的字符串进行解码导致了浏览器报错：URIError: URI malformed。于是上网找寻答案，看到这篇文章。
-
-在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 atob 和 btoa 函数时。这些函数用于二进制字符串和 Ba">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
+  <meta name="description" content="译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 decodeURIComponent 函数对 escape 编码过的字符串进行解码导致了浏览器报错：URIError: URI malformed。于是上网找寻答案，看到这篇文章。  在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 atob 和 btoa 函数时。这些函数用于二进制字符串和 Ba">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Javascript 中的 UTF-8">
 <meta property="og:url" content="http://log.zvz.im/2016/12/30/utf8-in-javascript/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
-<meta property="og:description" content="译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 decodeURIComponent 函数对 escape 编码过的字符串进行解码导致了浏览器报错：URIError: URI malformed。于是上网找寻答案，看到这篇文章。
-
-在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 atob 和 btoa 函数时。这些函数用于二进制字符串和 Ba">
-<meta property="og:updated_time" content="2024-05-12T13:15:10.157Z">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
+<meta property="og:description" content="译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 decodeURIComponent 函数对 escape 编码过的字符串进行解码导致了浏览器报错：URIError: URI malformed。于是上网找寻答案，看到这篇文章。  在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 atob 和 btoa 函数时。这些函数用于二进制字符串和 Ba">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-12-30T02:50:08.000Z">
+<meta property="article:modified_time" content="2025-07-03T18:06:35.828Z">
+<meta property="article:author" content="darluc">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Javascript 中的 UTF-8">
-<meta name="twitter:description" content="译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 decodeURIComponent 函数对 escape 编码过的字符串进行解码导致了浏览器报错：URIError: URI malformed。于是上网找寻答案，看到这篇文章。
-
-在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 atob 和 btoa 函数时。这些函数用于二进制字符串和 Ba">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -28,7 +25,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -47,8 +46,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -83,43 +82,43 @@
 <p>译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 <code>decodeURIComponent</code> 函数对 <code>escape</code> 编码过的字符串进行解码导致了浏览器报错：<strong>URIError: URI malformed</strong>。于是上网找寻答案，看到这篇文章。</p>
 </blockquote>
 <p>在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 <code>atob</code> 和 <code>btoa</code> 函数时。这些函数用于二进制字符串和 Base64 ASCII 码之间的转换。但是用它们处理 Unicode 字符串时就挂了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; btoa(&apos;\u0227&apos;);</div><div class="line">Error: INVALID_CHARACTER_ERR: DOM</div><div class="line">Exception 5</div></pre></td></tr></table></figure>
-<p><a href="https://developer.mozilla.org/en/DOM/window.btoa#Unicode_Strings" target="_blank" rel="external">MDN 上关于 <code>btoa</code> 的文档</a>指出下面<a href="http://ecmanaut.blogspot.com/2006/07/encoding-decoding-utf8-in-javascript.html" target="_blank" rel="external">来自于 Johan Sundström 的函数</a>可以解决 Unicode 问题：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">encode_utf8</span>(<span class="params">s</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">unescape</span>(endcodeURIComponent(s));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">decode_utf8</span>(<span class="params">s</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">decodeURIComponent</span>(<span class="built_in">escape</span>(s));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">btoa(<span class="string">&#x27;\u0227&#x27;</span>);</span></span><br><span class="line">Error: INVALID_CHARACTER_ERR: DOM</span><br><span class="line">Exception 5</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en/DOM/window.btoa#Unicode_Strings">MDN 上关于 <code>btoa</code> 的文档</a>指出下面<a target="_blank" rel="noopener" href="http://ecmanaut.blogspot.com/2006/07/encoding-decoding-utf8-in-javascript.html">来自于 Johan Sundström 的函数</a>可以解决 Unicode 问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">encode_utf8</span>(<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">unescape</span>(<span class="title function_">endcodeURIComponent</span>(s));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">decode_utf8</span>(<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">decodeURIComponent</span>(<span class="built_in">escape</span>(s));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用上这些函数后，<code>btoa</code> 就能够给出期望的结果了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; btoa(encode_utf8(&apos;\u0227&apos;));</div><div class="line">&quot;yKc==&quot;</div></pre></td></tr></table></figure>
-<p>Johan 的函数能正常工作，只是让人觉得有点像是黑魔法。所以我决定研究一下 <code>encode_utf8</code> 函数的各个部分，搞明白它是如何工作的。<br><a id="more"></a></p>
-<h2 id="encodeURIComponent"><a href="#encodeURIComponent" class="headerlink" title="encodeURIComponent"></a>encodeURIComponent</h2><p><code>encode_utf8</code> 函数中先使用了 <code>encodeURIComponent</code> 。<code>encodeURIComponent</code> 在<a href="http://ecma-international.org/ecma-262/5.1/" target="_blank" rel="external">最近的 ECMAScript 规范</a>中定义如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">btoa(encode_utf8(<span class="string">&#x27;\u0227&#x27;</span>));</span></span><br><span class="line">&quot;yKc==&quot;</span><br></pre></td></tr></table></figure>
+<p>Johan 的函数能正常工作，只是让人觉得有点像是黑魔法。所以我决定研究一下 <code>encode_utf8</code> 函数的各个部分，搞明白它是如何工作的。<br><span id="more"></span></p>
+<h2 id="encodeURIComponent"><a href="#encodeURIComponent" class="headerlink" title="encodeURIComponent"></a>encodeURIComponent</h2><p><code>encode_utf8</code> 函数中先使用了 <code>encodeURIComponent</code> 。<code>encodeURIComponent</code> 在<a target="_blank" rel="noopener" href="http://ecma-international.org/ecma-262/5.1/">最近的 ECMAScript 规范</a>中定义如下：</p>
 <blockquote>
 <p>encodeURIComponent 函数计算产生一个新的 URI，其中的某些字符被替换为一个，二个，三个，或四个字节的 该字符 UTF-8 编码的转义序列。</p>
 </blockquote>
-<p>令我惊讶的是 <code>encodeURIComponent</code> 函数是与 UTF-8 编码绑定的。而不像其它语言的类似函数，编码方式是作为函数参数传入的。如果你本来就像使用 UTF-8 编码，当然没有问题，如果你想使用别的编码方式就不好使了（当然也有别的方法<a href="http://updates.html5rocks.com/2012/06/How-to-convert-ArrayBuffer-to-and-from-String" target="_blank" rel="external">使用 ArrayBuffers 实现定长编码</a>）。</p>
+<p>令我惊讶的是 <code>encodeURIComponent</code> 函数是与 UTF-8 编码绑定的。而不像其它语言的类似函数，编码方式是作为函数参数传入的。如果你本来就像使用 UTF-8 编码，当然没有问题，如果你想使用别的编码方式就不好使了（当然也有别的方法<a target="_blank" rel="noopener" href="http://updates.html5rocks.com/2012/06/How-to-convert-ArrayBuffer-to-and-from-String">使用 ArrayBuffers 实现定长编码</a>）。</p>
 <p>这儿有个例子是对 Unicode 字符 U+0227（ȧ，小写的拉丁字母 A 顶上加个点）使用 <code>encodeURIComponent</code> 函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; encodeURIComponent(&apos;\u0227&apos;);</div><div class="line">&quot;%C8%A7&quot;</div></pre></td></tr></table></figure>
-<p>结果是一个<a href="http://en.wikipedia.org/wiki/Percent-encoding" target="_blank" rel="external">百分号编码</a>的字符串，每一段表示该字符串 UTF-8 编码的一个字节。查找 <a href="http://www.fileformat.info/info/unicode/char/227/index.htm" target="_blank" rel="external">Unicode 字符 U+0227 的文档</a>，我们可以验证该字符 UTF-8 编码的十六进制形式就是 0xC8 0xA7。</p>
-<p>ECMAScript 的定义很模糊，它说 <code>encodeURIComponent</code> 会替换“某些字符”，却没说明这些字符。不过一个<a href="http://monsur.hossa.in/temp/encodeURIComponent.html" target="_blank" rel="external">快速的试验</a>显示，任何大于 0x7E 的字符都会被编码，所以我觉得说任何非 ASCII 字符都会被 <code>encocodeURIComponent</code> 编码肯定不会错。由于百分号编码方式只使用了数字 0-9，字母 A-F 以及 ‘%’ 字符，可以保证输出结果一定是 ASCII 字符串。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">encodeURIComponent(<span class="string">&#x27;\u0227&#x27;</span>);</span></span><br><span class="line">&quot;%C8%A7&quot;</span><br></pre></td></tr></table></figure>
+<p>结果是一个<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Percent-encoding">百分号编码</a>的字符串，每一段表示该字符串 UTF-8 编码的一个字节。查找 <a target="_blank" rel="noopener" href="http://www.fileformat.info/info/unicode/char/227/index.htm">Unicode 字符 U+0227 的文档</a>，我们可以验证该字符 UTF-8 编码的十六进制形式就是 0xC8 0xA7。</p>
+<p>ECMAScript 的定义很模糊，它说 <code>encodeURIComponent</code> 会替换“某些字符”，却没说明这些字符。不过一个<a target="_blank" rel="noopener" href="http://monsur.hossa.in/temp/encodeURIComponent.html">快速的试验</a>显示，任何大于 0x7E 的字符都会被编码，所以我觉得说任何非 ASCII 字符都会被 <code>encocodeURIComponent</code> 编码肯定不会错。由于百分号编码方式只使用了数字 0-9，字母 A-F 以及 ‘%’ 字符，可以保证输出结果一定是 ASCII 字符串。</p>
 <p>现在我们可以先暂停一下。<code>btoa</code> 函数所需要的就是 ASCII 字符串，<code>encodeURIComponent</code> 函数就已然够用了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; btoa(encodeURIComponent(&apos;\u0227&apos;));</div><div class="line">&quot;JUM4JUE3&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">btoa(encodeURIComponent(<span class="string">&#x27;\u0227&#x27;</span>));</span></span><br><span class="line">&quot;JUM4JUE3&quot;</span><br></pre></td></tr></table></figure>
 <p>不过这样做有一些缺陷。首先，输出的结果字符串与输入的字符串的二进制变了。这只是个原始字节的一个编码版本。这可能在与其它系统交互时造成困难和烦恼。</p>
 <p>第二个缺陷是，<code>encodeURIComponent</code> 函数生成了一个更长的字符串。单个 Unicode 字符采用 UTF-8 编码最多占用 4 个字节，经过 URI 编码后就能产生一个 12 个字符长的串。之后在经过 Base64 编码（能使字符串变得更长），最终输出的结果比输入的字符能长许多倍。为了解决字符串长度问题，Johan 找来了 <code>unescape</code> 函数。</p>
-<h2 id="unescape"><a href="#unescape" class="headerlink" title="unescape"></a>unescape</h2><p> 与 <code>encodeURIComponent</code> 函数不同，<code>escape</code> / <code>unescape</code> 函数在最近的 ECMAScript 版本中都没有被定义。<a href="http://shop.oreilly.com/product/9780596805531.do" target="_blank" rel="external">JavaScript: The Definitive Guide</a> （第6版，855页）表述如下：</p>
+<h2 id="unescape"><a href="#unescape" class="headerlink" title="unescape"></a>unescape</h2><p> 与 <code>encodeURIComponent</code> 函数不同，<code>escape</code> / <code>unescape</code> 函数在最近的 ECMAScript 版本中都没有被定义。<a target="_blank" rel="noopener" href="http://shop.oreilly.com/product/9780596805531.do">JavaScript: The Definitive Guide</a> （第6版，855页）表述如下：</p>
 <blockquote>
 <p>尽管在第一版的 ECMAScript 中 unescape 被标准化了，但自从 ECMAScript v3 起它就被弃用并从标准中移除了。而 ECMAScript 的实现中，这个方法很大可能上都被实现了，不过这不是必须的。</p>
 </blockquote>
 <p>鉴于这两个函数从浏览器诞生之初就存在了，我认为它们不会很快就消失不见。</p>
 <p><code>unescape</code> 函数用于将百分号形式编码的字符串反转义。它可以用于标准的百分号转义形式（%XX），也可以用于非标准的 Unicode 百分号形式（%uXXXX）。以下是最初那个例子的反转义结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; var e = encodeURIComponent(&apos;\u0227&apos;);</div><div class="line">console.log(e);</div><div class="line">&quot;%C8%A7&quot;</div><div class="line">&gt; var u = unescape(e); console.log(u);</div><div class="line">&quot;È§&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">var e = encodeURIComponent(<span class="string">&#x27;\u0227&#x27;</span>);</span></span><br><span class="line">console.log(e);</span><br><span class="line">&quot;%C8%A7&quot;</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">var u = unescape(e); console.log(u);</span></span><br><span class="line">&quot;È§&quot;</span><br></pre></td></tr></table></figure>
 <p>“È§”是 C8 和 A7 所对应的 ASCII 字符，如下可见：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; u.charCodeAt(0).toString(16);</div><div class="line">&quot;c8&quot;</div><div class="line">&gt; u.charCodeAt(1).toString(16);</div><div class="line">&quot;a7&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">u.charCodeAt(0).toString(16);</span></span><br><span class="line">&quot;c8&quot;</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">u.charCodeAt(1).toString(16);</span></span><br><span class="line">&quot;a7&quot;</span><br></pre></td></tr></table></figure>
 <p>调用和 <code>unescape</code> 与调用 <code>decodeURIComponent</code> 非常不同。<code>decodeURIComponent</code> 将字符串转换为 UTF-8 编码，它会将两个被百分号编码的字符合起来解译为初始字符的 UTF-8 表现形式。<code>unescape</code> 则只是将字符返回不做任何解译。</p>
 <p>使用 <code>unescape</code> 函数的好处是，我们可以使用更段的字符串保留实际的 UTF-8 字节：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; e.length</div><div class="line">6</div><div class="line">&gt; u.lenght</div><div class="line">2</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">e.length</span></span><br><span class="line">6</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">u.lenght</span></span><br><span class="line">2</span><br></pre></td></tr></table></figure>
 <p>新的字符串中的字节是原始字符串的 UTF-8 编码字节作为 ASCII 码解译时表现出来的样子。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>综上所述， <code>encode_utf8</code> 函数对字符串转换的整个过程就显而易见了。</p>
 <p>Johan 的小小黑魔法能够工作，是因为它将 Unicode 字符串转为编码过 UTF-8 字符串，然后再将编码字节对应转换为对应的 ASCII 字符串并返回。我喜欢这个方法是因为它利用了浏览器有多种编码函数的事实。如果只是分别成对使用 <code>encodeURIComponent</code> / <code>decodeURIComponent</code> 或者 <code>escape</code> / <code>unescape</code> 函数，则相当于空操作。Johan 的天才之处就在于他同时使用了两种不同的编码函数，从而得到了我们想要的结果。</p>
 <blockquote>
 <p>译者的话：文中有一句话可以解释我所遇到的问题，就是 <strong>The <code>unescape</code> function unescapes a percent-encoded string. It works with the standard percent-encoding (%XX) as well as the non-standard Unicode (%uXXXX) percent encoding.</strong> <code>unescape</code> 函数能够支持非标准的百分号编码方式，而 <code>decodeURIComponent</code> 函数却不能，当你所操作的字符串在 ASCII 范围内时，两者其实是可以互换使用的。有兴趣可以自己尝试一下。</p>
-<p>原文地址：<a href="http://monsur.hossa.in/2012/07/20/utf-8-in-javascript.html" target="_blank" rel="external">UTF-8 in Javascript</a></p>
+<p>原文地址：<a target="_blank" rel="noopener" href="http://monsur.hossa.in/2012/07/20/utf-8-in-javascript.html">UTF-8 in Javascript</a></p>
 </blockquote>
 
       
@@ -169,7 +168,7 @@
       })();
     </script>
     <noscript>
-    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
   </div>
 </section>
@@ -248,12 +247,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -288,7 +295,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -300,7 +307,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

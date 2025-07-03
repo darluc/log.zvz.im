@@ -5,15 +5,16 @@
   
   <title>Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
   <meta name="description" content="Blog for computer technology.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Z - Computer & Programming Technology">
+<meta property="og:title" content="Z - Computer &amp; Programming Technology">
 <meta property="og:url" content="http://log.zvz.im/page/2/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
 <meta property="og:description" content="Blog for computer technology.">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="darluc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Z - Computer & Programming Technology">
-<meta name="twitter:description" content="Blog for computer technology.">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -21,7 +22,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -40,8 +43,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -122,11 +125,11 @@
         <p><img src="https://img.zvz.im/imgs/2019/10/19578038f26ae531.jpg" alt=""></p>
 <p>本文是我总结的 golang 项目中最常见的十种错误。排名不分先后。</p>
 <h2 id="未知状态的枚举值"><a href="#未知状态的枚举值" class="headerlink" title="未知状态的枚举值"></a>未知状态的枚举值</h2><p>我们来看一个简单的例子：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Status <span class="keyword">uint32</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> (</div><div class="line">	StatusOpen Status = <span class="literal">iota</span></div><div class="line">	StatusClosed</div><div class="line">	StatusUnknown</div><div class="line">)</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Status <span class="type">uint32</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	StatusOpen Status = <span class="literal">iota</span></span><br><span class="line">	StatusClosed</span><br><span class="line">	StatusUnknown</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>在这里我们使用 <code>iota</code>  创建了一个枚举列表，结果状态如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">StatusOpen = <span class="number">0</span></div><div class="line">StatusClosed = <span class="number">1</span></div><div class="line">StatusUnknown = <span class="number">2</span></div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">StatusOpen = <span class="number">0</span></span><br><span class="line">StatusClosed = <span class="number">1</span></span><br><span class="line">StatusUnknown = <span class="number">2</span></span><br></pre></td></tr></table></figure>
 <p>现在，假设这个 <code>Status</code> 类型是 JSON 请求数据中的一部分，并且会被用于编码解码。我们可以设计一个结构，如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Request <span class="keyword">struct</span> &#123;</div><div class="line">	ID        <span class="keyword">int</span>    <span class="string">`json:"Id"`</span></div><div class="line">	Timestamp <span class="keyword">int</span>    <span class="string">`json:"Timestamp"`</span></div><div class="line">	Status    Status <span class="string">`json:"Status"`</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Request <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID        <span class="type">int</span>    <span class="string">`json:&quot;Id&quot;`</span></span><br><span class="line">	Timestamp <span class="type">int</span>    <span class="string">`json:&quot;Timestamp&quot;`</span></span><br><span class="line">	Status    Status <span class="string">`json:&quot;Status&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
           <p class="article-more-link">
             <a href="/2019/11/09/top-10-golang-mistakes/#more">More...</a>
@@ -220,7 +223,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在上一篇文章 <a href="http://blog.alexellis.io/golang-json-api-client/">“Grab JSON from an API”</a> 中，我们探索了如何使用 HTTP 客户端以及如何解析 JSON 数据。本篇文章是 Go 语言主题的续篇，讲述如何编写单元测试。</p>
+        <p>在上一篇文章 <a target="_blank" rel="noopener" href="http://blog.alexellis.io/golang-json-api-client/">“Grab JSON from an API”</a> 中，我们探索了如何使用 HTTP 客户端以及如何解析 JSON 数据。本篇文章是 Go 语言主题的续篇，讲述如何编写单元测试。</p>
 <h2 id="1-Go-语言中的测试"><a href="#1-Go-语言中的测试" class="headerlink" title="1. Go 语言中的测试"></a>1. Go 语言中的测试</h2><p>Go 语言有一个自带的测试命令 <code>go test</code> ，还有一个标准 <code>testing</code> 测试包，它能够为你提供一个小却完整的测试体验。</p>
 <p>这套标准工具链还包括了基准测试以及基于语句的代码覆盖率测试，类似与 NCover(.Net) 或者 Istanbul(Node.js)。</p>
 <h2 id="1-2-编写测试代码"><a href="#1-2-编写测试代码" class="headerlink" title="1.2 编写测试代码"></a>1.2 编写测试代码</h2><p>和 Go 语言其它方面如格式化、命名规则一样，Go 语言的单元测试也显得个性十足。它的语法刻意规避了使用断言模式，并将值验证和行为检测的工作留给了开发人员。<br>
@@ -269,7 +272,7 @@
         <p>当静态编程语言使用到 JSON 的时候，总是会有些费力。一方面，JSON 数据可能是任何形式的，从一个简单的数字，到一个复杂的包含内嵌对象的数组。当使用 Go 语言的时候，这意味着你要将这些变化多端的 JSON 数据放入结构化的变量中去。</p>
 <p>幸运地是，Go 尽力尝试帮我们降低编码难度，为我们提供了许多方式来解析 JSON 数据。</p>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Go 标准库的 json 包为我们提供了我们想要的功能。对于任意的 JSON 字符串，标准的解析方法如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">"encoding/json"</span></div><div class="line"><span class="comment">//...</span></div><div class="line"></div><div class="line"><span class="comment">// ... </span></div><div class="line">myJsonString := <span class="string">`&#123;"some":"json"&#125;`</span></div><div class="line"></div><div class="line"><span class="comment">// `&amp;myStoredVariable` is the address of the variable we want to store our</span></div><div class="line"><span class="comment">// parsed data in</span></div><div class="line">json.Unmarshall([]<span class="keyword">byte</span>(myJsonString), &amp;myStoredVariable)</div><div class="line"><span class="comment">//...</span></div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ... </span></span><br><span class="line">myJsonString := <span class="string">`&#123;&quot;some&quot;:&quot;json&quot;&#125;`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `&amp;myStoredVariable` is the address of the variable we want to store our</span></span><br><span class="line"><span class="comment">// parsed data in</span></span><br><span class="line">json.Unmarshall([]<span class="type">byte</span>(myJsonString), &amp;myStoredVariable)</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure>
 <p>本文中我们要讨论的是，对于 <code>myStoredVariable</code> 变量的类型，你可以有哪些不同的选择，以及决定何时采用何种类型。<br>
         
           <p class="article-more-link">
@@ -333,7 +336,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 </section>
@@ -409,12 +412,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -449,7 +460,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -461,7 +472,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

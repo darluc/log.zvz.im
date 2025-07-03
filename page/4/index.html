@@ -5,15 +5,16 @@
   
   <title>Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
   <meta name="description" content="Blog for computer technology.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Z - Computer & Programming Technology">
+<meta property="og:title" content="Z - Computer &amp; Programming Technology">
 <meta property="og:url" content="http://log.zvz.im/page/4/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
 <meta property="og:description" content="Blog for computer technology.">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="darluc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Z - Computer & Programming Technology">
-<meta name="twitter:description" content="Blog for computer technology.">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -21,7 +22,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -40,8 +43,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -75,11 +78,11 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>写一段可以无限被重用的代码，对于程序员来说无异于黄粱美梦。代码表达清晰是因为代码要表达需求，代码易于重用……好吧，只是因为你要重复使用它。两者不可得兼，你还能奢求更多么？</p>
-<p><a href="https://npmjs.org/package/curry">柯里化</a>可以帮上忙。</p>
+<p><a target="_blank" rel="noopener" href="https://npmjs.org/package/curry">柯里化</a>可以帮上忙。</p>
 <h2 id="什么是柯里化，为何它如此美味？"><a href="#什么是柯里化，为何它如此美味？" class="headerlink" title="什么是柯里化，为何它如此美味？"></a>什么是柯里化，为何它如此美味？</h2><p>通常， JavaScript 函数看起来都像这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> add = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123; <span class="keyword">return</span> a + b &#125;</div><div class="line">add(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">//= 3</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="keyword">function</span>(<span class="params">a, b</span>)&#123; <span class="keyword">return</span> a + b &#125;</span><br><span class="line"><span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">//= 3</span></span><br></pre></td></tr></table></figure>
 <p>它接受一些参数，然后有一个返回值。我可以使用过多（多余的参数会被忽略）或过少（会给出奇怪的返回值）的参数调用它：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">add(<span class="number">1</span>, <span class="number">2</span>, <span class="string">'IGNORE ME'</span>) <span class="comment">//= 3</span></div><div class="line">add(<span class="number">1</span>) <span class="comment">//= NaN</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="string">&#x27;IGNORE ME&#x27;</span>) <span class="comment">//= 3</span></span><br><span class="line"><span class="title function_">add</span>(<span class="number">1</span>) <span class="comment">//= NaN</span></span><br></pre></td></tr></table></figure>
 <p>柯里化可以使一个多参数函数转化为一系列单参数函数。比如，柯里化后的加法函数：<br>
         
           <p class="article-more-link">
@@ -129,8 +132,8 @@
 <p>计算机视觉是计算机科学中的一个领域，主要专注于使用不同的算法从图像和视频中获取数据。</p>
 </blockquote>
 <p>计算机视觉在许多领域得到了广泛地应用，例如安全摄像头的运动跟踪，控制车辆进行自动驾驶，从图片或视频中识别或搜索对象。</p>
-<p>要实现计算机视觉算法是一件非常繁复的工作，不过幸好有 <a href="http://opencv.org/">OpenCV</a> 这个非常好的开源库，此库起源于 1999 年，并一直发展到现在。</p>
-<p>OpenCV 官方支持 C，C ++，Python 和 Java。幸运的是，由 Peter Braden 领导的一群 Javascript 程序员开发了一个 Javascript 的 OpenCV 接口库，名为 <a href="https://github.com/peterbraden/node-opencv">node-opencv</a>。</p>
+<p>要实现计算机视觉算法是一件非常繁复的工作，不过幸好有 <a target="_blank" rel="noopener" href="http://opencv.org/">OpenCV</a> 这个非常好的开源库，此库起源于 1999 年，并一直发展到现在。</p>
+<p>OpenCV 官方支持 C，C ++，Python 和 Java。幸运的是，由 Peter Braden 领导的一群 Javascript 程序员开发了一个 Javascript 的 OpenCV 接口库，名为 <a target="_blank" rel="noopener" href="https://github.com/peterbraden/node-opencv">node-opencv</a>。</p>
 <p>利用该接口库，我们可以实现用于图像分析的 Node.js 应用。此库目前还没有实现所有的 OpenCV 特性 - 特别是 OpenCV 3 的一些特性 - 不过已经基本够用了。<br>
         
           <p class="article-more-link">
@@ -178,11 +181,11 @@
 <p>译者的话：最近在工作遇到一个小的问题。某段 JS 尝试使用 <code>decodeURIComponent</code> 函数对 <code>escape</code> 编码过的字符串进行解码导致了浏览器报错：<strong>URIError: URI malformed</strong>。于是上网找寻答案，看到这篇文章。</p>
 </blockquote>
 <p>在 Javascript 中处理编码问题有时会令人烦恼。我最近一次遭遇就是在使用浏览器的 <code>atob</code> 和 <code>btoa</code> 函数时。这些函数用于二进制字符串和 Base64 ASCII 码之间的转换。但是用它们处理 Unicode 字符串时就挂了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; btoa(&apos;\u0227&apos;);</div><div class="line">Error: INVALID_CHARACTER_ERR: DOM</div><div class="line">Exception 5</div></pre></td></tr></table></figure>
-<p><a href="https://developer.mozilla.org/en/DOM/window.btoa#Unicode_Strings">MDN 上关于 <code>btoa</code> 的文档</a>指出下面<a href="http://ecmanaut.blogspot.com/2006/07/encoding-decoding-utf8-in-javascript.html">来自于 Johan Sundström 的函数</a>可以解决 Unicode 问题：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">encode_utf8</span>(<span class="params">s</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">unescape</span>(endcodeURIComponent(s));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">decode_utf8</span>(<span class="params">s</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">decodeURIComponent</span>(<span class="built_in">escape</span>(s));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">btoa(<span class="string">&#x27;\u0227&#x27;</span>);</span></span><br><span class="line">Error: INVALID_CHARACTER_ERR: DOM</span><br><span class="line">Exception 5</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en/DOM/window.btoa#Unicode_Strings">MDN 上关于 <code>btoa</code> 的文档</a>指出下面<a target="_blank" rel="noopener" href="http://ecmanaut.blogspot.com/2006/07/encoding-decoding-utf8-in-javascript.html">来自于 Johan Sundström 的函数</a>可以解决 Unicode 问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">encode_utf8</span>(<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">unescape</span>(<span class="title function_">endcodeURIComponent</span>(s));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">decode_utf8</span>(<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">decodeURIComponent</span>(<span class="built_in">escape</span>(s));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用上这些函数后，<code>btoa</code> 就能够给出期望的结果了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; btoa(encode_utf8(&apos;\u0227&apos;));</div><div class="line">&quot;yKc==&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">btoa(encode_utf8(<span class="string">&#x27;\u0227&#x27;</span>));</span></span><br><span class="line">&quot;yKc==&quot;</span><br></pre></td></tr></table></figure>
 <p>Johan 的函数能正常工作，只是让人觉得有点像是黑魔法。所以我决定研究一下 <code>encode_utf8</code> 函数的各个部分，搞明白它是如何工作的。<br>
         
           <p class="article-more-link">
@@ -226,9 +229,9 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在<a href="https://www.ted.com/talks/linus_torvalds_the_mind_behind_linux">最近一次对 Linus Torvalds （ Linux 之父 ） 的采访</a>视频中，约 14 分 20 秒的位置，他提到了带着“好品味”编程的观点。好品味？采访者对其细节进行了追问，而 Linus 则是早有准备。</p>
+        <p>在<a target="_blank" rel="noopener" href="https://www.ted.com/talks/linus_torvalds_the_mind_behind_linux">最近一次对 Linus Torvalds （ Linux 之父 ） 的采访</a>视频中，约 14 分 20 秒的位置，他提到了带着“好品味”编程的观点。好品味？采访者对其细节进行了追问，而 Linus 则是早有准备。</p>
 <p>他首先展示了一个代码段。不过这不是一个有着“好品味”的代码。这个代码段是个坏样例，用作对比的原始代码。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">remove_list_entry(entry) </div><div class="line">&#123;</div><div class="line">  prev = <span class="literal">NULL</span>;</div><div class="line">  walk = head;</div><div class="line">  </div><div class="line">  <span class="comment">// Walk the list</span></div><div class="line">  </div><div class="line">  <span class="keyword">while</span> (walk != entry) &#123;</div><div class="line">    prev = walk;</div><div class="line">    walk = walk-&gt;next;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// Remove the entry by updating the</span></div><div class="line">  <span class="comment">// head or the previous entry</span></div><div class="line">  </div><div class="line">  <span class="keyword">if</span> (!prev)</div><div class="line">    head = entry-&gt;next;</div><div class="line">  <span class="keyword">else</span></div><div class="line">    prev-&gt;head = entry-&gt;next;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">remove_list_entry(entry) </span><br><span class="line">&#123;</span><br><span class="line">  prev = <span class="literal">NULL</span>;</span><br><span class="line">  walk = head;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Walk the list</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (walk != entry) &#123;</span><br><span class="line">    prev = walk;</span><br><span class="line">    walk = walk-&gt;next;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Remove the entry by updating the</span></span><br><span class="line">  <span class="comment">// head or the previous entry</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!prev)</span><br><span class="line">    head = entry-&gt;next;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    prev-&gt;head = entry-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><em>无品味的代码示例</em><br>
         
           <p class="article-more-link">
@@ -272,10 +275,10 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://facebook.github.io/react">React</a> 采用组件和单向数据流的方式完美地解决了用户界面的构建问题，不过它所用于处理状态的工具设计得太简单了，感觉就是故意的；也可能是为了强调 React 只是对应传统的 <a href="http://blog.codinghorror.com/understanding-model-view-controller/">MVC</a> 架构中 View 的部分。</p>
+        <p><a target="_blank" rel="noopener" href="https://facebook.github.io/react">React</a> 采用组件和单向数据流的方式完美地解决了用户界面的构建问题，不过它所用于处理状态的工具设计得太简单了，感觉就是故意的；也可能是为了强调 React 只是对应传统的 <a target="_blank" rel="noopener" href="http://blog.codinghorror.com/understanding-model-view-controller/">MVC</a> 架构中 View 的部分。</p>
 <h2 id="作者认为"><a href="#作者认为" class="headerlink" title="作者认为"></a>作者认为</h2><p>没有什么能够阻止我们用 React 来构建越来越大的应用，但是很快我们就会发现，想要保持代码简单，我们到处都需要进行状态的管理。</p>
 <p>尽管没有官方的解决方案，但是仍然有不少代码库依照 React 的设计理念解决了状态管理的问题。今天我们就要介绍两个这样的类库，并使用它们构建一个简单的小应用。</p>
-<h2 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h2><p><a href="https://redux.js.org/">Redux</a> 是一个极精简的库，它融合了 <a href="https://redux.js.org/">Flux</a> 和 <a href="https://redux.js.org/">Elm</a> 的设计理念，为应用状态提供容器功能。我们可以使用 Redux 管理任何应用的状态，使我们遵守以下准则：<br>
+<h2 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h2><p><a target="_blank" rel="noopener" href="https://redux.js.org/">Redux</a> 是一个极精简的库，它融合了 <a target="_blank" rel="noopener" href="https://redux.js.org/">Flux</a> 和 <a target="_blank" rel="noopener" href="https://redux.js.org/">Elm</a> 的设计理念，为应用状态提供容器功能。我们可以使用 Redux 管理任何应用的状态，使我们遵守以下准则：<br>
         
           <p class="article-more-link">
             <a href="/2016/10/13/build-todo-app/#more">More...</a>
@@ -319,7 +322,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>在 Javascript 语言中，闭包就是一个函数，只是它上下文中的变量以引用的形式与其绑定在了一起。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMeAClosure</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> canYouSeeMe = <span class="string">"here I am"</span>;</div><div class="line">  <span class="keyword">return</span> (<span class="function"><span class="keyword">function</span> <span class="title">theClosure</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> &#123;<span class="attr">canYouSeeIt</span>: canYouSeeMe ? <span class="string">"yes"</span> : <span class="string">"no"</span>&#125;;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> closure = getMeAClosure();</div><div class="line">closure().canYouSeeIt; <span class="comment">//"yes"</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getMeAClosure</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> canYouSeeMe = <span class="string">&quot;here I am&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">function</span> <span class="title function_">theClosure</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="attr">canYouSeeIt</span>: canYouSeeMe ? <span class="string">&quot;yes&quot;</span> : <span class="string">&quot;no&quot;</span>&#125;;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> closure = <span class="title function_">getMeAClosure</span>();</span><br><span class="line"><span class="title function_">closure</span>().<span class="property">canYouSeeIt</span>; <span class="comment">//&quot;yes&quot;</span></span><br></pre></td></tr></table></figure>
 <p>实际上每个 Javascript 函数在生成的时候都形成了闭包。稍后我会给大家解释闭包的产生原因和过程，然后纠正一些关于闭包的错误概念，最后再给出一些闭包的实际用例。不过首先简单介绍一下闭包相关的基础概念：Javascript 的闭包是通过 <code>词法域 (lexical scope)</code> 和 <code>变量环境 (VariableEnvironment)</code> 实现的。<br>
         
           <p class="article-more-link">
@@ -339,7 +342,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
     </nav>
   
 </section>
@@ -415,12 +418,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -455,7 +466,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -467,7 +478,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

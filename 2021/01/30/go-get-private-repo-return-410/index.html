@@ -5,20 +5,20 @@
   
   <title>日知其所无：修复 go get 私有仓库时返回的 410 错误 | Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天原本应该是个好日子，令人兴致盎然的星期天，却被一件让我抓狂了一整个小时的事情毁掉了。其实，从前一晚开始（周六晚）我就被这件事难住了，不过我实在太累了，所以我决定暂停休息一下，周日才继续研究。
-我一直投入时间在做 Marbar (https://mabar.id) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store 这里下载体验一下">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
+  <meta name="description" content="今天原本应该是个好日子，令人兴致盎然的星期天，却被一件让我抓狂了一整个小时的事情毁掉了。其实，从前一晚开始（周六晚）我就被这件事难住了，不过我实在太累了，所以我决定暂停休息一下，周日才继续研究。 我一直投入时间在做 Marbar (https:&#x2F;&#x2F;mabar.id) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store 这里下载体验一下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="日知其所无：修复 go get 私有仓库时返回的 410 错误">
 <meta property="og:url" content="http://log.zvz.im/2021/01/30/go-get-private-repo-return-410/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
-<meta property="og:description" content="今天原本应该是个好日子，令人兴致盎然的星期天，却被一件让我抓狂了一整个小时的事情毁掉了。其实，从前一晚开始（周六晚）我就被这件事难住了，不过我实在太累了，所以我决定暂停休息一下，周日才继续研究。
-我一直投入时间在做 Marbar (https://mabar.id) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store 这里下载体验一下">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
+<meta property="og:description" content="今天原本应该是个好日子，令人兴致盎然的星期天，却被一件让我抓狂了一整个小时的事情毁掉了。其实，从前一晚开始（周六晚）我就被这件事难住了，不过我实在太累了，所以我决定暂停休息一下，周日才继续研究。 我一直投入时间在做 Marbar (https:&#x2F;&#x2F;mabar.id) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store 这里下载体验一下">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img.zvz.im/imgs/2021/01/a36a3a4d605ce3a9.png">
-<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta property="article:published_time" content="2021-01-30T22:17:59.000Z">
+<meta property="article:modified_time" content="2025-07-03T18:06:35.826Z">
+<meta property="article:author" content="darluc">
+<meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="日知其所无：修复 go get 私有仓库时返回的 410 错误">
-<meta name="twitter:description" content="今天原本应该是个好日子，令人兴致盎然的星期天，却被一件让我抓狂了一整个小时的事情毁掉了。其实，从前一晚开始（周六晚）我就被这件事难住了，不过我实在太累了，所以我决定暂停休息一下，周日才继续研究。
-我一直投入时间在做 Marbar (https://mabar.id) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store 这里下载体验一下">
 <meta name="twitter:image" content="https://img.zvz.im/imgs/2021/01/a36a3a4d605ce3a9.png">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
@@ -27,7 +27,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -46,8 +48,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -80,14 +82,14 @@
       
         <p><img src="https://img.zvz.im/imgs/2021/01/a36a3a4d605ce3a9.png" alt=""></p>
 <p>今天原本应该是个好日子，令人兴致盎然的星期天，却被一件让我抓狂了一整个小时的事情毁掉了。其实，从前一晚开始（周六晚）我就被这件事难住了，不过我实在太累了，所以我决定暂停休息一下，周日才继续研究。</p>
-<p>我一直投入时间在做 Marbar (<a href="https://mabar.id/" target="_blank" rel="external">https://mabar.id</a>) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store <a href="http://bit.ly/2mcWvv0" target="_blank" rel="external">这里</a>下载体验一下。</p>
+<p>我一直投入时间在做 Marbar (<a target="_blank" rel="noopener" href="https://mabar.id/">https://mabar.id</a>) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store <a target="_blank" rel="noopener" href="http://bit.ly/2mcWvv0">这里</a>下载体验一下。</p>
 <p>我个人对与 Mabar 这个项目有很多的期待，它将会是在各种界面（手机，桌面，网页）上都能使用的一个平台。技术栈方面，我使用 Golang 作为后端语言，Kubernetes 作为基础设施，还有 Digital Ocean 提供的服务器。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>问题是这样的，我有一个私有模块（Golang 模块），是后端 API 引入的一个简单类库。但是无论如何，我都无法获取到这个依赖包，而且当我执行 <code>go get</code> 命令时总是会报错。<br><a id="more"></a><br>假设这个包的名称是 <code>lucifer</code>。它总是会在命令行中显示如下错误信息。太让我抓狂了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ go get -v bitbucket.org/compay/lucifer</div><div class="line">go: finding bitbucket.org/compay/lucifer latest</div><div class="line">go: downloading bitbucket.org/compay/lucifer v0.0.0-20190921175342-61a76c096369</div><div class="line">verifying bitbucket.org/compay/lucifer@v0.0.0-20190921175342-61a76c096369: bitbucket.org/compay/lucifer@v0.0.0-20190921175342-61a76c096369: reading https://sum.golang.org/lookup/bitbucket.org/compay/lucifer@v0.0.0-20190921175342-61a76c096369: 410 Gone</div></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>问题是这样的，我有一个私有模块（Golang 模块），是后端 API 引入的一个简单类库。但是无论如何，我都无法获取到这个依赖包，而且当我执行 <code>go get</code> 命令时总是会报错。<br><span id="more"></span><br>假设这个包的名称是 <code>lucifer</code>。它总是会在命令行中显示如下错误信息。太让我抓狂了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ go get -v bitbucket.org/compay/lucifer</span><br><span class="line">go: finding bitbucket.org/compay/lucifer latest</span><br><span class="line">go: downloading bitbucket.org/compay/lucifer v0.0.0-20190921175342-61a76c096369</span><br><span class="line">verifying bitbucket.org/compay/lucifer@v0.0.0-20190921175342-61a76c096369: bitbucket.org/compay/lucifer@v0.0.0-20190921175342-61a76c096369: reading https://sum.golang.org/lookup/bitbucket.org/compay/lucifer@v0.0.0-20190921175342-61a76c096369: 410 Gone</span><br></pre></td></tr></table></figure>
 <p>如果你阅读一下这些信息，它在说这个包在 sum.golang.org 中已经不存在或者不可用了。</p>
-<p>首先，我想到的是可能忘记对 bitbucket 强制使用 SSH 了，因为我之前有写过相关的问题：<a href="https://medium.com/easyread/today-i-learned-fix-go-get-private-repository-return-error-terminal-prompts-disabled-8c5549d89045" target="_blank" rel="external">https://medium.com/easyread/today-i-learned-fix-go-get-private-repository-return-error-terminal-prompts-disabled-8c5549d89045</a></p>
+<p>首先，我想到的是可能忘记对 bitbucket 强制使用 SSH 了，因为我之前有写过相关的问题：<a target="_blank" rel="noopener" href="https://medium.com/easyread/today-i-learned-fix-go-get-private-repository-return-error-terminal-prompts-disabled-8c5549d89045">https://medium.com/easyread/today-i-learned-fix-go-get-private-repository-return-error-terminal-prompts-disabled-8c5549d89045</a></p>
 <p>但是，它仍然无法工作。即使我强制它只许使用 SSH，当我使用 <code>go get</code> 命令它还是继续报错。</p>
-<h2 id="根本原因"><a href="#根本原因" class="headerlink" title="根本原因"></a>根本原因</h2><p>然后我在互联网上搜索了这个问题后，我找到了真正的原因。这个问题只会出现在 Golang 版本 1.13 之后。在看过发布文档 <a href="https://golang.org/doc/go1.13#modules" target="_blank" rel="external">https://golang.org/doc/go1.13#modules</a> 之后我更加确信了。</p>
+<h2 id="根本原因"><a href="#根本原因" class="headerlink" title="根本原因"></a>根本原因</h2><p>然后我在互联网上搜索了这个问题后，我找到了真正的原因。这个问题只会出现在 Golang 版本 1.13 之后。在看过发布文档 <a target="_blank" rel="noopener" href="https://golang.org/doc/go1.13#modules">https://golang.org/doc/go1.13#modules</a> 之后我更加确信了。</p>
 <p>这个问题之所以会发生是因为这个版本的 Golang 有一个新的特性。</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>实际上我们有几种可供选择的解决方案。</p>
 <ul>
@@ -97,28 +99,28 @@
 <p><em>新的 GOPRIVATE 环境变量个用于指示非公开可见的模块路径。并且会作为底层 GONOPROXY 和 GONOSUMDB 变量的默认值，这两个变量则对于哪些模块通过代理获取并且校验 checksum 数据库提供更加细化的控制。</em></p>
 </blockquote>
 <p>也就是说，要解决上面的问题，我们只需在系统中设置 <code>GOPRIVATE</code> 变量。在 <code>~/.bashrc</code> 中加入这行指令。<em>请根据你的公司和组织名称调整命令内容</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> GOPRIVATE=<span class="string">"gitlab.com/idmabar,bitbucket.org/idmabar,github.com/idmabar"</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPRIVATE=<span class="string">&quot;gitlab.com/idmabar,bitbucket.org/idmabar,github.com/idmabar&quot;</span></span><br></pre></td></tr></table></figure>
 <p>要确认它是否已经生效，你可以使用 <code>go env</code> 命令。命令回显如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">$ go env</div><div class="line">GO111MODULE=&quot;&quot;</div><div class="line">GOARCH=&quot;amd64&quot;</div><div class="line">GOBIN=&quot;&quot;</div><div class="line">GOCACHE=&quot;/Users/imantumorang/Library/Caches/go-build&quot;</div><div class="line">GOENV=&quot;/Users/imantumorang/Library/Application Support/go/env&quot;</div><div class="line">GOEXE=&quot;&quot;</div><div class="line">GOFLAGS=&quot;&quot;</div><div class="line">GOHOSTARCH=&quot;amd64&quot;</div><div class="line">GOHOSTOS=&quot;darwin&quot;</div><div class="line">GOOS=&quot;darwin&quot;</div><div class="line">GOPATH=&quot;/Users/imantumorang/go&quot;</div><div class="line">GOPRIVATE=&quot;gitlab.com/idmabar,bitbucket.org/idmabar,github.com/idmabar&quot;</div><div class="line">GOPROXY=&quot;https://proxy.golang.org,direct&quot;</div><div class="line">GOROOT=&quot;/usr/local/Cellar/go/1.13/libexec&quot;</div><div class="line">GOSUMDB=&quot;sum.golang.org&quot;</div><div class="line">GOTMPDIR=&quot;&quot;</div><div class="line">GOTOOLDIR=&quot;/usr/local/Cellar/go/1.13/libexec/pkg/tool/darwin_amd64&quot;</div><div class="line">GCCGO=&quot;gccgo&quot;</div><div class="line">AR=&quot;ar&quot;</div><div class="line">CC=&quot;clang&quot;</div><div class="line">CXX=&quot;clang++&quot;</div><div class="line">CGO_ENABLED=&quot;1&quot;</div><div class="line">GOMOD=&quot;&quot;</div><div class="line">CGO_CFLAGS=&quot;-g -O2&quot;</div><div class="line">CGO_CPPFLAGS=&quot;&quot;</div><div class="line">CGO_CXXFLAGS=&quot;-g -O2&quot;</div><div class="line">CGO_FFLAGS=&quot;-g -O2&quot;</div><div class="line">CGO_LDFLAGS=&quot;-g -O2&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span></span></span><br><span class="line">GO111MODULE=&quot;&quot;</span><br><span class="line">GOARCH=&quot;amd64&quot;</span><br><span class="line">GOBIN=&quot;&quot;</span><br><span class="line">GOCACHE=&quot;/Users/imantumorang/Library/Caches/go-build&quot;</span><br><span class="line">GOENV=&quot;/Users/imantumorang/Library/Application Support/go/env&quot;</span><br><span class="line">GOEXE=&quot;&quot;</span><br><span class="line">GOFLAGS=&quot;&quot;</span><br><span class="line">GOHOSTARCH=&quot;amd64&quot;</span><br><span class="line">GOHOSTOS=&quot;darwin&quot;</span><br><span class="line">GOOS=&quot;darwin&quot;</span><br><span class="line">GOPATH=&quot;/Users/imantumorang/go&quot;</span><br><span class="line">GOPRIVATE=&quot;gitlab.com/idmabar,bitbucket.org/idmabar,github.com/idmabar&quot;</span><br><span class="line">GOPROXY=&quot;https://proxy.golang.org,direct&quot;</span><br><span class="line">GOROOT=&quot;/usr/local/Cellar/go/1.13/libexec&quot;</span><br><span class="line">GOSUMDB=&quot;sum.golang.org&quot;</span><br><span class="line">GOTMPDIR=&quot;&quot;</span><br><span class="line">GOTOOLDIR=&quot;/usr/local/Cellar/go/1.13/libexec/pkg/tool/darwin_amd64&quot;</span><br><span class="line">GCCGO=&quot;gccgo&quot;</span><br><span class="line">AR=&quot;ar&quot;</span><br><span class="line">CC=&quot;clang&quot;</span><br><span class="line">CXX=&quot;clang++&quot;</span><br><span class="line">CGO_ENABLED=&quot;1&quot;</span><br><span class="line">GOMOD=&quot;&quot;</span><br><span class="line">CGO_CFLAGS=&quot;-g -O2&quot;</span><br><span class="line">CGO_CPPFLAGS=&quot;&quot;</span><br><span class="line">CGO_CXXFLAGS=&quot;-g -O2&quot;</span><br><span class="line">CGO_FFLAGS=&quot;-g -O2&quot;</span><br><span class="line">CGO_LDFLAGS=&quot;-g -O2&quot;</span><br></pre></td></tr></table></figure>
 <p>现在我可以使用 <code>go get</code> 命令获取我的私有库了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ go get bitbucket.org/company/lucifer</div><div class="line">go: finding bitbucket.org/company/lucifer latest</div><div class="line">go: downloading bitbucket.org/company/lucifer v0.0.0-20190921175342-61a76c096369</div><div class="line">go: extracting bitbucket.org/company/lucifer v0.0.0-20190921175342-61a76c096369</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go get bitbucket.org/company/lucifer</span></span><br><span class="line">go: finding bitbucket.org/company/lucifer latest</span><br><span class="line">go: downloading bitbucket.org/company/lucifer v0.0.0-20190921175342-61a76c096369</span><br><span class="line">go: extracting bitbucket.org/company/lucifer v0.0.0-20190921175342-61a76c096369</span><br></pre></td></tr></table></figure>
 <p>所以这个 <code>环境变量</code> 会告诉 <code>go get</code> 命令使用私有主机代理去获取代码包。</p>
 </li>
 <li><p>使用 GONOSUMDB</p>
-<p>另一个解决方案是可以使用 <code>GONOSUMDB</code> 变量。我还没有试过，不过按这份提议所说应该是可行的 <a href="https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md" target="_blank" rel="external">https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md</a></p>
+<p>另一个解决方案是可以使用 <code>GONOSUMDB</code> 变量。我还没有试过，不过按这份提议所说应该是可行的 <a target="_blank" rel="noopener" href="https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md">https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md</a></p>
 <p>你可以这样设定你的环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export GONOSUMDB=&quot;gitlab.com/idmabar,bitbucket.org/idmabar,github.com/idmabar&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GONOSUMDB=&quot;gitlab.com/idmabar,bitbucket.org/idmabar,github.com/idmabar&quot;</span><br></pre></td></tr></table></figure>
 <p>实际上这个问题只会发生在最新的 Golang 1.13 以及其后的版本。所以在升级你的 Golang 版本之前，请确认你设定了这个环境变量。</p>
-<p>这里有一些与此问题相关的链接，多亏 <a href="https://stackoverflow.com/users/12052086/noveaustack" target="_blank" rel="external">noveaustack</a> 发现这个问题并且发到了 Stackoverflow 上，我只是又发了一遍而已，因为我刚刚了解到这个问题并且使其成为了我的新知。</p>
+<p>这里有一些与此问题相关的链接，多亏 <a target="_blank" rel="noopener" href="https://stackoverflow.com/users/12052086/noveaustack">noveaustack</a> 发现这个问题并且发到了 Stackoverflow 上，我只是又发了一遍而已，因为我刚刚了解到这个问题并且使其成为了我的新知。</p>
 </li>
 </ul>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li>Stackoverflow 回答：<a href="https://stackoverflow.com/a/57887036/4075313" target="_blank" rel="external">https://stackoverflow.com/a/57887036/4075313</a></li>
-<li>go 模块的 Go Sum DB 提案：<a href="https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md" target="_blank" rel="external">https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md</a></li>
-<li>代理 Checksum DB：<a href="https://docs.gomods.io/configuration/sumdb/" target="_blank" rel="external">https://docs.gomods.io/configuration/sumdb/</a></li>
-<li>相关的 Github 事项：<a href="https://github.com/golang/go/issues/33985" target="_blank" rel="external">#33985</a> 还有 <a href="https://github.com/golang/go/issues/32291" target="_blank" rel="external">#32291</a></li>
+<li>Stackoverflow 回答：<a target="_blank" rel="noopener" href="https://stackoverflow.com/a/57887036/4075313">https://stackoverflow.com/a/57887036/4075313</a></li>
+<li>go 模块的 Go Sum DB 提案：<a target="_blank" rel="noopener" href="https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md">https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md</a></li>
+<li>代理 Checksum DB：<a target="_blank" rel="noopener" href="https://docs.gomods.io/configuration/sumdb/">https://docs.gomods.io/configuration/sumdb/</a></li>
+<li>相关的 Github 事项：<a target="_blank" rel="noopener" href="https://github.com/golang/go/issues/33985">#33985</a> 还有 <a target="_blank" rel="noopener" href="https://github.com/golang/go/issues/32291">#32291</a></li>
 </ul>
-<p>翻译自：<a href="https://medium.com/mabar/today-i-learned-fix-go-get-private-repository-return-error-reading-sum-golang-org-lookup-93058a058dd8" target="_blank" rel="external">Today I Learned — Fix: go get private repository return error reading sum.golang.org/lookup … 410 gone</a></p>
+<p>翻译自：<a target="_blank" rel="noopener" href="https://medium.com/mabar/today-i-learned-fix-go-get-private-repository-return-error-reading-sum-golang-org-lookup-93058a058dd8">Today I Learned — Fix: go get private repository return error reading sum.golang.org/lookup … 410 gone</a></p>
 
       
 
@@ -167,7 +169,7 @@
       })();
     </script>
     <noscript>
-    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
   </div>
 </section>
@@ -246,12 +248,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -286,7 +296,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -298,7 +308,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

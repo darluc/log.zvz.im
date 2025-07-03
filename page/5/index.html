@@ -5,15 +5,16 @@
   
   <title>Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
   <meta name="description" content="Blog for computer technology.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Z - Computer & Programming Technology">
+<meta property="og:title" content="Z - Computer &amp; Programming Technology">
 <meta property="og:url" content="http://log.zvz.im/page/5/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
 <meta property="og:description" content="Blog for computer technology.">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="darluc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Z - Computer & Programming Technology">
-<meta name="twitter:description" content="Blog for computer technology.">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -21,7 +22,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -40,8 +43,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -74,10 +77,10 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>PHP 5.5  中最重要的特性之一就是对协程（coroutine）和生成器（generator）的支持。生成器的特性已经由<a href="http://de2.php.net/manual/en/language.generators.overview.php">官方文档</a>和许多博文（比如<a href="http://blog.ircmaxell.com/2012/07/what-generators-can-do-for-you.html">这一篇</a>和<a href="http://sheriframadan.com/2012/10/test-drive-php-5-5-a-sneak-peek/#generators">这一篇</a>）讲解得很充分了。另一方面，协程受到的关注则较少。这是因为协程的功能相较而言更加强大，但却难以讲解。</p>
+        <p>PHP 5.5  中最重要的特性之一就是对协程（coroutine）和生成器（generator）的支持。生成器的特性已经由<a target="_blank" rel="noopener" href="http://de2.php.net/manual/en/language.generators.overview.php">官方文档</a>和许多博文（比如<a target="_blank" rel="noopener" href="http://blog.ircmaxell.com/2012/07/what-generators-can-do-for-you.html">这一篇</a>和<a target="_blank" rel="noopener" href="http://sheriframadan.com/2012/10/test-drive-php-5-5-a-sneak-peek/#generators">这一篇</a>）讲解得很充分了。另一方面，协程受到的关注则较少。这是因为协程的功能相较而言更加强大，但却难以讲解。</p>
 <p>本文会使用协程实现一个任务调度器，以此帮助你理解协程的概念和用法。我会先用几个段落做一些介绍。如果你觉得你已经对生成器和协程的基本概念掌握得很牢固了，那么你可以直接跳至“多任务协作”这一段开始阅读。</p>
 <h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>生成器背后最原始的想法就是一个函数不仅仅返回一次数据，而是能够返回一系列的数据，并且这些数据是挨个返回的。也可以理解为，生成器使你能更方便地实现迭代器。<code>xrange()</code> 函数就是一个生成器的简单例子：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">xrange</span><span class="params">($start, $end, $step = <span class="number">1</span>)</span> </span>&#123;</div><div class="line">  <span class="keyword">for</span> ($i = $start; $i &lt;= $end; $i += $step) &#123;</div><div class="line">    <span class="keyword">yield</span> $i;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">foreach</span> (xrange(<span class="number">1</span>, <span class="number">1000000</span>) <span class="keyword">as</span> $num) &#123;</div><div class="line">  <span class="keyword">echo</span> $num, <span class="string">"\n"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">xrange</span>(<span class="params"><span class="variable">$start</span>, <span class="variable">$end</span>, <span class="variable">$step</span> = <span class="number">1</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="variable">$i</span> = <span class="variable">$start</span>; <span class="variable">$i</span> &lt;= <span class="variable">$end</span>; <span class="variable">$i</span> += <span class="variable">$step</span>) &#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="variable">$i</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="title function_ invoke__">xrange</span>(<span class="number">1</span>, <span class="number">1000000</span>) <span class="keyword">as</span> <span class="variable">$num</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="variable">$num</span>, <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
           <p class="article-more-link">
             <a href="/2016/07/01/PHP-Coroutine/#more">More...</a>
@@ -174,8 +177,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>你是否正在开发一套 Node.js 的 RESTful 接口，但又不确定如何进行终端测试呢？实际工作比你想象得要简单很多，如果你选择对了测试工具的话。</p>
-<p>当我刚领到这个任务时：为我们的 node.js API 项目进行测试栈的调研和实现，我都不知道从哪儿开始。作为一个 ruby 码农，我之前都是用 RSpec 的。我的团队中没有人了解如何使用 javasript 对 RESTful 终端 API 进行测试。我们花了好几天来讨论该使用哪些测试库，包括 <a href="http://jasmine.github.io/">Jasmine</a> 和 <a href="http://frisbyjs.com/">Frisby</a>。</p>
-<p>接下来就要介绍我们的最终解决方案了。我还加入了一些实现指南和一个 <a href="https://github.com/kathrynhough/node-api-testing-example">GitHub 上的例子应用</a>，便于你将此测试技术栈加入到你自己的项目中去。<br>
+<p>当我刚领到这个任务时：为我们的 node.js API 项目进行测试栈的调研和实现，我都不知道从哪儿开始。作为一个 ruby 码农，我之前都是用 RSpec 的。我的团队中没有人了解如何使用 javasript 对 RESTful 终端 API 进行测试。我们花了好几天来讨论该使用哪些测试库，包括 <a target="_blank" rel="noopener" href="http://jasmine.github.io/">Jasmine</a> 和 <a target="_blank" rel="noopener" href="http://frisbyjs.com/">Frisby</a>。</p>
+<p>接下来就要介绍我们的最终解决方案了。我还加入了一些实现指南和一个 <a target="_blank" rel="noopener" href="https://github.com/kathrynhough/node-api-testing-example">GitHub 上的例子应用</a>，便于你将此测试技术栈加入到你自己的项目中去。<br>
         
           <p class="article-more-link">
             <a href="/2016/06/07/Make-your-Nodejs-API-robust/#more">More...</a>
@@ -218,13 +221,13 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Gitlab-简介"><a href="#Gitlab-简介" class="headerlink" title="Gitlab 简介"></a>Gitlab 简介</h2><p>GitLab 是一个用于仓库管理系统的开源项目。使用 <a href="http://www.baike.com/sowiki/Git?prd=content_doc_search">Git</a> 作为代码管理工具，并在此基础上搭建起来的 web 服务。 </p>
+        <h2 id="Gitlab-简介"><a href="#Gitlab-简介" class="headerlink" title="Gitlab 简介"></a>Gitlab 简介</h2><p>GitLab 是一个用于仓库管理系统的开源项目。使用 <a target="_blank" rel="noopener" href="http://www.baike.com/sowiki/Git?prd=content_doc_search">Git</a> 作为代码管理工具，并在此基础上搭建起来的 web 服务。 </p>
 <ol>
-<li>Web框架使用 <a href="http://www.baike.com/sowiki/Ruby+on+Rails?prd=content_doc_search">Ruby on Rails</a>。 </li>
-<li>基于 <a href="http://www.baike.com/sowiki/MIT?prd=content_doc_search">MIT</a> 代码发布协议。</li>
+<li>Web框架使用 <a target="_blank" rel="noopener" href="http://www.baike.com/sowiki/Ruby+on+Rails?prd=content_doc_search">Ruby on Rails</a>。 </li>
+<li>基于 <a target="_blank" rel="noopener" href="http://www.baike.com/sowiki/MIT?prd=content_doc_search">MIT</a> 代码发布协议。</li>
 </ol>
-<p>可以在 Github 上找到它的源码：<a href="https://github.com/gitlabhq/gitlabhq">https://github.com/gitlabhq/gitlabhq</a></p>
-<p>如果你点击查看 <a href="https://github.com/gitlabhq">gitlabhq</a> 这个用户，你可以看到更多的代码库。</p>
+<p>可以在 Github 上找到它的源码：<a target="_blank" rel="noopener" href="https://github.com/gitlabhq/gitlabhq">https://github.com/gitlabhq/gitlabhq</a></p>
+<p>如果你点击查看 <a target="_blank" rel="noopener" href="https://github.com/gitlabhq">gitlabhq</a> 这个用户，你可以看到更多的代码库。</p>
         
           <p class="article-more-link">
             <a href="/2016/04/02/gitlab-install/#more">More...</a>
@@ -317,7 +320,7 @@
 <p>在上一期我们已经介绍了，PHP7中最重要的对于不一致性的修复，以及两个大的新特性。本文将要介绍PHP7的另外6个你会乐于知道的特性。</p>
 </blockquote>
 <h2 id="Unicode编码的转义语法"><a href="#Unicode编码的转义语法" class="headerlink" title="Unicode编码的转义语法"></a>Unicode编码的转义语法</h2><p>新增的转义字符，<code>\u</code>，允许我们在php字符串中直接加入Unicode编码字符：</p>
-<p>使用语法如下<code>\u{编码}</code>，例如绿色的心形 💚，可以直接用PHP字符串表示：”\u{1F49A}”。<br>
+<p>使用语法如下<code>\u&#123;编码&#125;</code>，例如绿色的心形 💚，可以直接用PHP字符串表示：”\u{1F49A}”。<br>
         
           <p class="article-more-link">
             <a href="/2016/01/17/PHP7-2/#more">More...</a>
@@ -336,7 +339,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
     </nav>
   
 </section>
@@ -412,12 +415,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -452,7 +463,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -464,7 +475,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

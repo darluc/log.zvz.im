@@ -5,43 +5,19 @@
   
   <title>Go 语言中的 init 函数 | Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="标识符 main 无所不在。每个 Go 程序的执行都是从 main 包中一个拥有相同名字的函数开始的。当这个 main 函数返回时，整个程序也退出了执行。init 函数也扮演着特定的角色，本文会描述它们的特性并介绍它们的使用方法。
-init 函数是定义在包级别的，它被用于：
-
-初始化无法使用表达式初始化的变量
-检查和修复程序的状态
-注册
-执行一次性的运算
-以及其它
-
-除了下面要介绍一些区别，你可以">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
+  <meta name="description" content="标识符 main 无所不在。每个 Go 程序的执行都是从 main 包中一个拥有相同名字的函数开始的。当这个 main 函数返回时，整个程序也退出了执行。init 函数也扮演着特定的角色，本文会描述它们的特性并介绍它们的使用方法。 init 函数是定义在包级别的，它被用于：  初始化无法使用表达式初始化的变量 检查和修复程序的状态 注册 执行一次性的运算 以及其它  除了下面要介绍一些区别，你可以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go 语言中的 init 函数">
 <meta property="og:url" content="http://log.zvz.im/2021/01/10/init-functions-in-go/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
-<meta property="og:description" content="标识符 main 无所不在。每个 Go 程序的执行都是从 main 包中一个拥有相同名字的函数开始的。当这个 main 函数返回时，整个程序也退出了执行。init 函数也扮演着特定的角色，本文会描述它们的特性并介绍它们的使用方法。
-init 函数是定义在包级别的，它被用于：
-
-初始化无法使用表达式初始化的变量
-检查和修复程序的状态
-注册
-执行一次性的运算
-以及其它
-
-除了下面要介绍一些区别，你可以">
-<meta property="og:updated_time" content="2024-05-12T13:15:10.157Z">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
+<meta property="og:description" content="标识符 main 无所不在。每个 Go 程序的执行都是从 main 包中一个拥有相同名字的函数开始的。当这个 main 函数返回时，整个程序也退出了执行。init 函数也扮演着特定的角色，本文会描述它们的特性并介绍它们的使用方法。 init 函数是定义在包级别的，它被用于：  初始化无法使用表达式初始化的变量 检查和修复程序的状态 注册 执行一次性的运算 以及其它  除了下面要介绍一些区别，你可以">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-10T01:18:16.000Z">
+<meta property="article:modified_time" content="2025-07-03T18:06:35.827Z">
+<meta property="article:author" content="darluc">
+<meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go 语言中的 init 函数">
-<meta name="twitter:description" content="标识符 main 无所不在。每个 Go 程序的执行都是从 main 包中一个拥有相同名字的函数开始的。当这个 main 函数返回时，整个程序也退出了执行。init 函数也扮演着特定的角色，本文会描述它们的特性并介绍它们的使用方法。
-init 函数是定义在包级别的，它被用于：
-
-初始化无法使用表达式初始化的变量
-检查和修复程序的状态
-注册
-执行一次性的运算
-以及其它
-
-除了下面要介绍一些区别，你可以">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -49,7 +25,9 @@ init 函数是定义在包级别的，它被用于：
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -68,8 +46,8 @@ init 函数是定义在包级别的，它被用于：
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -117,45 +95,45 @@ init 函数是定义在包级别的，它被用于：
 <li>执行包内的 <code>init</code> 方法</li>
 </ol>
 <blockquote>
-<p><em>包的初始化过程只会被执行一次，即使它被多次引用</em><br><a id="more"></a></p>
+<p><em>包的初始化过程只会被执行一次，即使它被多次引用</em><br><span id="more"></span></p>
 </blockquote>
-<h2 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h2><p>Go 语言的包可以包含许多文件。那么在这些包和文件中，变量的初始化和 <code>init</code> 函数的执行顺序是怎样的呢？首先，初始化依赖机制会起作用（详情可以查看<a href="https://medium.com/golangspec/initialization-dependencies-in-go-51ae7b53f24c" target="_blank" rel="external">“Go 中的初始化依赖”</a>）。当依赖工作完成后，必须决定先初始化 <em>a.go</em> 文件中的变量还是 <em>z.go</em> 文件中的变量。这依赖于文件在编译器中出现的顺序。如果 <em>z.go</em> 先被提交给构建系统，那么它的变量就会先于 <em>a.go</em> 中的变量初始化。<code>init</code> 方法的调用也遵守相同的顺序。语言规格定义中建议总是采用相同的顺序，并且将包中的文件按单词拼写顺序传入：</p>
+<h2 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h2><p>Go 语言的包可以包含许多文件。那么在这些包和文件中，变量的初始化和 <code>init</code> 函数的执行顺序是怎样的呢？首先，初始化依赖机制会起作用（详情可以查看<a target="_blank" rel="noopener" href="https://medium.com/golangspec/initialization-dependencies-in-go-51ae7b53f24c">“Go 中的初始化依赖”</a>）。当依赖工作完成后，必须决定先初始化 <em>a.go</em> 文件中的变量还是 <em>z.go</em> 文件中的变量。这依赖于文件在编译器中出现的顺序。如果 <em>z.go</em> 先被提交给构建系统，那么它的变量就会先于 <em>a.go</em> 中的变量初始化。<code>init</code> 方法的调用也遵守相同的顺序。语言规格定义中建议总是采用相同的顺序，并且将包中的文件按单词拼写顺序传入：</p>
 <blockquote>
 <p>为了保证初始化行为可稳定复现，构建系统应该倾向于将同一个包中的多个文件按文件名的单词拼写顺序传递给编译器。</p>
 </blockquote>
 <p>不过对于移植性较差的程序来说也可以使用特别的顺序。我们用下面的例子看看这些是如何一起工作的：</p>
 <p><strong>sandbox.go</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"><span class="keyword">var</span> _ <span class="keyword">int64</span> = s()</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"init in sandbox.go"</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">s</span><span class="params">()</span> <span class="title">int64</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"calling s() in sandbox.go"</span>)</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"main"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="keyword">var</span> _ <span class="type">int64</span> = s()</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;init in sandbox.go&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">s</span><span class="params">()</span></span> <span class="type">int64</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;calling s() in sandbox.go&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;main&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>a.go</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"><span class="keyword">var</span> _ <span class="keyword">int64</span> = a()</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"init in a.go"</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span> <span class="title">int64</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"calling a() in a.go"</span>)</div><div class="line">    <span class="keyword">return</span> <span class="number">2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="keyword">var</span> _ <span class="type">int64</span> = a()</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;init in a.go&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> <span class="type">int64</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;calling a() in a.go&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>z.go</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"><span class="keyword">var</span> _ <span class="keyword">int64</span> = z()</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"init in z.go"</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">z</span><span class="params">()</span> <span class="title">int64</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"calling z() in z.go"</span>)</div><div class="line">    <span class="keyword">return</span> <span class="number">3</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="keyword">var</span> _ <span class="type">int64</span> = z()</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;init in z.go&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">z</span><span class="params">()</span></span> <span class="type">int64</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;calling z() in z.go&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>程序输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">calling a() in a.go</div><div class="line">calling s() in sandbox.go</div><div class="line">calling z() in z.go</div><div class="line">init in a.go</div><div class="line">init in sandbox.go</div><div class="line">init in z.go</div><div class="line">main</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">calling a() in a.go</span><br><span class="line">calling s() in sandbox.go</span><br><span class="line">calling z() in z.go</span><br><span class="line">init in a.go</span><br><span class="line">init in sandbox.go</span><br><span class="line">init in z.go</span><br><span class="line">main</span><br></pre></td></tr></table></figure>
 <h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p><code>init</code> 函数不接受任何参数，也没有返回值。于 <code>main</code> 相比，标识符 <code>init</code> 是没有被申明的，所以无法被引用：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"init"</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    init()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;init&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    init()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>编译时它会输出 “undefined: init” 错误。</p>
 <blockquote>
 <p>正式地来讲，<em>init</em> 标识符不会引入任何绑定关系。与此相同的还有，下划线表示的空白标识符。</p>
 </blockquote>
 <p>同一个包或文件中可以定义许多的 <em>init</em> 函数：</p>
 <p><strong>sandbox.go</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"init 1"</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"init 2"</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"main"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;init 1&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;init 2&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;main&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>utils.go</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"init 3"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;init 3&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">init 1</div><div class="line">init 2</div><div class="line">init 3</div><div class="line">main</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">init 1</span><br><span class="line">init 2</span><br><span class="line">init 3</span><br><span class="line">main</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>init 函数在标准库中被频繁地使用，比如：在<a href="https://github.com/golang/go/blob/2878cf14f3bb4c097771e50a481fec43962d7401/src/math/pow10.go#L33" target="_blank" rel="external">math</a>，<a href="https://github.com/golang/go/blob/2878cf14f3bb4c097771e50a481fec43962d7401/src/compress/bzip2/bzip2.go#L479" target="_blank" rel="external">bzip2</a> 和 <a href="https://github.com/golang/go/blob/2d573eee8ae532a3720ef4efbff9c8f42b6e8217/src/image/gif/reader.go#L511" target="_blank" rel="external">image</a> 这些包里。</p>
+<p>init 函数在标准库中被频繁地使用，比如：在<a target="_blank" rel="noopener" href="https://github.com/golang/go/blob/2878cf14f3bb4c097771e50a481fec43962d7401/src/math/pow10.go#L33">math</a>，<a target="_blank" rel="noopener" href="https://github.com/golang/go/blob/2878cf14f3bb4c097771e50a481fec43962d7401/src/compress/bzip2/bzip2.go#L479">bzip2</a> 和 <a target="_blank" rel="noopener" href="https://github.com/golang/go/blob/2d573eee8ae532a3720ef4efbff9c8f42b6e8217/src/image/gif/reader.go#L511">image</a> 这些包里。</p>
 </blockquote>
 <p><em>init</em> 函数最常见的使用场景就是赋值无法用初始化表达式计算得出的情况：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> precomputed = [<span class="number">20</span>]<span class="keyword">float64</span>&#123;&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> current <span class="keyword">float64</span> = <span class="number">1</span></div><div class="line">    precomputed[<span class="number">0</span>] = current</div><div class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt; <span class="built_in">len</span>(precomputed); i++ &#123;</div><div class="line">        precomputed[i] = precomputed[i<span class="number">-1</span>] * <span class="number">1.2</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><em>for</em> 循环无法用作<a href="https://golang.org/ref/spec#Expression" target="_blank" rel="external">表达式</a>，所以将其放入 <em>init</em> 函数中可以解决这个问题。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> precomputed = [<span class="number">20</span>]<span class="type">float64</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> current <span class="type">float64</span> = <span class="number">1</span></span><br><span class="line">    precomputed[<span class="number">0</span>] = current</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt; <span class="built_in">len</span>(precomputed); i++ &#123;</span><br><span class="line">        precomputed[i] = precomputed[i<span class="number">-1</span>] * <span class="number">1.2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>for</em> 循环无法用作<a target="_blank" rel="noopener" href="https://golang.org/ref/spec#Expression">表达式</a>，所以将其放入 <em>init</em> 函数中可以解决这个问题。</p>
 <h2 id="为副作用而引入包"><a href="#为副作用而引入包" class="headerlink" title="为副作用而引入包"></a>为副作用而引入包</h2><p>Go 对于未使用的包引入非常严格。有时候程序员引入一个包可能只是为了执行其中的 <em>init</em> 函数进行初始化工作。空白标识符这时候就派上用场了：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> _ <span class="string">"image/png"</span></div></pre></td></tr></table></figure>
-<p>这在 <a href="https://github.com/golang/go/blob/0104a31b8fbcbe52728a08867b26415d282c35d2/src/image/image.go#L10" target="_blank" rel="external">image</a> 包的评论中都有被提到。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> _ <span class="string">&quot;image/png&quot;</span></span><br></pre></td></tr></table></figure>
+<p>这在 <a target="_blank" rel="noopener" href="https://github.com/golang/go/blob/0104a31b8fbcbe52728a08867b26415d282c35d2/src/image/image.go#L10">image</a> 包的评论中都有被提到。</p>
 <p>如果上面介绍的这些内容有帮助到你，请关注我的博客以获取最新的更新，同时也可以提升我的积极性。</p>
-<p>翻译自：<a href="https://medium.com/golangspec/init-functions-in-go-eac191b3860a" target="_blank" rel="external">init functions in Go</a></p>
+<p>翻译自：<a target="_blank" rel="noopener" href="https://medium.com/golangspec/init-functions-in-go-eac191b3860a">init functions in Go</a></p>
 
       
 
@@ -204,7 +182,7 @@ init 函数是定义在包级别的，它被用于：
       })();
     </script>
     <noscript>
-    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
   </div>
 </section>
@@ -283,12 +261,20 @@ init 函数是定义在包级别的，它被用于：
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -323,7 +309,7 @@ init 函数是定义在包级别的，它被用于：
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -335,7 +321,7 @@ init 函数是定义在包级别的，它被用于：
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

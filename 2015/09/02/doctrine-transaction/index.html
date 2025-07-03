@@ -5,19 +5,20 @@
   
   <title>Doctrine 2 ORM 2 中的事务说明 | Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="事务划界“事务划界”就是定义你的事务边界的。正确地进行事务划界非常重要，如果做的不好就会影响你的应用性能。许多数据库以及数据库抽象层（比如PDO）默认工作在自动提交（auto-commit）模式下，该模式下每条SQL语句都被包裹在一个单独的小事务中。所以如果你没有主动进行事务控制，很快就会造成应用的性能下降，因为事务的开销可不便宜哦。
-在绝大多数情况下，Doctrine 2都为你做了合理的事务划界">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
+  <meta name="description" content="事务划界“事务划界”就是定义你的事务边界的。正确地进行事务划界非常重要，如果做的不好就会影响你的应用性能。许多数据库以及数据库抽象层（比如PDO）默认工作在自动提交（auto-commit）模式下，该模式下每条SQL语句都被包裹在一个单独的小事务中。所以如果你没有主动进行事务控制，很快就会造成应用的性能下降，因为事务的开销可不便宜哦。 在绝大多数情况下，Doctrine 2都为你做了合理的事务划界">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Doctrine 2 ORM 2 中的事务说明">
 <meta property="og:url" content="http://log.zvz.im/2015/09/02/doctrine-transaction/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
-<meta property="og:description" content="事务划界“事务划界”就是定义你的事务边界的。正确地进行事务划界非常重要，如果做的不好就会影响你的应用性能。许多数据库以及数据库抽象层（比如PDO）默认工作在自动提交（auto-commit）模式下，该模式下每条SQL语句都被包裹在一个单独的小事务中。所以如果你没有主动进行事务控制，很快就会造成应用的性能下降，因为事务的开销可不便宜哦。
-在绝大多数情况下，Doctrine 2都为你做了合理的事务划界">
-<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
+<meta property="og:description" content="事务划界“事务划界”就是定义你的事务边界的。正确地进行事务划界非常重要，如果做的不好就会影响你的应用性能。许多数据库以及数据库抽象层（比如PDO）默认工作在自动提交（auto-commit）模式下，该模式下每条SQL语句都被包裹在一个单独的小事务中。所以如果你没有主动进行事务控制，很快就会造成应用的性能下降，因为事务的开销可不便宜哦。 在绝大多数情况下，Doctrine 2都为你做了合理的事务划界">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-09-02T02:29:35.000Z">
+<meta property="article:modified_time" content="2025-07-03T18:06:35.825Z">
+<meta property="article:author" content="darluc">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="doctrine">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Doctrine 2 ORM 2 中的事务说明">
-<meta name="twitter:description" content="事务划界“事务划界”就是定义你的事务边界的。正确地进行事务划界非常重要，如果做的不好就会影响你的应用性能。许多数据库以及数据库抽象层（比如PDO）默认工作在自动提交（auto-commit）模式下，该模式下每条SQL语句都被包裹在一个单独的小事务中。所以如果你没有主动进行事务控制，很快就会造成应用的性能下降，因为事务的开销可不便宜哦。
-在绝大多数情况下，Doctrine 2都为你做了合理的事务划界">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -25,7 +26,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -44,8 +47,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -79,27 +82,27 @@
         <h2 id="事务划界"><a href="#事务划界" class="headerlink" title="事务划界"></a>事务划界</h2><p>“事务划界”就是定义你的事务边界的。正确地进行事务划界非常重要，如果做的不好就会影响你的应用性能。许多数据库以及数据库抽象层（比如PDO）默认工作在自动提交（auto-commit）模式下，该模式下每条SQL语句都被包裹在一个单独的小事务中。所以如果你没有主动进行事务控制，很快就会造成应用的性能下降，因为事务的开销可不便宜哦。</p>
 <p>在绝大多数情况下，Doctrine 2都为你做了合理的事务划界：所有的写操作（INSERT/UPDATE/DELETE）都被放到队列中，直到 <code>EntityManager#flush()</code>被调用，这些操作都被囊括在一个事务中。</p>
 <p>而且，Doctrine 2也支持（且鼓励）你自己来接管并控制事务划界。</p>
-<p>这里有使用Doctrine ORM处理事务的两种方法，接下来将详细讲述。<br><a id="more"></a></p>
+<p>这里有使用Doctrine ORM处理事务的两种方法，接下来将详细讲述。<br><span id="more"></span></p>
 <h3 id="方法1：隐式"><a href="#方法1：隐式" class="headerlink" title="方法1：隐式"></a>方法1：隐式</h3><p>第一种方法就是使用Doctrine ORM默认提供的事务处理机制。下面的代码片段，就没有任何显示的事务划界：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">// $me instanceof EntityManager</span></div><div class="line">$user = <span class="keyword">new</span> User;</div><div class="line">$user-&gt;setName(<span class="string">'George'</span>);</div><div class="line">$em-&gt;persist($user);</div><div class="line">$em-&gt;flush();</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// $me instanceof EntityManager</span></span><br><span class="line"><span class="variable">$user</span> = <span class="keyword">new</span> <span class="title class_">User</span>;</span><br><span class="line"><span class="variable">$user</span>-&gt;<span class="title function_ invoke__">setName</span>(<span class="string">&#x27;George&#x27;</span>);</span><br><span class="line"><span class="variable">$em</span>-&gt;<span class="title function_ invoke__">persist</span>(<span class="variable">$user</span>);</span><br><span class="line"><span class="variable">$em</span>-&gt;<span class="title function_ invoke__">flush</span>();</span><br></pre></td></tr></table></figure>
 <p>上面的代码我们没有进行任何事务操作，<code>EntityManager#flush()</code>会启动一个事务，并且控制它的提交和回滚。Doctrine ORM以将数据操作语句聚合（the aggregation of the DML operations）的方式实现了此种事务划界方法。如果所有的数据操作都属于某个域模型（domain model）的一个工作单元，这种方法完全能够满足需求。</p>
 <h3 id="方法2：显式"><a href="#方法2：显式" class="headerlink" title="方法2：显式"></a>方法2：显式</h3><p>显式的方式，是调用<code>Doctrine\DBAL\Connection</code> API直接控制事务边界。代码如下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">// $em instanceof EntityManager</span></div><div class="line">$em-&gt;getConnetion()-&gt;beginTransaction(); <span class="comment">// suspend auto-commit</span></div><div class="line"><span class="keyword">try</span>&#123;</div><div class="line">  <span class="comment">//... do some work</span></div><div class="line">  $user = <span class="keyword">new</span> User;</div><div class="line">  $user-&gt;setName(<span class="string">'George'</span>);</div><div class="line">  $em-&gt;persist($user);</div><div class="line">  $em-&gt;flush();</div><div class="line">  $em-&gt;getConnection()-&gt;commit();</div><div class="line">&#125;<span class="keyword">catch</span>(<span class="keyword">Exception</span> $e)&#123;</div><div class="line">  $em-&gt;getConnection()-&gt;rollback();</div><div class="line">  <span class="keyword">throw</span> $e;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// $em instanceof EntityManager</span></span><br><span class="line"><span class="variable">$em</span>-&gt;<span class="title function_ invoke__">getConnetion</span>()-&gt;<span class="title function_ invoke__">beginTransaction</span>(); <span class="comment">// suspend auto-commit</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="comment">//... do some work</span></span><br><span class="line">  <span class="variable">$user</span> = <span class="keyword">new</span> <span class="title class_">User</span>;</span><br><span class="line">  <span class="variable">$user</span>-&gt;<span class="title function_ invoke__">setName</span>(<span class="string">&#x27;George&#x27;</span>);</span><br><span class="line">  <span class="variable">$em</span>-&gt;<span class="title function_ invoke__">persist</span>(<span class="variable">$user</span>);</span><br><span class="line">  <span class="variable">$em</span>-&gt;<span class="title function_ invoke__">flush</span>();</span><br><span class="line">  <span class="variable">$em</span>-&gt;<span class="title function_ invoke__">getConnection</span>()-&gt;<span class="title function_ invoke__">commit</span>();</span><br><span class="line">&#125;<span class="keyword">catch</span>(<span class="built_in">Exception</span> <span class="variable">$e</span>)&#123;</span><br><span class="line">  <span class="variable">$em</span>-&gt;<span class="title function_ invoke__">getConnection</span>()-&gt;<span class="title function_ invoke__">rollback</span>();</span><br><span class="line">  <span class="keyword">throw</span> <span class="variable">$e</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>显式事务划界在两种情况下是必不可少的：</p>
 <ol>
 <li>当你想要在一个工作单元中包含自定义的DBAL操作时；</li>
 <li>当你想要使用某些需要激活状态事务的<code>EntityManager</code>API时。如果你没有满足它的事务需求时，这类方法会抛出<code>TransactionRequiredException</code>异常。</li>
 </ol>
 <p>一个更加方便的显式事务划界方法，是使用控制抽象层的方法<code>Connection#transactional($func)</code>或<code>EntityManager#transactional($func)</code> 。这些控制抽象可以确保你不会遗漏事务回滚的处理，而且节省不少代码。下面的代码示例与前面的代码实现了同样的功能：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">// $em instanceof EntityManager</span></div><div class="line">$em-&gt;transactional(<span class="function"><span class="keyword">function</span><span class="params">($em)</span></span>&#123;</div><div class="line">  <span class="comment">//... do some work</span></div><div class="line">  $user = <span class="keyword">new</span> User;</div><div class="line">  $user-&gt;setName(<span class="string">'George'</span>);</div><div class="line">  $em-&gt;persist($user);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p style="background-color:#FFFFDD;">Notice: 由于历史原因。使用<code>EntityManager#transactional($func)</code> 时，如果函数<code>$func</code> 返回等同于false的值时（如<code>array()</code>， <code>&quot;0&quot;</code> ，<code>&quot;&quot;</code> ，<code>0</code> ），总是会返回<code>false</code> 。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// $em instanceof EntityManager</span></span><br><span class="line"><span class="variable">$em</span>-&gt;<span class="title function_ invoke__">transactional</span>(function(<span class="variable">$em</span>)&#123;</span><br><span class="line">  <span class="comment">//... do some work</span></span><br><span class="line">  <span class="variable">$user</span> = <span class="keyword">new</span> <span class="title class_">User</span>;</span><br><span class="line">  <span class="variable">$user</span>-&gt;<span class="title function_ invoke__">setName</span>(<span class="string">&#x27;George&#x27;</span>);</span><br><span class="line">  <span class="variable">$em</span>-&gt;<span class="title function_ invoke__">persist</span>(<span class="variable">$user</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p style='background-color:#FFFFDD;'>Notice: 由于历史原因。使用<code>EntityManager#transactional($func)</code> 时，如果函数<code>$func</code> 返回等同于false的值时（如<code>array()</code>， <code>&quot;0&quot;</code> ，<code>&quot;&quot;</code> ，<code>0</code> ），总是会返回<code>false</code> 。</p>
 
 <p><code>Connection#transactional</code> 和<code>EntityManager#transactional</code> 的区别在于，后者在提交事务前会清空（flush）<code>EntityManager</code> ，并且在发生异常时回滚事务。</p>
 <h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>当使用隐式事务划界时，如果在执行<code>EntityManager#flush()</code>时发生异常 ，事务会被自动回滚，<code>EntityManager</code>会关闭。</p>
 <p>当使用显式事务划界时，事务应当如上面的例子所展示的那样，立即回滚，同时调用<code>Entitymanger#close()</code>方法关闭<code>EntityManager</code>，随后删除之。当然也能像前例所示，使用控制抽象更加优雅地处理。注意一般情况下，你应当将捕获到的异常重新抛出。如果你想要从某些异常中恢复，可以将捕获这些异常的代码放在考前的位置（但不能忘记回滚事务并关闭<code>EntityManager</code>）。</p>
 <p>在这些过程处理完成后，所有之前<code>EntityManager</code>管理过或移除掉的实例都脱离了（become detached）。这些脱线对象的状态与事务回滚时的状态是一致的，并且这种状态是无法回滚的，也就是说它们与数据库不再同步了。我们可以继续使用这些对象，但是得留意它们的状态可能已不准确了。</p>
 <p>异常发生后，如果你还想进行下一个工作单元，那么你应当使用一个新的<code>EntityManger</code>对象。</p>
-<p>translated from <a href="http://doctrine-orm.readthedocs.org/en/latest/reference/transactions-and-concurrency.html" target="_blank" rel="external">Doctrine 2 ORM 2 documentation</a></p>
+<p>translated from <a target="_blank" rel="noopener" href="http://doctrine-orm.readthedocs.org/en/latest/reference/transactions-and-concurrency.html">Doctrine 2 ORM 2 documentation</a></p>
 
       
 
@@ -148,7 +151,7 @@
       })();
     </script>
     <noscript>
-    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
   </div>
 </section>
@@ -227,12 +230,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -267,7 +278,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -279,7 +290,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

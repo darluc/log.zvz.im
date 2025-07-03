@@ -5,25 +5,19 @@
   
   <title>为什么柯里化有用 | Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="写一段可以无限被重用的代码，对于程序员来说无异于黄粱美梦。代码表达清晰是因为代码要表达需求，代码易于重用……好吧，只是因为你要重复使用它。两者不可得兼，你还能奢求更多么？
-柯里化可以帮上忙。
-什么是柯里化，为何它如此美味？通常， JavaScript 函数看起来都像这样：
-12var add = function(a, b)&amp;#123; return a + b &amp;#125;add(1, 2) /">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
+  <meta name="description" content="写一段可以无限被重用的代码，对于程序员来说无异于黄粱美梦。代码表达清晰是因为代码要表达需求，代码易于重用……好吧，只是因为你要重复使用它。两者不可得兼，你还能奢求更多么？ 柯里化可以帮上忙。 什么是柯里化，为何它如此美味？通常， JavaScript 函数看起来都像这样： 12var add &#x3D; function(a, b)&amp;#123; return a + b &amp;#125;add(1, 2) &#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为什么柯里化有用">
 <meta property="og:url" content="http://log.zvz.im/2017/03/23/why-curry-helps/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
-<meta property="og:description" content="写一段可以无限被重用的代码，对于程序员来说无异于黄粱美梦。代码表达清晰是因为代码要表达需求，代码易于重用……好吧，只是因为你要重复使用它。两者不可得兼，你还能奢求更多么？
-柯里化可以帮上忙。
-什么是柯里化，为何它如此美味？通常， JavaScript 函数看起来都像这样：
-12var add = function(a, b)&amp;#123; return a + b &amp;#125;add(1, 2) /">
-<meta property="og:updated_time" content="2024-05-12T13:15:10.157Z">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
+<meta property="og:description" content="写一段可以无限被重用的代码，对于程序员来说无异于黄粱美梦。代码表达清晰是因为代码要表达需求，代码易于重用……好吧，只是因为你要重复使用它。两者不可得兼，你还能奢求更多么？ 柯里化可以帮上忙。 什么是柯里化，为何它如此美味？通常， JavaScript 函数看起来都像这样： 12var add &#x3D; function(a, b)&amp;#123; return a + b &amp;#125;add(1, 2) &#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-03-23T15:11:23.000Z">
+<meta property="article:modified_time" content="2025-07-03T18:06:35.828Z">
+<meta property="article:author" content="darluc">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="为什么柯里化有用">
-<meta name="twitter:description" content="写一段可以无限被重用的代码，对于程序员来说无异于黄粱美梦。代码表达清晰是因为代码要表达需求，代码易于重用……好吧，只是因为你要重复使用它。两者不可得兼，你还能奢求更多么？
-柯里化可以帮上忙。
-什么是柯里化，为何它如此美味？通常， JavaScript 函数看起来都像这样：
-12var add = function(a, b)&amp;#123; return a + b &amp;#125;add(1, 2) /">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -31,7 +25,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -50,8 +46,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -83,50 +79,50 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>写一段可以无限被重用的代码，对于程序员来说无异于黄粱美梦。代码表达清晰是因为代码要表达需求，代码易于重用……好吧，只是因为你要重复使用它。两者不可得兼，你还能奢求更多么？</p>
-<p><a href="https://npmjs.org/package/curry" target="_blank" rel="external">柯里化</a>可以帮上忙。</p>
+<p><a target="_blank" rel="noopener" href="https://npmjs.org/package/curry">柯里化</a>可以帮上忙。</p>
 <h2 id="什么是柯里化，为何它如此美味？"><a href="#什么是柯里化，为何它如此美味？" class="headerlink" title="什么是柯里化，为何它如此美味？"></a>什么是柯里化，为何它如此美味？</h2><p>通常， JavaScript 函数看起来都像这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> add = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123; <span class="keyword">return</span> a + b &#125;</div><div class="line">add(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">//= 3</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="keyword">function</span>(<span class="params">a, b</span>)&#123; <span class="keyword">return</span> a + b &#125;</span><br><span class="line"><span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">//= 3</span></span><br></pre></td></tr></table></figure>
 <p>它接受一些参数，然后有一个返回值。我可以使用过多（多余的参数会被忽略）或过少（会给出奇怪的返回值）的参数调用它：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">add(<span class="number">1</span>, <span class="number">2</span>, <span class="string">'IGNORE ME'</span>) <span class="comment">//= 3</span></div><div class="line">add(<span class="number">1</span>) <span class="comment">//= NaN</span></div></pre></td></tr></table></figure>
-<p>柯里化可以使一个多参数函数转化为一系列单参数函数。比如，柯里化后的加法函数：<br><a id="more"></a></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> curry = <span class="built_in">require</span>(<span class="string">'curry'</span>);</div><div class="line"><span class="keyword">var</span> add = curry(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123; <span class="keyword">return</span> a + b &#125;)</div><div class="line"><span class="keyword">var</span> add100 = add(<span class="number">100</span>)</div><div class="line">add100(<span class="number">1</span>) <span class="comment">//= 101</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="string">&#x27;IGNORE ME&#x27;</span>) <span class="comment">//= 3</span></span><br><span class="line"><span class="title function_">add</span>(<span class="number">1</span>) <span class="comment">//= NaN</span></span><br></pre></td></tr></table></figure>
+<p>柯里化可以使一个多参数函数转化为一系列单参数函数。比如，柯里化后的加法函数：<br><span id="more"></span></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> curry = <span class="built_in">require</span>(<span class="string">&#x27;curry&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> add = <span class="title function_">curry</span>(<span class="keyword">function</span>(<span class="params">a, b</span>)&#123; <span class="keyword">return</span> a + b &#125;)</span><br><span class="line"><span class="keyword">var</span> add100 = <span class="title function_">add</span>(<span class="number">100</span>)</span><br><span class="line"><span class="title function_">add100</span>(<span class="number">1</span>) <span class="comment">//= 101</span></span><br></pre></td></tr></table></figure>
 <p>柯里化后的多参数函数可以如下调用：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> sum3 = curry(<span class="function"><span class="keyword">function</span>(<span class="params">a, b, c</span>)</span>&#123; <span class="keyword">return</span> a + b + c &#125;)</div><div class="line">sum3(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>) <span class="comment">//= 6</span></div></pre></td></tr></table></figure>
-<p>这样的写法在 JavaScript 中可能有点丑，所以<a href="https://npmjs.org/package/curry" target="_blank" rel="external">柯里化</a>也允许你一次传入都个参数：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> sum3 = curry(<span class="function"><span class="keyword">function</span>(<span class="params">a, b, c</span>)</span>&#123; <span class="keyword">return</span> a + b + c &#125;)</div><div class="line">sum3(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment">//= 6</span></div><div class="line">sum3(<span class="number">1</span>)(<span class="number">2</span>, <span class="number">3</span>) <span class="comment">//= 6</span></div><div class="line">sum3(<span class="number">1</span>, <span class="number">2</span>)(<span class="number">3</span>) <span class="comment">//= 6</span></div></pre></td></tr></table></figure>
-<h2 id="这样又如何？"><a href="#这样又如何？" class="headerlink" title="这样又如何？"></a>这样又如何？</h2><p>如果你对于那些经常使用柯里化函数的语言很熟（比如<a href="http://learnyouahaskell.com/" target="_blank" rel="external">Haskell</a>），可能看不出来这样做会带来什么好处。在我的理解中，主要有以下两点好处：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum3 = <span class="title function_">curry</span>(<span class="keyword">function</span>(<span class="params">a, b, c</span>)&#123; <span class="keyword">return</span> a + b + c &#125;)</span><br><span class="line"><span class="title function_">sum3</span>(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>) <span class="comment">//= 6</span></span><br></pre></td></tr></table></figure>
+<p>这样的写法在 JavaScript 中可能有点丑，所以<a target="_blank" rel="noopener" href="https://npmjs.org/package/curry">柯里化</a>也允许你一次传入都个参数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum3 = <span class="title function_">curry</span>(<span class="keyword">function</span>(<span class="params">a, b, c</span>)&#123; <span class="keyword">return</span> a + b + c &#125;)</span><br><span class="line"><span class="title function_">sum3</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment">//= 6</span></span><br><span class="line"><span class="title function_">sum3</span>(<span class="number">1</span>)(<span class="number">2</span>, <span class="number">3</span>) <span class="comment">//= 6</span></span><br><span class="line"><span class="title function_">sum3</span>(<span class="number">1</span>, <span class="number">2</span>)(<span class="number">3</span>) <span class="comment">//= 6</span></span><br></pre></td></tr></table></figure>
+<h2 id="这样又如何？"><a href="#这样又如何？" class="headerlink" title="这样又如何？"></a>这样又如何？</h2><p>如果你对于那些经常使用柯里化函数的语言很熟（比如<a target="_blank" rel="noopener" href="http://learnyouahaskell.com/">Haskell</a>），可能看不出来这样做会带来什么好处。在我的理解中，主要有以下两点好处：</p>
 <ul>
 <li>小片断的函数可以被配置，并很容易得到重用，且代码整洁；</li>
 <li>代码中彻头彻尾只用函数。</li>
 </ul>
 <h3 id="小片断函数"><a href="#小片断函数" class="headerlink" title="小片断函数"></a>小片断函数</h3><p>举一个比较明显的例子；从一个集合中获取所有成员的 id：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> objects = [&#123; <span class="attr">id</span>: <span class="number">1</span> &#125;, &#123; <span class="attr">id</span>: <span class="number">2</span> &#125;, &#123; <span class="attr">id</span>: <span class="number">3</span> &#125;]</div><div class="line">objects.map(<span class="function"><span class="keyword">function</span>(<span class="params">o</span>)</span>&#123; <span class="keyword">return</span> o.id &#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> objects = [&#123; <span class="attr">id</span>: <span class="number">1</span> &#125;, &#123; <span class="attr">id</span>: <span class="number">2</span> &#125;, &#123; <span class="attr">id</span>: <span class="number">3</span> &#125;]</span><br><span class="line">objects.<span class="title function_">map</span>(<span class="keyword">function</span>(<span class="params">o</span>)&#123; <span class="keyword">return</span> o.<span class="property">id</span> &#125;)</span><br></pre></td></tr></table></figure>
 <p>如果你正在厘清第二行代码的真实逻辑，让我帮你把它择出来吧：</p>
 <blockquote>
 <p>MAP over OBJECTS to get IDS（遍历所有对象获取它们的 ID 值）</p>
 </blockquote>
 <p>从函数定义的形式来看，只是这一行就有很多垃圾代码。让我们将其整理干净：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> get = curry(<span class="function"><span class="keyword">function</span>(<span class="params">property, object</span>)</span>&#123; <span class="keyword">return</span> object[property] &#125;)</div><div class="line">objects.map(get(<span class="string">'id'</span>)) <span class="comment">//= [1, 2, 3]</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> get = <span class="title function_">curry</span>(<span class="keyword">function</span>(<span class="params">property, object</span>)&#123; <span class="keyword">return</span> object[property] &#125;)</span><br><span class="line">objects.<span class="title function_">map</span>(<span class="title function_">get</span>(<span class="string">&#x27;id&#x27;</span>)) <span class="comment">//= [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
 <p>现在我们可以照着代码讲出真实的逻辑了 - 遍历所有对象获取它们的 ID 值。我们创建的<em>get</em> 方法是一个<strong>可部分配置的方法</strong>。</p>
 <p>如果我们想要重用‘从一组对象中获取 id ’这个功能怎么办？最直接的办法就是：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> getIDs = <span class="function"><span class="keyword">function</span>(<span class="params">objects</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> objects.map(get(<span class="string">'id'</span>))</div><div class="line">&#125;</div><div class="line">getIDs(objects) <span class="comment">//= [1, 2, 3]</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getIDs = <span class="keyword">function</span>(<span class="params">objects</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> objects.<span class="title function_">map</span>(<span class="title function_">get</span>(<span class="string">&#x27;id&#x27;</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">getIDs</span>(objects) <span class="comment">//= [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
 <p>嗯，看起来我们又丢掉了优雅简练，退回到杂乱无章的编码风格了。那我们该怎么办呢？额 - 如果 map 方法可以在还没有数据的时候，用一个函数进行部分配置的话？</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> map = curry(<span class="function"><span class="keyword">function</span>(<span class="params">fn, value</span>)</span>&#123; <span class="keyword">return</span> value.map(fn) &#125;)</div><div class="line"><span class="keyword">var</span> getIDs = map(get(<span class="string">'id'</span>))</div><div class="line"></div><div class="line">getIDs(objects) <span class="comment">//= [1, 2, 3]</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> map = <span class="title function_">curry</span>(<span class="keyword">function</span>(<span class="params">fn, value</span>)&#123; <span class="keyword">return</span> value.<span class="title function_">map</span>(fn) &#125;)</span><br><span class="line"><span class="keyword">var</span> getIDs = <span class="title function_">map</span>(<span class="title function_">get</span>(<span class="string">&#x27;id&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="title function_">getIDs</span>(objects) <span class="comment">//= [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
 <p>看起来，如果我们以柯里化函数作为基础构建模块，我们就可以使用它们很容易得创造出全新的功能函数。更让人兴奋的是，代码看起来更能体现你的业务逻辑。</p>
 <h3 id="连成串的函数"><a href="#连成串的函数" class="headerlink" title="连成串的函数"></a>连成串的函数</h3><p>使用这种方式写代码还有另一个好处，它鼓励函数的使用；而不是类的方法。虽然类的方法是很美好的 —— 允许多态，代码可读性高 —— 但它们并不总适合所有的工作，比如拥有大量异步调用的时候。</p>
 <p>下面的例子中，我们会从服务器端获取数据，再将其进行处理。数据形式如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="string">"user"</span>: <span class="string">"hughfdjackson"</span>,</div><div class="line">    <span class="string">"posts"</span>: [</div><div class="line">        &#123; <span class="string">"title"</span>: <span class="string">"why curry?"</span>, <span class="string">"contents"</span>: <span class="string">"..."</span> &#125;,</div><div class="line">        &#123; <span class="string">"title"</span>: <span class="string">"prototypes: the short(est possible) story"</span>, <span class="string">"contents"</span>: <span class="string">"..."</span> &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;user&quot;</span>: <span class="string">&quot;hughfdjackson&quot;</span>,</span><br><span class="line">    <span class="string">&quot;posts&quot;</span>: [</span><br><span class="line">        &#123; <span class="string">&quot;title&quot;</span>: <span class="string">&quot;why curry?&quot;</span>, <span class="string">&quot;contents&quot;</span>: <span class="string">&quot;...&quot;</span> &#125;,</span><br><span class="line">        &#123; <span class="string">&quot;title&quot;</span>: <span class="string">&quot;prototypes: the short(est possible) story&quot;</span>, <span class="string">&quot;contents&quot;</span>: <span class="string">&quot;...&quot;</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>你的任务是得到该用户所有文章的标题。现在开始！</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fetchFromServer()</div><div class="line">    .then(<span class="built_in">JSON</span>.parse)</div><div class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; <span class="keyword">return</span> data.posts &#125;)</div><div class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">posts</span>)</span>&#123;</div><div class="line">        <span class="keyword">return</span> posts.map(<span class="function"><span class="keyword">function</span>(<span class="params">post</span>)</span>&#123; <span class="keyword">return</span> post.title &#125;)</div><div class="line">    &#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetchFromServer</span>()</span><br><span class="line">    .<span class="title function_">then</span>(<span class="title class_">JSON</span>.<span class="property">parse</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">data</span>)&#123; <span class="keyword">return</span> data.<span class="property">posts</span> &#125;)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">posts</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> posts.<span class="title function_">map</span>(<span class="keyword">function</span>(<span class="params">post</span>)&#123; <span class="keyword">return</span> post.<span class="property">title</span> &#125;)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
 <p>好吧，这不公平，是我催得太急了。（我还帮你写了上面这些代码 —— 你也许能更加优雅地解决这个问题，可能我已经跑题了）</p>
 <p>由于承诺链（ chains of promises ）（也许你更喜欢称其为回调函数）基本都是与函数一起使用的，你无法简单直接地遍历数据，直到它先从服务器返回并被（无论视觉上或头脑中的）一团乱麻包裹住。</p>
 <p>让我们再次出发，这回我们使用已经定义过的方法：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fetchFromServer()</div><div class="line">    .then(<span class="built_in">JSON</span>.parse)</div><div class="line">    .then(get(<span class="string">'posts'</span>))</div><div class="line">    .then(map(get(<span class="string">'title'</span>)))</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetchFromServer</span>()</span><br><span class="line">    .<span class="title function_">then</span>(<span class="title class_">JSON</span>.<span class="property">parse</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="title function_">get</span>(<span class="string">&#x27;posts&#x27;</span>))</span><br><span class="line">    .<span class="title function_">then</span>(<span class="title function_">map</span>(<span class="title function_">get</span>(<span class="string">&#x27;title&#x27;</span>)))</span><br></pre></td></tr></table></figure>
 <p>Ok，很少的逻辑，轻松地表达；如果没有柯里化函数我们是无法如此容易地做到的。</p>
-<h2 id="简而言之"><a href="#简而言之" class="headerlink" title="简而言之"></a>简而言之</h2><p><a href="https://npmjs.org/package/curry" target="_blank" rel="external">柯里化</a>能给予你一种令人垂涎的表达能力。</p>
+<h2 id="简而言之"><a href="#简而言之" class="headerlink" title="简而言之"></a>简而言之</h2><p><a target="_blank" rel="noopener" href="https://npmjs.org/package/curry">柯里化</a>能给予你一种令人垂涎的表达能力。</p>
 <p>我建议你立刻开始使用它。如果你已经熟稔于此，那么你一定会发现它的 API 接口直接好用。如果还没有，那么你应当与你的同事一起好好考虑一下了。</p>
 <blockquote>
-<p>翻译自：<a href="https://hughfdjackson.com/javascript/why-curry-helps/" target="_blank" rel="external">Why Curry Helps</a></p>
+<p>翻译自：<a target="_blank" rel="noopener" href="https://hughfdjackson.com/javascript/why-curry-helps/">Why Curry Helps</a></p>
 </blockquote>
 
       
@@ -176,7 +172,7 @@
       })();
     </script>
     <noscript>
-    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
   </div>
 </section>
@@ -255,12 +251,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -295,7 +299,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -307,7 +311,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

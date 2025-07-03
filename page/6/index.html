@@ -5,15 +5,16 @@
   
   <title>Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
   <meta name="description" content="Blog for computer technology.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Z - Computer & Programming Technology">
+<meta property="og:title" content="Z - Computer &amp; Programming Technology">
 <meta property="og:url" content="http://log.zvz.im/page/6/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
 <meta property="og:description" content="Blog for computer technology.">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="darluc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Z - Computer & Programming Technology">
-<meta name="twitter:description" content="Blog for computer technology.">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -21,7 +22,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -40,8 +43,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -123,7 +126,7 @@
         <blockquote>
 <p>JSON-PRC 是与 XML-RPC类似的轻量级远程过程调用协议。</p>
 </blockquote>
-<h2 id="JSON-RPC-2-0-说明文档"><a href="#JSON-RPC-2-0-说明文档" class="headerlink" title="JSON-RPC 2.0 说明文档"></a>JSON-RPC 2.0 说明文档</h2><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>JSON-RPC 是一种无状态、轻量级远程过程调用（RPC）协议。本文档主要定义了调用过程中的一些数据结构和规则。该协议是与传输方式无关的：其定义内容在同一个处理过程使用时，可通过sockets、HTTP或其它任意消息传递环境。JSON-RPC使用了<a href="http://www.ietf.org/rfc/rfc4627.txt">JSON(RFC 4627)</a>作为数据格式。<br>它是从简设计的！<br>
+<h2 id="JSON-RPC-2-0-说明文档"><a href="#JSON-RPC-2-0-说明文档" class="headerlink" title="JSON-RPC 2.0 说明文档"></a>JSON-RPC 2.0 说明文档</h2><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>JSON-RPC 是一种无状态、轻量级远程过程调用（RPC）协议。本文档主要定义了调用过程中的一些数据结构和规则。该协议是与传输方式无关的：其定义内容在同一个处理过程使用时，可通过sockets、HTTP或其它任意消息传递环境。JSON-RPC使用了<a target="_blank" rel="noopener" href="http://www.ietf.org/rfc/rfc4627.txt">JSON(RFC 4627)</a>作为数据格式。<br>它是从简设计的！<br>
         
           <p class="article-more-link">
             <a href="/2015/10/06/JSON-RPC/#more">More...</a>
@@ -205,7 +208,7 @@
 </tr>
 </tbody>
 </table>
-<p>  <a href="http://getbootstrap.com/getting-started/#support">reference</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://getbootstrap.com/getting-started/#support">reference</a></p>
         
           <p class="article-more-link">
             <a href="/2015/09/16/Internet-Explorer-Compatibility-List/#more">More...</a>
@@ -298,14 +301,9 @@
 <li><p>Generate xml from table.</p>
 <ul>
 <li><p>you may need to set filter in your cli-config.php code like below.</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$config-&gt;setFilterSchemaAssetsExpression(<span class="string">'/^life_/'</span>);</div></pre></td></tr></table></figure>
-</li>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$config</span>-&gt;<span class="title function_ invoke__">setFilterSchemaAssetsExpression</span>(<span class="string">&#x27;/^life_/&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
 <li><p>you may meet unkown database type enum requested error, you can fix that in your cli-config.php too.</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$entityManager-&gt;getConnection()-&gt;getDatabasePlatform()-&gt;registerDoctrineTypeMapping(<span class="string">'enum'</span>, <span class="string">'string'</span>);</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$entityManager</span>-&gt;<span class="title function_ invoke__">getConnection</span>()-&gt;<span class="title function_ invoke__">getDatabasePlatform</span>()-&gt;<span class="title function_ invoke__">registerDoctrineTypeMapping</span>(<span class="string">&#x27;enum&#x27;</span>, <span class="string">&#x27;string&#x27;</span>);</span><br></pre></td></tr></table></figure>
         
           <p class="article-more-link">
             <a href="/2015/08/31/doctrine-generate/#more">More...</a>
@@ -350,8 +348,8 @@
       
         <h2 id="A-problem-about-nested-form-in-AngularJS"><a href="#A-problem-about-nested-form-in-AngularJS" class="headerlink" title="A problem about nested form in AngularJS"></a>A problem about nested form in AngularJS</h2><p>Today I happened to work with a page having a form nested in another one. I found the nested ng-controller directive was not working. So I tried to replace the FORM tag with DIV tag, and the ng-controller directvie worked again.</p>
 <p>The conclusion is that nested FORM is not compiled. I did not find any supporting post about this. If you know the reason, please let me know.</p>
-<p><a href="http://jsbin.com/yitiku/edit?html,js,output" target="_blank" rel="external">This is an example</a></p>
-<p><strong>Related book:</strong>  <a href="http://www.amazon.cn/gp/product/B00G3XSBG8/ref=as_li_qf_sp_asin_tl?ie=UTF8&camp=536&creative=3200&creativeASIN=B00G3XSBG8&linkCode=as2&tag=imzvz-23" target="_blank" rel="external">用AngularJS开发下一代Web应用</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=imzvz-23&l=as2&o=28&a=B00G3XSBG8" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"></p>
+<p><a target="_blank" rel="noopener" href="http://jsbin.com/yitiku/edit?html,js,output">This is an example</a></p>
+<p><strong>Related book:</strong>  <a target="_blank" rel="noopener" href="http://www.amazon.cn/gp/product/B00G3XSBG8/ref=as_li_qf_sp_asin_tl?ie=UTF8&camp=536&creative=3200&creativeASIN=B00G3XSBG8&linkCode=as2&tag=imzvz-23">用AngularJS开发下一代Web应用</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=imzvz-23&l=as2&o=28&a=B00G3XSBG8" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
 
       
 
@@ -366,7 +364,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+      <a class="extend prev" rel="prev" href="/page/5/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
     </nav>
   
 </section>
@@ -442,12 +440,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -482,7 +488,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -494,7 +500,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

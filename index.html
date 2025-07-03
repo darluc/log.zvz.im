@@ -5,15 +5,16 @@
   
   <title>Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
   <meta name="description" content="Blog for computer technology.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Z - Computer & Programming Technology">
+<meta property="og:title" content="Z - Computer &amp; Programming Technology">
 <meta property="og:url" content="http://log.zvz.im/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
 <meta property="og:description" content="Blog for computer technology.">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="darluc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Z - Computer & Programming Technology">
-<meta name="twitter:description" content="Blog for computer technology.">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -21,7 +22,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -40,8 +43,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -178,7 +181,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><img src="https://img.zvz.im/imgs/2020/04/d055ce9a0a5c233c.png" alt=""></p>
-<p>OpenCV 是一个用于计算机视觉处理的代码库，面世已有 20 多年了。大学时期，我曾在个人的 C++ 和 Python项目中使用过它，因为这些编程语言对它有很好的支持。不过随着我开始学习并使用 Go 语言，我开始好奇 Go 语言能否使用 OpenCV。网上有一些关于如何使用 Go 语言调用 OpenCV 的例子和教程，但我发现它们都太过黑科技和复杂了。还好我发现了一个名为 <a href="https://github.com/hybridgroup"><em>hybridgroup</em></a> 小组的伙计们写的封装库，它很容易使用，而且文档也很全。这里我要向你们展示如何使用 gocv ，并且创建一个简单的 Haar Cascades 面部探测器。</p>
+<p>OpenCV 是一个用于计算机视觉处理的代码库，面世已有 20 多年了。大学时期，我曾在个人的 C++ 和 Python项目中使用过它，因为这些编程语言对它有很好的支持。不过随着我开始学习并使用 Go 语言，我开始好奇 Go 语言能否使用 OpenCV。网上有一些关于如何使用 Go 语言调用 OpenCV 的例子和教程，但我发现它们都太过黑科技和复杂了。还好我发现了一个名为 <a target="_blank" rel="noopener" href="https://github.com/hybridgroup"><em>hybridgroup</em></a> 小组的伙计们写的封装库，它很容易使用，而且文档也很全。这里我要向你们展示如何使用 gocv ，并且创建一个简单的 Haar Cascades 面部探测器。</p>
 <p><strong>准备工作</strong></p>
 <ul>
 <li>Go</li>
@@ -228,7 +231,7 @@
       
         <p><img src="https://img.zvz.im/imgs/2021/01/a36a3a4d605ce3a9.png" alt=""></p>
 <p>今天原本应该是个好日子，令人兴致盎然的星期天，却被一件让我抓狂了一整个小时的事情毁掉了。其实，从前一晚开始（周六晚）我就被这件事难住了，不过我实在太累了，所以我决定暂停休息一下，周日才继续研究。</p>
-<p>我一直投入时间在做 Marbar (<a href="https://mabar.id/">https://mabar.id</a>) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store <a href="http://bit.ly/2mcWvv0">这里</a>下载体验一下。</p>
+<p>我一直投入时间在做 Marbar (<a target="_blank" rel="noopener" href="https://mabar.id/">https://mabar.id</a>) 这个业余项目。目前它还处于 beta 版本状态，仍然缺少许多特性，你可以在 Android Play Store <a target="_blank" rel="noopener" href="http://bit.ly/2mcWvv0">这里</a>下载体验一下。</p>
 <p>我个人对与 Mabar 这个项目有很多的期待，它将会是在各种界面（手机，桌面，网页）上都能使用的一个平台。技术栈方面，我使用 Golang 作为后端语言，Kubernetes 作为基础设施，还有 Digital Ocean 提供的服务器。</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>问题是这样的，我有一个私有模块（Golang 模块），是后端 API 引入的一个简单类库。但是无论如何，我都无法获取到这个依赖包，而且当我执行 <code>go get</code> 命令时总是会报错。<br>
         
@@ -335,7 +338,7 @@
       
         <p><img src="https://img.zvz.im/imgs/2020/06/85d574b9bcb0a790.png" alt=""></p>
 <p>:information_source: <em>本文基于处于开发中的项目的主分支</em></p>
-<p><code>ent</code> 是由 <a href="https://connectivity.fb.com/">Facebook Connectivity</a> 团队创建的 ORM 框架。迫于 Go 社区中缺少能够像图一样查询数据的工具，同时也缺少 100% 类型安全的 ORM，<code>ent</code> <a href="https://entgo.io/blog/#the-motivation-for-writing-a-new-orm-in-go">就是被设计出来解决这些问题的</a>。<br>
+<p><code>ent</code> 是由 <a target="_blank" rel="noopener" href="https://connectivity.fb.com/">Facebook Connectivity</a> 团队创建的 ORM 框架。迫于 Go 社区中缺少能够像图一样查询数据的工具，同时也缺少 100% 类型安全的 ORM，<code>ent</code> <a target="_blank" rel="noopener" href="https://entgo.io/blog/#the-motivation-for-writing-a-new-orm-in-go">就是被设计出来解决这些问题的</a>。<br>
         
           <p class="article-more-link">
             <a href="/2020/06/21/go-ent-graph-based-orm/#more">More...</a>
@@ -354,7 +357,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 </section>
@@ -430,12 +433,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -470,7 +481,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -482,7 +493,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

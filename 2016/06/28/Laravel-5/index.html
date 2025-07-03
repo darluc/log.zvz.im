@@ -5,37 +5,20 @@
   
   <title>Laravel 5 流程简析 | Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="文中 PHP 代码默认的 namespace 为 Illuminate。
-代码中的异常处理流程被忽略，未作描述。
-
-public/index.php
-引入 autoload 文件；
-引入 Bootstrap/app.php； 
-通过容器实例化 Kernel 接口对象；
-Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
+  <meta name="description" content="文中 PHP 代码默认的 namespace 为 Illuminate。 代码中的异常处理流程被忽略，未作描述。  public&#x2F;index.php 引入 autoload 文件； 引入 Bootstrap&#x2F;app.php；  通过容器实例化 Kernel 接口对象； Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Laravel 5 流程简析">
 <meta property="og:url" content="http://log.zvz.im/2016/06/28/Laravel-5/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
-<meta property="og:description" content="文中 PHP 代码默认的 namespace 为 Illuminate。
-代码中的异常处理流程被忽略，未作描述。
-
-public/index.php
-引入 autoload 文件；
-引入 Bootstrap/app.php； 
-通过容器实例化 Kernel 接口对象；
-Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
-<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
+<meta property="og:description" content="文中 PHP 代码默认的 namespace 为 Illuminate。 代码中的异常处理流程被忽略，未作描述。  public&#x2F;index.php 引入 autoload 文件； 引入 Bootstrap&#x2F;app.php；  通过容器实例化 Kernel 接口对象； Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-06-28T13:42:32.000Z">
+<meta property="article:modified_time" content="2025-07-03T18:06:35.824Z">
+<meta property="article:author" content="darluc">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="laravel">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Laravel 5 流程简析">
-<meta name="twitter:description" content="文中 PHP 代码默认的 namespace 为 Illuminate。
-代码中的异常处理流程被忽略，未作描述。
-
-public/index.php
-引入 autoload 文件；
-引入 Bootstrap/app.php； 
-通过容器实例化 Kernel 接口对象；
-Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得到 Response 实例；">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -43,7 +26,9 @@ Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得�
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -62,8 +47,8 @@ Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得�
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -104,7 +89,7 @@ Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得�
 <li><a href="#kernel">通过容器实例化 Kernel 接口对象</a>；</li>
 <li><a href="#request">Request::capture 获取到 Request 对象</a>，并<a href="#handle">交给 Kernel 实例处理</a>，得到 Response 实例；</li>
 <li><a href="#send">Response 实例输出 <code>send()</code></a>；</li>
-<li><a href="#terminate">Kernel 终结</a>，传入 Request 和 Response 作为参数；<a id="more"></a>
+<li><a href="#terminate">Kernel 终结</a>，传入 Request 和 Response 作为参数；<span id="more"></span>
 </li>
 </ol>
 <h2 id="Bootstrap-app-php"><a href="#Bootstrap-app-php" class="headerlink" title="Bootstrap/app.php"></a><a name="app"></a>Bootstrap/app.php</h2><ol>
@@ -235,7 +220,7 @@ Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得�
       })();
     </script>
     <noscript>
-    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
   </div>
 </section>
@@ -314,12 +299,20 @@ Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得�
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -354,7 +347,7 @@ Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得�
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -366,7 +359,7 @@ Request::capture 获取到 Request 对象，并交给 Kernel 实例处理，得�
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

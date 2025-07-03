@@ -5,22 +5,19 @@
   
   <title>PHP 7 有些什么值得期待？（一） | Z - Computer &amp; Programming Technology</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。 无论你有什么想法，PHP7的发布都将是一个大事件，而且今年就会发布。但是这对你来说意味着什么呢？我们可以发现许多运营站点都不太愿意更新到较新的PHP 5.x版本。本次大版本的发布是否会带来许多向后兼容的问题，而使得这些站点更加不愿意进行更新呢？
-
-答案是：这是因具体情况而异的。且看下文分析。">
+  <meta name="google-adsense-account" content="ca-pub-8768699638326268">
+  <meta name="description" content="大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。 无论你有什么想法，PHP7的发布都将是一个大事件，而且今年就会发布。但是这对你来说意味着什么呢？我们可以发现许多运营站点都不太愿意更新到较新的PHP 5.x版本。本次大版本的发布是否会带来许多向后兼容的问题，而使得这些站点更加不愿意进行更新呢？  答案是：这是因具体情况而异的。且看下文分析。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP 7 有些什么值得期待？（一）">
 <meta property="og:url" content="http://log.zvz.im/2015/10/24/PHP7-1/index.html">
-<meta property="og:site_name" content="Z - Computer & Programming Technology">
-<meta property="og:description" content="大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。 无论你有什么想法，PHP7的发布都将是一个大事件，而且今年就会发布。但是这对你来说意味着什么呢？我们可以发现许多运营站点都不太愿意更新到较新的PHP 5.x版本。本次大版本的发布是否会带来许多向后兼容的问题，而使得这些站点更加不愿意进行更新呢？
-
-答案是：这是因具体情况而异的。且看下文分析。">
-<meta property="og:updated_time" content="2024-05-12T13:15:10.153Z">
+<meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
+<meta property="og:description" content="大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。 无论你有什么想法，PHP7的发布都将是一个大事件，而且今年就会发布。但是这对你来说意味着什么呢？我们可以发现许多运营站点都不太愿意更新到较新的PHP 5.x版本。本次大版本的发布是否会带来许多向后兼容的问题，而使得这些站点更加不愿意进行更新呢？  答案是：这是因具体情况而异的。且看下文分析。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-10-24T23:29:47.000Z">
+<meta property="article:modified_time" content="2025-07-03T18:06:35.825Z">
+<meta property="article:author" content="darluc">
+<meta property="article:tag" content="php">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PHP 7 有些什么值得期待？（一）">
-<meta name="twitter:description" content="大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。 无论你有什么想法，PHP7的发布都将是一个大事件，而且今年就会发布。但是这对你来说意味着什么呢？我们可以发现许多运营站点都不太愿意更新到较新的PHP 5.x版本。本次大版本的发布是否会带来许多向后兼容的问题，而使得这些站点更加不愿意进行更新呢？
-
-答案是：这是因具体情况而异的。且看下文分析。">
   
     <link rel="alternative" href="/atom.xml" title="Z - Computer &amp; Programming Technology" type="application/atom+xml">
   
@@ -28,7 +25,9 @@
     <link rel="icon" href="/favicon.png">
   
   <link href="//fonts.geekzu.org/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NRBEZPWYN"></script>
@@ -47,8 +46,8 @@
       google_ad_client: "ca-pub-8768699638326268",
       enable_page_level_ads: true
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
@@ -83,52 +82,52 @@
 <p>大多数人可能已经知道，PHP7是PHP的下一个重要发布版本。<br> 无论你有什么想法，PHP7的发布都将是一个大事件，而且今年就会发布。但是这对你来说意味着什么呢？我们可以发现许多运营站点都不太愿意更新到较新的PHP 5.x版本。本次大版本的发布是否会带来许多向后兼容的问题，而使得这些站点更加不愿意进行更新呢？</p>
 </blockquote>
 <p>答案是：这是因具体情况而异的。且看下文分析。</p>
-<a id="more"></a>
+<span id="more"></span>
 <p>在PHP 7中，许多语言边界问题（language edge cases）都得到了清理。另外，性能和不一致性的修复在此版本都是关注的焦点。</p>
 <p>让我们看看详细情况。</p>
 <h2 id="对于不一致性的修复"><a href="#对于不一致性的修复" class="headerlink" title="对于不一致性的修复"></a>对于不一致性的修复</h2><p>遗憾的是，needle/haystack问题没有得到修复。不过，两个重要的RFC获得通过，它们能带来更加重要的内部和用户空间一致性。</p>
-<p>最大（且最难以察觉）的变化是<a href="https://wiki.php.net/rfc/abstract_syntax_tree" target="_blank" rel="external">Abstract Syntax Tree(AST)抽象语法树)</a>的加入——代码编译过程的中间表示法。它可以使我们能够清除一些边界情况下的不一致问题，同时为未来一些惊人的工具开启了无限可能，例如使用AST产生更高性能opcodes。</p>
-<p>第二点是引入了<a href="https://wiki.php.net/rfc/uniform_variable_syntax" target="_blank" rel="external">Uniform Variable Syntax 统一变量语法</a>，可能会给你带来更多的问题。它解决了表达式求值上严重的不一致问题。比如，可以使用 <code>($object-&gt;closureProperty)()</code>调用闭包类型属性，而且可以链式调用静态方法，如下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">foo</span> </span>&#123; <span class="keyword">static</span> $bar = <span class="string">'baz'</span>;&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">baz</span> </span>&#123; <span class="keyword">static</span> $bat = <span class="string">'Hello World'</span>;&#125;</div><div class="line"></div><div class="line">baz::$bat = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123; <span class="keyword">echo</span> <span class="string">"Hello World"</span>; &#125;;</div><div class="line"></div><div class="line">$foo = <span class="string">'foo'</span>,</div><div class="line">($foo::$bar::$bat)();</div></pre></td></tr></table></figure>
+<p>最大（且最难以察觉）的变化是<a target="_blank" rel="noopener" href="https://wiki.php.net/rfc/abstract_syntax_tree">Abstract Syntax Tree(AST)抽象语法树)</a>的加入——代码编译过程的中间表示法。它可以使我们能够清除一些边界情况下的不一致问题，同时为未来一些惊人的工具开启了无限可能，例如使用AST产生更高性能opcodes。</p>
+<p>第二点是引入了<a target="_blank" rel="noopener" href="https://wiki.php.net/rfc/uniform_variable_syntax">Uniform Variable Syntax 统一变量语法</a>，可能会给你带来更多的问题。它解决了表达式求值上严重的不一致问题。比如，可以使用 <code>($object-&gt;closureProperty)()</code>调用闭包类型属性，而且可以链式调用静态方法，如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">foo</span> </span>&#123; <span class="built_in">static</span> <span class="variable">$bar</span> = <span class="string">&#x27;baz&#x27;</span>;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">baz</span> </span>&#123; <span class="built_in">static</span> <span class="variable">$bat</span> = <span class="string">&#x27;Hello World&#x27;</span>;&#125;</span><br><span class="line"></span><br><span class="line">baz::<span class="variable">$bat</span> = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">echo</span> <span class="string">&quot;Hello World&quot;</span>; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable">$foo</span> = <span class="string">&#x27;foo&#x27;</span>,</span><br><span class="line">(<span class="variable">$foo</span>::<span class="variable">$bar</span>::<span class="variable">$bat</span>)();</span><br></pre></td></tr></table></figure>
 <p>不过，有些语义也受影响产生了变化。特别是变量值作为变量和变量值作为属性时。</p>
 <p>或者说变得更简洁了，如下的语句：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$obj-&gt;$properties[<span class="string">'name'</span>]</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$obj</span>-&gt;<span class="variable">$properties</span>[<span class="string">&#x27;name&#x27;</span>]</span><br></pre></td></tr></table></figure>
 <p>在PHP5.6中，会被解释为：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$obj-&gt;&#123;$properties[<span class="string">'name'</span>]&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$obj</span>-&gt;&#123;<span class="variable">$properties</span>[<span class="string">&#x27;name&#x27;</span>]&#125;</span><br></pre></td></tr></table></figure>
 <p>而在PHP7中，则被解释为：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;$obj-&gt;$properties&#125;[<span class="string">'name'</span>]</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="variable">$obj</span>-&gt;<span class="variable">$properties</span>&#125;[<span class="string">&#x27;name&#x27;</span>]</span><br></pre></td></tr></table></figure>
 <p>使用变量值变量只是一般的边界情况，更加令我难以接受地是，变量值属性的变化。还好我们可以采用加大括号的方式，让这些情况在PHP5.6和7下表现一致。</p>
-<h2 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h2><p>升级至PHP 7的最大动力来自于它的性能提升，这主要得益于被称作<a href="https://wiki.php.net/rfc/phpng" target="_blank" rel="external">phpng</a>的修改。性能的提升或许可以保证更快被采用，特别是那些平时不太乐意升级的较小的主机供应商，因为通过升级，他们能够为更多的客户提供服务，而不需要对硬件进行升级。</p>
+<h2 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h2><p>升级至PHP 7的最大动力来自于它的性能提升，这主要得益于被称作<a target="_blank" rel="noopener" href="https://wiki.php.net/rfc/phpng">phpng</a>的修改。性能的提升或许可以保证更快被采用，特别是那些平时不太乐意升级的较小的主机供应商，因为通过升级，他们能够为更多的客户提供服务，而不需要对硬件进行升级。</p>
 <p>取决与参照哪家的benchmark程序，PHP 7的性能已经能与Facebook的HHVM一较高下了。HHVM使用了JIT(Just In Time)编译器将PHP代码直接编译为机器指令（在可能的情况下）。</p>
 <p>尽管有许多相关的讨论，PHP 7依然没有使用JIT。暂时还不清楚在使用JIT的情况下能否获得更多的性能提升，但是如果有人做了一个，那一定会很有意思。</p>
 <p>除了性能提升外，PHP 7 还大量提升了内存使用效率。对于内部数据结构的优化，不仅节省了内存空间，也是提升性能的主要手段之一。</p>
 <h2 id="无法完全向后兼容"><a href="#无法完全向后兼容" class="headerlink" title="无法完全向后兼容"></a>无法完全向后兼容</h2><p>尽管内核开发者们尽力保证向后兼容，可惜当语言进化发展的时候，并不是总能如愿的。</p>
 <p>不过，和前面提到的统一变量语法带来的对向后兼容性的破坏一样，绝大多数破坏都是微不足道的，例如下面的<strong>对非对象类型变量进行方法调用时产生的可捕获致命错误</strong>：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">set_error_handler(<span class="function"><span class="keyword">function</span><span class="params">($code, $message)</span> </span>&#123;</div><div class="line">  var_dump($code, $message);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">$val = <span class="keyword">null</span>;</div><div class="line">$var-&gt;method();</div><div class="line"><span class="keyword">echo</span> $e-&gt;getMessage(); <span class="comment">// Fatal Error: Call to a member function method() on null</span></div><div class="line"><span class="keyword">echo</span> <span class="string">"Hello World"</span>; <span class="comment">// Still runs</span></div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">set_error_handler</span>(function(<span class="variable">$code</span>, <span class="variable">$message</span>) &#123;</span><br><span class="line">  <span class="title function_ invoke__">var_dump</span>(<span class="variable">$code</span>, <span class="variable">$message</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable">$val</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="variable">$var</span>-&gt;<span class="title function_ invoke__">method</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$e</span>-&gt;<span class="title function_ invoke__">getMessage</span>(); <span class="comment">// Fatal Error: Call to a member function method() on null</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Hello World&quot;</span>; <span class="comment">// Still runs</span></span><br></pre></td></tr></table></figure>
 <p>此外ASP和脚本标签都被移除了，意味着&lt;%和&lt;%=，或者&lt;script language=“php”&gt;（以及它们对应的闭合标签，%&gt;，和&lt;/script&gt;）都不能再被使用。</p>
-<p>其它较大的变化可以参考<a href="https://wiki.php.net/rfc/remove_deprecated_functionality_in_php7" target="_blank" rel="external">移除所有的过时函数</a>。</p>
+<p>其它较大的变化可以参考<a target="_blank" rel="noopener" href="https://wiki.php.net/rfc/remove_deprecated_functionality_in_php7">移除所有的过时函数</a>。</p>
 <p>最重要的是POSIX兼容的正则表达式扩展的移除，ext/ereg（5.3时被弃用）和旧的ext/mysql扩展（5.5时被弃用）。</p>
 <p>另一个较小的向后不兼容变化是不再允许一条switch语句中包含多个default子句。在PHP 7以前，以下的语句是合法的：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">switch</span>($expr) &#123;</div><div class="line">  <span class="keyword">default</span>:</div><div class="line">  	<span class="keyword">echo</span> <span class="string">"Hello World"</span>;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">  <span class="keyword">default</span>:</div><div class="line">  	<span class="keyword">echo</span> <span class="string">"Goodbye Moon!"</span>;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(<span class="variable">$expr</span>) &#123;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&quot;Goodbye Moon!&quot;</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>最后的一条default子句将被执行。而在PHP 7中，则会产生如下结果：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Fatal error: <span class="keyword">Switch</span> statements may only contain one <span class="keyword">default</span> clause</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fatal error: Switch statements may only contain one <span class="keyword">default</span> clause</span><br></pre></td></tr></table></figure>
 <h2 id="新的特性"><a href="#新的特性" class="headerlink" title="新的特性"></a>新的特性</h2><p>我们小心地处理向后不兼容性，我们赞赏性能的提升，我们陶醉在新的特性中！新特性才是使每个发行版本中有意思的部分，PHP 7可有不少新特性哦。</p>
-<h2 id="标量类型提示以及返回类型"><a href="#标量类型提示以及返回类型" class="headerlink" title="标量类型提示以及返回类型"></a>标量类型提示以及返回类型</h2><p>让我们从PHP 7最具争议的新特性开始讲起：<a href="https://wiki.php.net/rfc/scalar_type_hints_v5" target="_blank" rel="external">标量类型提示</a>。加入此特性的相关投票才刚刚通过，投票发起人就永久退出了PHP的开发（同时撤销了RFC）。随之而来的，多个RFC文档提出此特性的实现方案，同时产生了许多公开的辩论，最终在初始的RFC得到通过之后，一切才归于平静。</p>
+<h2 id="标量类型提示以及返回类型"><a href="#标量类型提示以及返回类型" class="headerlink" title="标量类型提示以及返回类型"></a>标量类型提示以及返回类型</h2><p>让我们从PHP 7最具争议的新特性开始讲起：<a target="_blank" rel="noopener" href="https://wiki.php.net/rfc/scalar_type_hints_v5">标量类型提示</a>。加入此特性的相关投票才刚刚通过，投票发起人就永久退出了PHP的开发（同时撤销了RFC）。随之而来的，多个RFC文档提出此特性的实现方案，同时产生了许多公开的辩论，最终在初始的RFC得到通过之后，一切才归于平静。</p>
 <p>对于我们来说，作为最终使用者，对于标量类型的类型提示到底意味着什么呢。具体来说就是int，float，string和bool类型。类型提示默认是不严格的，它们会将原始类型数据强制转换为提示所指定的类型。所以，当你将int(1)作为参数传递给一个需要float类型参数的函数时，它会被转换为float(1.0)。将float(1.5)传递给需要int类型的函数时，则会被转换为int(1)。</p>
 <p>下面举例说明：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sendHttpStatus</span><span class="params">(int $statusCode, string $message)</span> </span>&#123;</div><div class="line">  header(<span class="string">'HTTP/1.0 '</span> .$statusCode. <span class="string">' '</span> .$message);</div><div class="line">&#125;</div><div class="line"></div><div class="line">sendHttpStatus(<span class="number">404</span>, <span class="string">"File Not Found"</span>); <span class="comment">// integer and string passed</span></div><div class="line">sendHttpStatus(<span class="string">"403"</span>, <span class="string">"OK"</span>); <span class="comment">// string "403" coerced to int(403)</span></div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sendHttpStatus</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$statusCode</span>, <span class="keyword">string</span> <span class="variable">$message</span></span>) </span>&#123;</span><br><span class="line">  <span class="title function_ invoke__">header</span>(<span class="string">&#x27;HTTP/1.0 &#x27;</span> .<span class="variable">$statusCode</span>. <span class="string">&#x27; &#x27;</span> .<span class="variable">$message</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">sendHttpStatus</span>(<span class="number">404</span>, <span class="string">&quot;File Not Found&quot;</span>); <span class="comment">// integer and string passed</span></span><br><span class="line"><span class="title function_ invoke__">sendHttpStatus</span>(<span class="string">&quot;403&quot;</span>, <span class="string">&quot;OK&quot;</span>); <span class="comment">// string &quot;403&quot; coerced to int(403)</span></span><br></pre></td></tr></table></figure>
 <p>而且，你可以开启严格模式：在文件顶部加入代码行<code>declare(strict_types=1);</code>，就可以使得在当前文件中的所有函数调用都采用严格的类型检查模式。严格模式是由调用函数的文件决定的，而不是声明函数的文件决定的。</p>
 <p>如果函数类型提示检测到不匹配的情况，就会产生一个可捕获的致命错误：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>); <span class="comment">// must be the first line</span></div><div class="line"></div><div class="line">sendHttpStatus(<span class="number">404</span>, <span class="string">"File Not Found"</span>); <span class="comment">// integer and string passed</span></div><div class="line">sendHttpStatus(<span class="string">"403"</span>, <span class="string">"OK"</span>);</div><div class="line"></div><div class="line"><span class="comment">// Catchable fatal error: Argument 1 passed to sendHttpStatus() must be of the type integer, string given</span></div></pre></td></tr></table></figure>
-<p>此外，PHP 7 还支持返回值类型提示，与参数的类型提示支持相同的数据类型。与<a href="https://blog.engineyard.com/2014/hhvm-hack-php" target="_blank" rel="external">hack</a>的语法一样，只需在函数名结尾括号后加上冒号和返回类型：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isValidStatusCode</span><span class="params">(int $statusCode)</span>: <span class="title">bool</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;statuses[$statusCode]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>); <span class="comment">// must be the first line</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">sendHttpStatus</span>(<span class="number">404</span>, <span class="string">&quot;File Not Found&quot;</span>); <span class="comment">// integer and string passed</span></span><br><span class="line"><span class="title function_ invoke__">sendHttpStatus</span>(<span class="string">&quot;403&quot;</span>, <span class="string">&quot;OK&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Catchable fatal error: Argument 1 passed to sendHttpStatus() must be of the type integer, string given</span></span><br></pre></td></tr></table></figure>
+<p>此外，PHP 7 还支持返回值类型提示，与参数的类型提示支持相同的数据类型。与<a target="_blank" rel="noopener" href="https://blog.engineyard.com/2014/hhvm-hack-php">hack</a>的语法一样，只需在函数名结尾括号后加上冒号和返回类型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isValidStatusCode</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$statusCode</span></span>): <span class="title">bool</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">isset</span>(<span class="variable language_">$this</span>-&gt;statuses[<span class="variable">$statusCode</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的例子中，<strong>bool</strong>指明函数返回值为布尔类型。</p>
 <p>返回值类型提示的严格模式与参数类型提示遵守同样的规则。</p>
 <h2 id="组合比较操作符"><a href="#组合比较操作符" class="headerlink" title="组合比较操作符"></a>组合比较操作符</h2><p>我个人最喜欢的 PHP 7 新特性是组合比较操作符，<strong>&lt;=&gt;</strong>，也被称作宇宙飞船操作符。我可能有点偏心，因为我写了最初的补丁，并使得（T_SPACESHIP）这个名字流行起来，无论如何这个操作符对PHP语言都是个很好的扩充，带来了大于小于符号所不具备的功能。</p>
 <p>它的功能如同<strong>strcmp()</strong>或者<strong>version_compare()</strong>，当左操作数小于右操作数时返回-1，相等时返回0，如果左操作数大于右边则返回1。主要不同在于它可以接受任意类型的操作数，不仅仅只是字符串类型，还包括整形，浮点型，数组等等。</p>
 <p>最通常的用法是用于排序回调函数的实现：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">// Pre Spacefaring^W PHP 7</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">order_func</span><span class="params">($a, $b)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> ($a &lt; $b) ? <span class="number">-1</span> : (($a &gt; $b) ? <span class="number">1</span> : <span class="number">0</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Post PHP 7</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">order_func</span><span class="params">($a, $b)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> $a &lt;=&gt; $b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>本文翻译自：<a href="https://blog.engineyard.com/2015/what-to-expect-php-7" target="_blank" rel="external">https://blog.engineyard.com/2015/what-to-expect-php-7</a></strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// Pre Spacefaring^W PHP 7</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">order_func</span>(<span class="params"><span class="variable">$a</span>, <span class="variable">$b</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="variable">$a</span> &lt; <span class="variable">$b</span>) ? -<span class="number">1</span> : ((<span class="variable">$a</span> &gt; <span class="variable">$b</span>) ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Post PHP 7</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">order_func</span>(<span class="params"><span class="variable">$a</span>, <span class="variable">$b</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable">$a</span> &lt;=&gt; <span class="variable">$b</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>本文翻译自：<a target="_blank" rel="noopener" href="https://blog.engineyard.com/2015/what-to-expect-php-7">https://blog.engineyard.com/2015/what-to-expect-php-7</a></strong></p>
 
       
 
@@ -177,7 +176,7 @@
       })();
     </script>
     <noscript>
-    Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
     </noscript>
   </div>
 </section>
@@ -256,12 +255,20 @@
 
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
 
 
 <script src="/js/require.min.js"></script>
+
+
 <script src="/js/script.js"></script>
+
 
 
 <script type="text/x-mathjax-config">
@@ -296,7 +303,7 @@
 
   </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -308,7 +315,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
