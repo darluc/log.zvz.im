@@ -9,7 +9,7 @@
   <meta name="description" content="本文是「使用 NodeJS 构建影院微服务」系列的第二篇文章。  ## 第一章快速回顾 我们讲了什么是微服务 我们对比了微服务的利与弊 我们设计了一个影院微服务的架构 我们使用 RAML 定义了电影服务 API 的技术规格 我们使用 NodeJS 和 ExpressJS 开发了 电影服务 API 我们针对 API 做了单元测试 我们将 API 组成一个服务，并使我们的电影服务运行在 Docke">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2">
-<meta property="og:url" content="http://log.zvz.im/2017/07/17/nodejs-cinema-microservice-part2/index.html">
+<meta property="og:url" content="http://zvz.im/2017/07/17/nodejs-cinema-microservice-part2/index.html">
 <meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
 <meta property="og:description" content="本文是「使用 NodeJS 构建影院微服务」系列的第二篇文章。  ## 第一章快速回顾 我们讲了什么是微服务 我们对比了微服务的利与弊 我们设计了一个影院微服务的架构 我们使用 RAML 定义了电影服务 API 的技术规格 我们使用 NodeJS 和 ExpressJS 开发了 电影服务 API 我们针对 API 做了单元测试 我们将 API 组成一个服务，并使我们的电影服务运行在 Docke">
 <meta property="og:locale" content="en_US">
@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://img.zvz.im/imgs/2019/06/89fcb6d89df7cf8a.gif">
 <meta property="og:image" content="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png">
 <meta property="article:published_time" content="2017-07-17T14:18:23.000Z">
-<meta property="article:modified_time" content="2025-07-04T09:28:20.966Z">
+<meta property="article:modified_time" content="2025-07-04T09:35:17.313Z">
 <meta property="article:author" content="darluc">
 <meta property="article:tag" content="Nodejs">
 <meta name="twitter:card" content="summary">
@@ -100,7 +100,7 @@
 <li>我们将 API 组成一个服务，并使我们的<strong>电影服务</strong>运行在 <strong>Docker</strong> 容器中</li>
 <li>我们对运行在 <strong>Docker</strong> 中的<strong>电影服务</strong>做了<strong>集成测试</strong></li>
 </ul>
-<p>如果你还没有阅读过第一篇文章，你可以<a href="https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">去这里看看</a>👀。</p>
+<p>如果你还没有阅读过第一篇文章，你可以<a href="https://zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">去这里看看</a>👀。</p>
 <p>在本篇中我们将继续构建我们的<strong>影院微服务</strong>，这次我们将进行<strong>影院目录服务</strong>的开发，以完成下图中的功能。</p>
 <p><img src="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png" alt=""><br><span id="more"></span><br>我们将使用到以下技术：</p>
 <ul>
@@ -110,7 +110,7 @@
 </ul>
 <p>要跟上本文的进度有以下要求：</p>
 <ul>
-<li>已经完成<a href="https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">上一篇文章</a>中的例子代码</li>
+<li>已经完成<a href="https://zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">上一篇文章</a>中的例子代码</li>
 </ul>
 <p>如果你还没有完成这些代码，我已经将代码传到了 github 上，你可以直接使用<a target="_blank" rel="noopener" href="https://github.com/Crizstian/cinema-microservice/tree/step-1">代码库</a>分支 <strong>step-1</strong>。</p>
 <h2 id="微服务安全以及-¿-HTTP-2"><a href="#微服务安全以及-¿-HTTP-2" class="headerlink" title="# 微服务安全以及 ¿ HTTP/2 ?"></a># 微服务安全以及 ¿ HTTP/2 ?</h2><p>在第一章中，我们实现了一个简单的微服务，它使用的是 HTTP/1.1 协议。对于已有 15 年历史的 HTTP 协议来说，<strong>HTTP/2 是第一次大升级</strong>，它被高度优化且效率更高。<strong>HTTP/2 是最新的网络标准</strong>，它起源于谷歌的 SPDY 协议。现在已有许多热门站点在使用它，并且几乎所有主流浏览器都支持该协议。</p>
@@ -229,7 +229,7 @@
 <p>其次我们使用了与之前的<strong>微服务</strong>一样的 <strong>dockerfile</strong>，并构建了一个脚本来自动化此过程，我们还介绍了如何使用环境文件，并且在 <strong>Docker</strong> 容器中使用 <code>environment variables</code>，在完成这些之后，作为<strong>集成测试</strong>的补充，我还向你们展示了如何使用 JMeter 进行<strong>压力测试</strong>。</p>
 <p>虽然我们可能见过许多 <strong>NodeJS</strong> 开发的项目，不过仍然还有许多东西值得我们去学习和实践。本文只是一个小小的展示，我希望它展示出了一些有趣而有用的东西，使你在工作中能够运用 <strong>Docker 和 NodeJS</strong> 的相关技术。</p>
 <p>翻译自：<a target="_blank" rel="noopener" href="https://medium.com/@cramirez92/build-a-nodejs-cinema-microservice-and-deploying-it-with-docker-part-2-e05cc7b126e0">Build a NodeJS cinema microservice and deploying it with docker (part 2)</a></p>
-<p><a href="https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">系列文章 - Part 1</a></p>
+<p><a href="https://zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">系列文章 - Part 1</a></p>
 
       
 
@@ -322,7 +322,7 @@
 <script>
   var disqus_shortname = 'imzvz';
   
-  var disqus_url = 'http://log.zvz.im/2017/07/17/nodejs-cinema-microservice-part2/';
+  var disqus_url = 'http://zvz.im/2017/07/17/nodejs-cinema-microservice-part2/';
   
   (function(){
     var dsq = document.createElement('script');

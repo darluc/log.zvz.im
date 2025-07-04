@@ -9,7 +9,7 @@
   <meta name="description" content="ℹ︎本文内容基于 Go 1.13 版本。 Go 语言利用内部的调度器管理 goroutine。这个调度器致力于对 goroutine 进行切换，确保它们都能够获得执行时间。不过，调度器有时会抢占这些 goroutine 的运行时间以保证正确的轮换。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go：Goroutine 的抢占机制">
-<meta property="og:url" content="http://log.zvz.im/2020/03/11/go-goroutine-and-preemption/index.html">
+<meta property="og:url" content="http://zvz.im/2020/03/11/go-goroutine-and-preemption/index.html">
 <meta property="og:site_name" content="Z - Computer &amp; Programming Technology">
 <meta property="og:description" content="ℹ︎本文内容基于 Go 1.13 版本。 Go 语言利用内部的调度器管理 goroutine。这个调度器致力于对 goroutine 进行切换，确保它们都能够获得执行时间。不过，调度器有时会抢占这些 goroutine 的运行时间以保证正确的轮换。">
 <meta property="og:locale" content="en_US">
@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://img.zvz.im/imgs/2020/03/ea0c3522f02f71c9.png">
 <meta property="og:image" content="https://img.zvz.im/imgs/2020/03/7e2c3bd1d9bead3c.png">
 <meta property="article:published_time" content="2020-03-11T01:16:02.000Z">
-<meta property="article:modified_time" content="2025-07-04T09:28:20.965Z">
+<meta property="article:modified_time" content="2025-07-04T09:35:17.312Z">
 <meta property="article:author" content="darluc">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -232,7 +232,7 @@
 <script>
   var disqus_shortname = 'imzvz';
   
-  var disqus_url = 'http://log.zvz.im/2020/03/11/go-goroutine-and-preemption/';
+  var disqus_url = 'http://zvz.im/2020/03/11/go-goroutine-and-preemption/';
   
   (function(){
     var dsq = document.createElement('script');
