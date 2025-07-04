@@ -2,261 +2,261 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://log.zvz.im/2019/02/18/parsing-json-in-golang/</loc>
+    
+    <lastmod>2025-07-04T09:28:20.967Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://log.zvz.im/2019/07/25/real-world-concurrency-bugs-in-golang/</loc>
     
-    <lastmod>2025-07-03T18:06:35.828Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.967Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2019/11/09/top-10-golang-mistakes/</loc>
     
-    <lastmod>2025-07-03T18:06:35.828Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://log.zvz.im/2016/12/30/utf8-in-javascript/</loc>
-    
-    <lastmod>2025-07-03T18:06:35.828Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.967Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/09/03/understand-js-closure/</loc>
     
-    <lastmod>2025-07-03T18:06:35.828Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.967Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://log.zvz.im/2016/12/30/utf8-in-javascript/</loc>
+    
+    <lastmod>2025-07-04T09:28:20.967Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2017/03/23/why-curry-helps/</loc>
     
-    <lastmod>2025-07-03T18:06:35.828Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.967Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/tags/index.html</loc>
     
-    <lastmod>2025-07-03T18:06:35.828Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.967Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2021/01/10/init-functions-in-go/</loc>
     
-    <lastmod>2025-07-03T18:06:35.827Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.966Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2017/12/12/javascript-async-await/</loc>
     
-    <lastmod>2025-07-03T18:06:35.827Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/</loc>
-    
-    <lastmod>2025-07-03T18:06:35.827Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.966Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2017/03/20/node-opencv/</loc>
     
-    <lastmod>2025-07-03T18:06:35.827Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.966Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://log.zvz.im/2017/10/17/nodejs-cinema-microservice-part3/</loc>
+    <loc>http://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/</loc>
     
-    <lastmod>2025-07-03T18:06:35.827Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://log.zvz.im/2019/02/18/parsing-json-in-golang/</loc>
-    
-    <lastmod>2025-07-03T18:06:35.827Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.966Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2017/07/17/nodejs-cinema-microservice-part2/</loc>
     
-    <lastmod>2025-07-03T18:06:35.827Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.966Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://log.zvz.im/2021/06/05/go-detect-faces-using-opencv/</loc>
+    <loc>http://log.zvz.im/2017/10/17/nodejs-cinema-microservice-part3/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.966Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2020/06/21/go-ent-graph-based-orm/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2021/01/30/go-get-private-repo-return-410/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2020/03/11/go-goroutine-and-preemption/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2018/07/15/go-tensorflow/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2019/03/09/golang-writing-unit-tests/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/11/11/good-taste-coding/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2018/02/28/handling-million-requests-with-golang/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2024/04/01/history-timeline-of-llm/</loc>
     
-    <lastmod>2025-07-03T18:06:35.826Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.965Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/02/27/PHP-session/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://log.zvz.im/2017/10/25/PHP-SOLID-principles/</loc>
-    
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2015/10/24/PHP7-1/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/01/17/PHP7-2/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2024/05/12/ai-ml-nn-and-dl/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2015/08/24/angularjs-form/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/10/13/build-todo-app/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2015/08/31/doctrine-generate/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2015/09/02/doctrine-transaction/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/04/02/gitlab-install/</loc>
     
-    <lastmod>2025-07-03T18:06:35.825Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://log.zvz.im/2021/06/05/go-detect-faces-using-opencv/</loc>
+    
+    <lastmod>2025-07-04T09:28:20.964Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2015/09/16/Internet-Explorer-Compatibility-List/</loc>
     
-    <lastmod>2025-07-03T18:06:35.824Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.963Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2015/10/06/JSON-RPC/</loc>
     
-    <lastmod>2025-07-03T18:06:35.824Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.963Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/06/28/Laravel-5/</loc>
     
-    <lastmod>2025-07-03T18:06:35.824Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.963Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/06/07/Make-your-Nodejs-API-robust/</loc>
     
-    <lastmod>2025-07-03T18:06:35.824Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.963Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://log.zvz.im/2016/07/01/PHP-Coroutine/</loc>
     
-    <lastmod>2025-07-03T18:06:35.824Z</lastmod>
+    <lastmod>2025-07-04T09:28:20.963Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://log.zvz.im/2017/10/25/PHP-SOLID-principles/</loc>
+    
+    <lastmod>2025-07-04T09:28:20.963Z</lastmod>
     
   </url>
   
