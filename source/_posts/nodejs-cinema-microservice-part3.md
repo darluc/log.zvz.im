@@ -20,8 +20,8 @@ tags:
 
 如果你没有阅读之前的章节，那么很有可能会错一些有趣的东西 🤘🏽，下面我列出前两篇的链接，方便你有兴趣的话可以看一下👀。
 
-- [用 NodeJS 打造影院微服务并部署到 docker 上 — Part 1](https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/)
-- [用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2](https://log.zvz.im/2017/07/17/nodejs-cinema-microservice-part2/)
+- [用 NodeJS 打造影院微服务并部署到 docker 上 — Part 1](https://zvz.im/2017/05/24/nodejs-cinema-microservice-part1/)
+- [用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2](https://zvz.im/2017/07/17/nodejs-cinema-microservice-part2/)
 
 在之前的章节中，我们已经完成了以下架构图中的上层部分，接着从本章起，我们要开始图中下层部分的开发了。
 
@@ -37,7 +37,7 @@ tags:
 
 要跟上本文的进度有以下要求：
 
-- 已经完成[上一篇文章](https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/)中的例子代码
+- 已经完成[上一篇文章](https://zvz.im/2017/05/24/nodejs-cinema-microservice-part1/)中的例子代码
 
 如果你还没有完成这些代码，我已经将代码传到了 github 上，你可以直接使用[代码库](https://github.com/Crizstian/cinema-microservice/tree/step-1)分支 **step-2**。
 
@@ -781,5 +781,5 @@ $ bash < start_service
 
 
 
-[系列文章 - Part 1](https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part1/)
-[系列文章 - Part 2](https://log.zvz.im/2017/07/17/nodejs-cinema-microservice-part2/)
+[系列文章 - Part 1](https://zvz.im/2017/05/24/nodejs-cinema-microservice-part1/)
+[系列文章 - Part 2](https://zvz.im/2017/07/17/nodejs-cinema-microservice-part2/)

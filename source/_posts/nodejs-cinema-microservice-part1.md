@@ -714,4 +714,4 @@ describe('movies-service', () => {
 
 
 
-[系列文章 - Part 2](https://log.zvz.im/2017/05/24/nodejs-cinema-microservice-part2/)
+[系列文章 - Part 2](https://zvz.im/2017/05/24/nodejs-cinema-microservice-part2/)

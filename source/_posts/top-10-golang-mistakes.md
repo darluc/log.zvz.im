@@ -402,7 +402,7 @@ response, err := grpcClient.Send(ctx, request)
 
 我确实经常见到的一个错误是，测试 Go 应用时不使用 `-race` 参数。
 
-就如这份[报告](https://log.zvz.im/2019/07/25/real-world-concurrency-bugs-in-golang/)中描述的，尽管 Go 的设计初衷是“让并发编程变得简单可靠”，我们仍然会遇到许多并发问题。
+就如这份[报告](https://zvz.im/2019/07/25/real-world-concurrency-bugs-in-golang/)中描述的，尽管 Go 的设计初衷是“让并发编程变得简单可靠”，我们仍然会遇到许多并发问题。
 
 当然 Go 的竞争探测器（ race detector ）不可能帮你解决所有的并发问题。不过，它仍然是很**有价值的**工具，当进行程序测试时我们总是应该启用它。
 
