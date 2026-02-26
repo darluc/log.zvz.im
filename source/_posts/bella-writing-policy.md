@@ -4,12 +4,14 @@ tags:
 
 - privacy policy
 
-# 贝贝练字板隐私政策 / Bella's Writing Board Privacy Policy
+---
 
 **最后更新日期 / Last Updated:** 2026-02-27
 
 欢迎使用贝贝练字板（以下简称“本应用”）。我们非常重视用户隐私，尤其是儿童用户的隐私。本隐私政策旨在说明我们如何处理信息。
 Welcome to Bella's Writing Board ("the App"). We value user privacy, especially children’s privacy. This Privacy Policy explains how information is handled.
+
+<!--more-->
 
 ------
 
