@@ -47,6 +47,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-understand-js-closure" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/03/understand-js-closure/">搞不明白的 Javascript 闭包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/09/03/understand-js-closure/" class="article-date">
+  <time datetime="2016-09-03T23:32:18.000Z" itemprop="datePublished">2016-09-03</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/javascript/">javascript</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在 Javascript 语言中，闭包就是一个函数，只是它上下文中的变量以引用的形式与其绑定在了一起。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getMeAClosure</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> canYouSeeMe = <span class="string">&quot;here I am&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">function</span> <span class="title function_">theClosure</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="attr">canYouSeeIt</span>: canYouSeeMe ? <span class="string">&quot;yes&quot;</span> : <span class="string">&quot;no&quot;</span>&#125;;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> closure = <span class="title function_">getMeAClosure</span>();</span><br><span class="line"><span class="title function_">closure</span>().<span class="property">canYouSeeIt</span>; <span class="comment">//&quot;yes&quot;</span></span><br></pre></td></tr></table></figure>
+<p>实际上每个 Javascript 函数在生成的时候都形成了闭包。稍后我会给大家解释闭包的产生原因和过程，然后纠正一些关于闭包的错误概念，最后再给出一些闭包的实际用例。不过首先简单介绍一下闭包相关的基础概念：Javascript 的闭包是通过 <code>词法域 (lexical scope)</code> 和 <code>变量环境 (VariableEnvironment)</code> 实现的。<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/09/03/understand-js-closure/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-PHP-Coroutine" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
@@ -286,56 +331,9 @@
 
 
   
-    <article id="post-PHP7-2" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/17/PHP7-2/">PHP 7 有些什么值得期待？（二）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/01/17/PHP7-2/" class="article-date">
-  <time datetime="2016-01-17T03:13:27.000Z" itemprop="datePublished">2016-01-17</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/tags/php/">php</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在上一期我们已经介绍了，PHP7中最重要的对于不一致性的修复，以及两个大的新特性。本文将要介绍PHP7的另外6个你会乐于知道的特性。</p>
-</blockquote>
-<h2 id="Unicode编码的转义语法"><a href="#Unicode编码的转义语法" class="headerlink" title="Unicode编码的转义语法"></a>Unicode编码的转义语法</h2><p>新增的转义字符，<code>\u</code>，允许我们在php字符串中直接加入Unicode编码字符：</p>
-<p>使用语法如下<code>\u&#123;编码&#125;</code>，例如绿色的心形 💚，可以直接用PHP字符串表示：”\u{1F49A}”。<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/01/17/PHP7-2/#more">More...</a>
-          </p>
-        
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
     </nav>
   
 </section>
