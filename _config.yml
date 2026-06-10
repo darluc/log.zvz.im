@@ -79,7 +79,7 @@ disqus_shortname: imzvz
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/darluc/log.zvz.im.git
+  repo: git@github.com:darluc/log.zvz.im.git
   branch: gh-pages
 
 sitemap:
