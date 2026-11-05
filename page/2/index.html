@@ -47,6 +47,66 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-init-functions-in-go" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/10/init-functions-in-go/">Go 语言中的 init 函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2021/01/10/init-functions-in-go/" class="article-date">
+  <time datetime="2021-01-10T01:18:16.000Z" itemprop="datePublished">2021-01-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>标识符 <code>main</code> 无所不在。每个 Go 程序的执行都是从 <code>main</code> 包中一个拥有相同名字的函数开始的。当这个 <code>main</code> 函数返回时，整个程序也退出了执行。<code>init</code> 函数也扮演着特定的角色，本文会描述它们的特性并介绍它们的使用方法。</p>
+<p><code>init</code> 函数是定义在包级别的，它被用于：</p>
+<ul>
+<li>初始化无法使用表达式初始化的变量</li>
+<li>检查和修复程序的状态</li>
+<li>注册</li>
+<li>执行一次性的运算</li>
+<li>以及其它</li>
+</ul>
+<p>除了下面要介绍一些区别，你可以将任何在一般函数中有效的代码放在其中。</p>
+<h2 id="包的初始化"><a href="#包的初始化" class="headerlink" title="包的初始化"></a>包的初始化</h2><p>要使用一个引入的包，首先它需要被初始化。这是由 Golang 的运行系统来完成的，由以下几步（顺序很重要）组成：</p>
+<ol>
+<li>初始化引入的包（递归释义）</li>
+<li>计算并初始化赋值包级别的变量</li>
+<li>执行包内的 <code>init</code> 方法</li>
+</ol>
+<blockquote>
+<p><em>包的初始化过程只会被执行一次，即使它被多次引用</em><br>
+        
+          <p class="article-more-link">
+            <a href="/2021/01/10/init-functions-in-go/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-go-ent-graph-based-orm" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
@@ -271,53 +331,6 @@
         
           <p class="article-more-link">
             <a href="/2019/03/09/golang-writing-unit-tests/#more">More...</a>
-          </p>
-        
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-parsing-json-in-golang" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/18/parsing-json-in-golang/">如何使用 Go 语言解析 JSON</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2019/02/18/parsing-json-in-golang/" class="article-date">
-  <time datetime="2019-02-18T01:17:13.000Z" itemprop="datePublished">2019-02-18</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/tags/golang/">golang</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当静态编程语言使用到 JSON 的时候，总是会有些费力。一方面，JSON 数据可能是任何形式的，从一个简单的数字，到一个复杂的包含内嵌对象的数组。当使用 Go 语言的时候，这意味着你要将这些变化多端的 JSON 数据放入结构化的变量中去。</p>
-<p>幸运地是，Go 尽力尝试帮我们降低编码难度，为我们提供了许多方式来解析 JSON 数据。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Go 标准库的 json 包为我们提供了我们想要的功能。对于任意的 JSON 字符串，标准的解析方法如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ... </span></span><br><span class="line">myJsonString := <span class="string">`&#123;&quot;some&quot;:&quot;json&quot;&#125;`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `&amp;myStoredVariable` is the address of the variable we want to store our</span></span><br><span class="line"><span class="comment">// parsed data in</span></span><br><span class="line">json.Unmarshall([]<span class="type">byte</span>(myJsonString), &amp;myStoredVariable)</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure>
-<p>本文中我们要讨论的是，对于 <code>myStoredVariable</code> 变量的类型，你可以有哪些不同的选择，以及决定何时采用何种类型。<br>
-        
-          <p class="article-more-link">
-            <a href="/2019/02/18/parsing-json-in-golang/#more">More...</a>
           </p>
         
       

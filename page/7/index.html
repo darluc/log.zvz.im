@@ -47,6 +47,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-doctrine-generate" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/31/doctrine-generate/">Howto generate entities from table with Doctrine</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/08/31/doctrine-generate/" class="article-date">
+  <time datetime="2015-08-31T23:55:59.000Z" itemprop="datePublished">2015-08-31</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/doctrine/">doctrine</a> <a class="article-category-link" href="/tags/php/">php</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>Generate xml from table.</p>
+<ul>
+<li><p>you may need to set filter in your cli-config.php code like below.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$config</span>-&gt;<span class="title function_ invoke__">setFilterSchemaAssetsExpression</span>(<span class="string">&#x27;/^life_/&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>you may meet unkown database type enum requested error, you can fix that in your cli-config.php too.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$entityManager</span>-&gt;<span class="title function_ invoke__">getConnection</span>()-&gt;<span class="title function_ invoke__">getDatabasePlatform</span>()-&gt;<span class="title function_ invoke__">registerDoctrineTypeMapping</span>(<span class="string">&#x27;enum&#x27;</span>, <span class="string">&#x27;string&#x27;</span>);</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2015/08/31/doctrine-generate/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-angularjs-form" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">

@@ -47,6 +47,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-uploader-youtube-privacy-policy" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/11/05/uploader-youtube-privacy-policy/">Uploader Youtube 隐私政策 / Uploader Youtube Privacy Policy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2026/11/05/uploader-youtube-privacy-policy/" class="article-date">
+  <time datetime="2026-11-05T19:55:00.000Z" itemprop="datePublished">2026-11-05</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/privacy-policy/">privacy policy</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>最后更新日期 / Last Updated:</strong> 2026-11-05</p>
+<p>Uploader Youtube（以下简称“本应用”）是 zvz.im 作者自用的工具。它在作者自己的电脑上运行，通过 YouTube Data API 把作者制作的视频上传到作者自己的 YouTube 频道，不向公众提供服务。本隐私政策说明本应用如何处理经 Google 账号授权获得的信息。</p>
+<p>Uploader Youtube (“the App”) is a personal tool used by the author of zvz.im. It runs on the author’s own computer and uploads the author’s own videos to the author’s own YouTube channel through the YouTube Data API. It is not offered as a service to the public. This Privacy Policy explains how the App handles information obtained through Google account authorization.</p>
+        
+          <p class="article-more-link">
+            <a href="/2026/11/05/uploader-youtube-privacy-policy/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-bella-writing-policy" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
@@ -277,66 +322,6 @@
         
           <p class="article-more-link">
             <a href="/2021/01/30/go-get-private-repo-return-410/#more">More...</a>
-          </p>
-        
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-init-functions-in-go" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/10/init-functions-in-go/">Go 语言中的 init 函数</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2021/01/10/init-functions-in-go/" class="article-date">
-  <time datetime="2021-01-10T01:18:16.000Z" itemprop="datePublished">2021-01-10</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/tags/golang/">golang</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>标识符 <code>main</code> 无所不在。每个 Go 程序的执行都是从 <code>main</code> 包中一个拥有相同名字的函数开始的。当这个 <code>main</code> 函数返回时，整个程序也退出了执行。<code>init</code> 函数也扮演着特定的角色，本文会描述它们的特性并介绍它们的使用方法。</p>
-<p><code>init</code> 函数是定义在包级别的，它被用于：</p>
-<ul>
-<li>初始化无法使用表达式初始化的变量</li>
-<li>检查和修复程序的状态</li>
-<li>注册</li>
-<li>执行一次性的运算</li>
-<li>以及其它</li>
-</ul>
-<p>除了下面要介绍一些区别，你可以将任何在一般函数中有效的代码放在其中。</p>
-<h2 id="包的初始化"><a href="#包的初始化" class="headerlink" title="包的初始化"></a>包的初始化</h2><p>要使用一个引入的包，首先它需要被初始化。这是由 Golang 的运行系统来完成的，由以下几步（顺序很重要）组成：</p>
-<ol>
-<li>初始化引入的包（递归释义）</li>
-<li>计算并初始化赋值包级别的变量</li>
-<li>执行包内的 <code>init</code> 方法</li>
-</ol>
-<blockquote>
-<p><em>包的初始化过程只会被执行一次，即使它被多次引用</em><br>
-        
-          <p class="article-more-link">
-            <a href="/2021/01/10/init-functions-in-go/#more">More...</a>
           </p>
         
       

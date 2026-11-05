@@ -47,6 +47,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-parsing-json-in-golang" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/18/parsing-json-in-golang/">如何使用 Go 语言解析 JSON</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2019/02/18/parsing-json-in-golang/" class="article-date">
+  <time datetime="2019-02-18T01:17:13.000Z" itemprop="datePublished">2019-02-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/golang/">golang</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当静态编程语言使用到 JSON 的时候，总是会有些费力。一方面，JSON 数据可能是任何形式的，从一个简单的数字，到一个复杂的包含内嵌对象的数组。当使用 Go 语言的时候，这意味着你要将这些变化多端的 JSON 数据放入结构化的变量中去。</p>
+<p>幸运地是，Go 尽力尝试帮我们降低编码难度，为我们提供了许多方式来解析 JSON 数据。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Go 标准库的 json 包为我们提供了我们想要的功能。对于任意的 JSON 字符串，标准的解析方法如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ... </span></span><br><span class="line">myJsonString := <span class="string">`&#123;&quot;some&quot;:&quot;json&quot;&#125;`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `&amp;myStoredVariable` is the address of the variable we want to store our</span></span><br><span class="line"><span class="comment">// parsed data in</span></span><br><span class="line">json.Unmarshall([]<span class="type">byte</span>(myJsonString), &amp;myStoredVariable)</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+<p>本文中我们要讨论的是，对于 <code>myStoredVariable</code> 变量的类型，你可以有哪些不同的选择，以及决定何时采用何种类型。<br>
+        
+          <p class="article-more-link">
+            <a href="/2019/02/18/parsing-json-in-golang/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-go-tensorflow" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
@@ -276,64 +323,6 @@
         
           <p class="article-more-link">
             <a href="/2017/10/17/nodejs-cinema-microservice-part3/#more">More...</a>
-          </p>
-        
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nodejs-cinema-microservice-part2" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/17/nodejs-cinema-microservice-part2/">用 NodeJS 打造影院微服务并部署到 docker 上 — Part 2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2017/07/17/nodejs-cinema-microservice-part2/" class="article-date">
-  <time datetime="2017-07-17T14:18:23.000Z" itemprop="datePublished">2017-07-17</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/tags/Nodejs/">Nodejs</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本文是「使用 NodeJS 构建影院微服务」系列的第二篇文章。</p>
-</blockquote>
-<h3 id="第一章快速回顾"><a href="#第一章快速回顾" class="headerlink" title="## 第一章快速回顾"></a>## 第一章快速回顾</h3><ul>
-<li>我们讲了<strong>什么是微服务</strong></li>
-<li>我们对比了<strong>微服务</strong>的<strong>利</strong>与<strong>弊</strong></li>
-<li>我们设计了一个<strong>影院微服务的架构</strong></li>
-<li>我们使用 <strong>RAML</strong> 定义了<strong>电影服务 API</strong> 的技术规格</li>
-<li>我们使用 <strong>NodeJS 和 ExpressJS</strong> 开发了 <strong>电影服务 API</strong></li>
-<li>我们针对 API 做了<strong>单元测试</strong></li>
-<li>我们将 API 组成一个服务，并使我们的<strong>电影服务</strong>运行在 <strong>Docker</strong> 容器中</li>
-<li>我们对运行在 <strong>Docker</strong> 中的<strong>电影服务</strong>做了<strong>集成测试</strong></li>
-</ul>
-<p>如果你还没有阅读过第一篇文章，你可以<a href="https://zvz.im/2017/05/24/nodejs-cinema-microservice-part1/">去这里看看</a>👀。</p>
-<p>在本篇中我们将继续构建我们的<strong>影院微服务</strong>，这次我们将进行<strong>影院目录服务</strong>的开发，以完成下图中的功能。</p>
-<p><img src="https://img.zvz.im/imgs/2019/06/f142eea98b22201f.png" alt=""><br>
-        
-          <p class="article-more-link">
-            <a href="/2017/07/17/nodejs-cinema-microservice-part2/#more">More...</a>
           </p>
         
       

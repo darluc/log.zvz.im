@@ -47,6 +47,52 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-build-todo-app" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/13/build-todo-app/">使用 Redux 秒做 todo-list 应用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/10/13/build-todo-app/" class="article-date">
+  <time datetime="2016-10-13T01:39:11.000Z" itemprop="datePublished">2016-10-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/javascript/">javascript</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://facebook.github.io/react">React</a> 采用组件和单向数据流的方式完美地解决了用户界面的构建问题，不过它所用于处理状态的工具设计得太简单了，感觉就是故意的；也可能是为了强调 React 只是对应传统的 <a target="_blank" rel="noopener" href="http://blog.codinghorror.com/understanding-model-view-controller/">MVC</a> 架构中 View 的部分。</p>
+<h2 id="作者认为"><a href="#作者认为" class="headerlink" title="作者认为"></a>作者认为</h2><p>没有什么能够阻止我们用 React 来构建越来越大的应用，但是很快我们就会发现，想要保持代码简单，我们到处都需要进行状态的管理。</p>
+<p>尽管没有官方的解决方案，但是仍然有不少代码库依照 React 的设计理念解决了状态管理的问题。今天我们就要介绍两个这样的类库，并使用它们构建一个简单的小应用。</p>
+<h2 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h2><p><a target="_blank" rel="noopener" href="https://redux.js.org/">Redux</a> 是一个极精简的库，它融合了 <a target="_blank" rel="noopener" href="https://redux.js.org/">Flux</a> 和 <a target="_blank" rel="noopener" href="https://redux.js.org/">Elm</a> 的设计理念，为应用状态提供容器功能。我们可以使用 Redux 管理任何应用的状态，使我们遵守以下准则：<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/10/13/build-todo-app/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-understand-js-closure" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
@@ -272,52 +318,6 @@
         
           <p class="article-more-link">
             <a href="/2016/04/02/gitlab-install/#more">More...</a>
-          </p>
-        
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP-session" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/27/PHP-session/">PHP session锁：如何避免session阻塞PHP请求</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/02/27/PHP-session/" class="article-date">
-  <time datetime="2016-02-27T17:38:26.000Z" itemprop="datePublished">2016-02-27</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/tags/php/">php</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>PHP session 的锁机制也许不是每个人都很清楚，如果你不注意，就会造成程序运行慢的问题。 如果你能了解其背后的机制，且能预判这种机制给你的PHP程序所带来的影响，并且避免它。那么 session 阻塞问题就根本算不上什么问题。</p>
-</blockquote>
-<h2 id="当你调用-session-start-时，都发生了什么"><a href="#当你调用-session-start-时，都发生了什么" class="headerlink" title="当你调用 session_start() 时，都发生了什么"></a>当你调用 session_start() 时，都发生了什么</h2><p>我们使用一个基本的 PHP 配置为例：当你开始一次 PHP 会话时，PHP会在 <em>session.save_path</em> 路径下创建一个普通的文件，默认路径为 <em>/var/lib/php/session</em> 。所有的 session 数据都保存在这个地方。<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/02/27/PHP-session/#more">More...</a>
           </p>
         
       

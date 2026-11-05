@@ -47,6 +47,52 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-PHP-session" class="article article-type-post" itemscope itemprop="blogPost">
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/27/PHP-session/">PHP session锁：如何避免session阻塞PHP请求</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/02/27/PHP-session/" class="article-date">
+  <time datetime="2016-02-27T17:38:26.000Z" itemprop="datePublished">2016-02-27</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/tags/php/">php</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>PHP session 的锁机制也许不是每个人都很清楚，如果你不注意，就会造成程序运行慢的问题。 如果你能了解其背后的机制，且能预判这种机制给你的PHP程序所带来的影响，并且避免它。那么 session 阻塞问题就根本算不上什么问题。</p>
+</blockquote>
+<h2 id="当你调用-session-start-时，都发生了什么"><a href="#当你调用-session-start-时，都发生了什么" class="headerlink" title="当你调用 session_start() 时，都发生了什么"></a>当你调用 session_start() 时，都发生了什么</h2><p>我们使用一个基本的 PHP 配置为例：当你开始一次 PHP 会话时，PHP会在 <em>session.save_path</em> 路径下创建一个普通的文件，默认路径为 <em>/var/lib/php/session</em> 。所有的 session 数据都保存在这个地方。<br>
+        
+          <p class="article-more-link">
+            <a href="/2016/02/27/PHP-session/#more">More...</a>
+          </p>
+        
+      
+
+      
+        
+    </div>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-PHP7-2" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
@@ -301,55 +347,6 @@
         
           <p class="article-more-link">
             <a href="/2015/09/02/doctrine-transaction/#more">More...</a>
-          </p>
-        
-      
-
-      
-        
-    </div>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-doctrine-generate" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/31/doctrine-generate/">Howto generate entities from table with Doctrine</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/08/31/doctrine-generate/" class="article-date">
-  <time datetime="2015-08-31T23:55:59.000Z" itemprop="datePublished">2015-08-31</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/tags/doctrine/">doctrine</a> <a class="article-category-link" href="/tags/php/">php</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p>Generate xml from table.</p>
-<ul>
-<li><p>you may need to set filter in your cli-config.php code like below.</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$config</span>-&gt;<span class="title function_ invoke__">setFilterSchemaAssetsExpression</span>(<span class="string">&#x27;/^life_/&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
-<li><p>you may meet unkown database type enum requested error, you can fix that in your cli-config.php too.</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$entityManager</span>-&gt;<span class="title function_ invoke__">getConnection</span>()-&gt;<span class="title function_ invoke__">getDatabasePlatform</span>()-&gt;<span class="title function_ invoke__">registerDoctrineTypeMapping</span>(<span class="string">&#x27;enum&#x27;</span>, <span class="string">&#x27;string&#x27;</span>);</span><br></pre></td></tr></table></figure>
-        
-          <p class="article-more-link">
-            <a href="/2015/08/31/doctrine-generate/#more">More...</a>
           </p>
         
       
